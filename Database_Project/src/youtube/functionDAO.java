@@ -6,6 +6,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 public class functionDAO {
 	private static final long serialVersionUID = 1L;
@@ -36,6 +38,26 @@ public class functionDAO {
         	connect.close();
         }
     }
+	
+	 public List<Video> listAllVideo() throws SQLException {
+	        List<Video> listVideo = new ArrayList<Video>();        
+	        String sql = "SELECT url FROM video";      
+	        connect_func();      
+	        statement =  (Statement) connect.createStatement();
+	        ResultSet resultSet = statement.executeQuery(sql);
+	         
+	        while (resultSet.next()) {
+	            String url = resultSet.getString("url");
+	            
+//	            People people = new People(id,name, address, status);
+//	            listPeople.add(people);
+	        }        
+	        resultSet.close();
+	        statement.close();         
+	        disconnect();        
+	        return listVideo;
+	    }
+	    
 	
 	
 
