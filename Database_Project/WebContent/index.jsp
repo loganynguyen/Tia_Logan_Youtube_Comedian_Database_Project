@@ -9,14 +9,14 @@
 	
 	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 
-	<title>Youtube Login Page</title>
+	<title>Youtube</title>
 
 </head>
 
 
 <body>
 	
-	<h1 align="center">Youtube</h1>
+	<h2 align="center">Youtube Login</h1>
 	
 	<form method="post" action="login">
 		<center>

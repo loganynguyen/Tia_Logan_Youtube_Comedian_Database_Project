@@ -7,13 +7,13 @@
 	
 	<meta charset="ISO-8859-1">
 	
-	<title>Initialize Database</title>
+	<title>Youtube</title>
 
 </head>
 
 <body>
 	
-	<h2 align="center">Welcome root user</h1>
+	<h2 align="center">Welcome, root user!</h1>
 	
 	<center>
 		<form action="initialize" method="post">

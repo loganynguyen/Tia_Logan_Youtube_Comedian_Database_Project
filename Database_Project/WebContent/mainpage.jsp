@@ -13,7 +13,7 @@
 
 <body>
 	
-	<h2 align="center">Welcome to your account</h1>
+	<h2 align="center">Welcome to your account!</h1>
 	
 	<center>
 	<form action="videoInsert.jsp">

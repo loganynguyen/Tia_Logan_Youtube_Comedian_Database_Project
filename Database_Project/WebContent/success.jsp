@@ -5,13 +5,13 @@
 	
 	<meta charset="ISO-8859-1">
 	
-	<title>success page</title>
+	<title>Youtube</title>
 
 </head>
 
 <body>
 	
-	<h2 align="center">Database has been initialized</h1>
+	<h2 align="center">The database has been initialized</h1>
 	
 	<center>
 	
