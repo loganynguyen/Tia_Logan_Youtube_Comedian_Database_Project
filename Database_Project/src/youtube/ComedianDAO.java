@@ -69,7 +69,7 @@ public class ComedianDAO extends HttpServlet {
 	
     public void insert(Comedian comedian) throws SQLException {
     	connect_func();         
-    	String sql = "insert into  user (email, password, firstname, lastname) values (?, ?, ?, ?)";
+    	String sql = "insert into  comedian (firstname, lastname, birthdate, birthplace) values (?, ?, ?, ?)";
 		preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
 		preparedStatement.setString(1, comedian.getFirstname());
 		preparedStatement.setString(2, comedian.getLastname());
