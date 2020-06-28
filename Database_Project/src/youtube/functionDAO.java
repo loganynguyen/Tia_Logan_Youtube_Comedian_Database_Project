@@ -39,18 +39,22 @@ public class functionDAO {
         }
     }
 	
-	 public List<Video> listAllVideo() throws SQLException {
-	        List<Video> listVideo = new ArrayList<Video>();        
-	        String sql = "SELECT url FROM video";      
-	        connect_func();      
+	 public List<String> listAllVideo(String comedianFirstName) throws SQLException {
+	        List<String> listVideo = new ArrayList<String>();        
+	        connect_func();     
+	        String sql1 = "SELECT comedianid FROM comedian where firstname='"+comedianFirstName+"'";      
+	        
 	        statement =  (Statement) connect.createStatement();
-	        ResultSet resultSet = statement.executeQuery(sql);
-	         
-	        while (resultSet.next()) {
+	        ResultSet resultSet = statement.executeQuery(sql1);
+	        String comedianid = resultSet.getString("comedianid");
+	        
+	        
+	        String sql2 = "SELECT url FROM video where comedianId='"+comedianid+"'";      
+	        resultSet = statement.executeQuery(sql2);
+	        while (resultSet.next()) 
+	        {
 	            String url = resultSet.getString("url");
-	            
-//	            People people = new People(id,name, address, status);
-//	            listPeople.add(people);
+	            listVideo.add(url);
 	        }        
 	        resultSet.close();
 	        statement.close();         
