@@ -1,5 +1,4 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1" %>
-<%@ page import="youtube.UserDAO" %>
 
 <!DOCTYPE html>
 
@@ -31,7 +30,7 @@
 						<td><button type="submit" id="search" value="search">Search</button></td>
 					</tr>
 					<tr>
-						<td colspan="2"><a href="index.jsp">Login here</a></td>
+						<td colspan="2"><a href="index.jsp">Login</a></td>
 					</tr>
 			</table>
 		</center>
