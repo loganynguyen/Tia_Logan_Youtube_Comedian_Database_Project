@@ -18,6 +18,7 @@
 	    <form action="videoInsert.jsp">
 			<button type="submit">Insert Video</button>
 		</form>
+		<br>
 		 <form action="searchpage.jsp">
 			<button type="submit">Search Video</button>
 		</form>
