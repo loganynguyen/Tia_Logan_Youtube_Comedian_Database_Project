@@ -5,16 +5,28 @@ public class Comedian {
     protected String lastname;
     protected String birthdate;
     protected String birthplace;
+    protected int comedianid;
  
     public Comedian() {
     }
     
-    public Comedian(String firstname, String lastname, String birthdate, String birthplace) 
+    public Comedian(int comedianid, String firstname, String lastname, String birthdate, String birthplace) 
     {
+    	this.comedianid = comedianid;
         this.firstname = firstname;
         this.lastname = lastname;
         this.birthdate = birthdate;
         this.lastname = lastname;
+    }
+    
+    public void setComedianid(int comedianid)
+    {
+    	this.comedianid = comedianid;
+    }
+    
+    public int getComedianid()
+    {
+    	return comedianid;
     }
  
     public void setFirstname(String firstname)

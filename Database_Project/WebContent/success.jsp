@@ -18,6 +18,10 @@
 	    <form action="videoInsert.jsp">
 			<button type="submit">Insert Video</button>
 		</form>
+		<br>
+		 <form action="searchpage.jsp">
+			<button type="submit">Search Video</button>
+		</form>
 		
 		<h3 colspan="2"><a href="index.jsp">Logout</a></td>
 	</center>
