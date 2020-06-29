@@ -9,7 +9,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class functionDAO {
+public class FunctionDAO {
 	private static final long serialVersionUID = 1L;
 	private Connection connect = null;
 	private Statement statement = null;
@@ -17,7 +17,7 @@ public class functionDAO {
 	private ResultSet resultSet = null;
 	
 	
-	public functionDAO() {}
+	public FunctionDAO() {}
 	
 	protected void connect_func() throws SQLException {
         if (connect == null || connect.isClosed()) {

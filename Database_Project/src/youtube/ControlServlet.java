@@ -35,6 +35,7 @@ public class ControlServlet extends HttpServlet
     private VideoDAO videoDAO;
     private ComedianDAO comedianDAO;
     private FavoriteDAO favoriteDAO;
+    private FunctionDAO functionDAO;
      
     // Initialize the table objects
     public void init() {
@@ -44,6 +45,7 @@ public class ControlServlet extends HttpServlet
     	videoDAO = new VideoDAO();
     	comedianDAO = new ComedianDAO();
     	favoriteDAO = new FavoriteDAO();
+    	functionDAO = new FunctionDAO();
     }
     
     // doPost -> doGet
@@ -66,6 +68,10 @@ public class ControlServlet extends HttpServlet
             case "/register":
         		System.out.println("Registering...");
             	register(request, response);
+            	break;
+            case "/search":
+        		System.out.println("Searching...");
+            	search(request, response);
             	break;
             case "/initialize":
             	initializeDatabase(request, response);
@@ -146,5 +152,15 @@ public class ControlServlet extends HttpServlet
     		dispatcher.forward(request, response);
         	System.out.println("Registration failed, please make sure your passwords match.");
         }
+	}
+	
+	private void search(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException 
+	{
+		String firstName = request.getParameter("field");
+		List<String> listVideo = functionDAO.listAllVideo(firstName);
+        request.setAttribute("listVideo", listVideo);       
+        RequestDispatcher dispatcher = request.getRequestDispatcher("listVideo.jsp");       
+        dispatcher.forward(request, response);
+        System.out.println("Printing the videos");
 	}
 }
