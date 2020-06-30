@@ -5,12 +5,12 @@ public class Comedian {
     protected String lastname;
     protected String birthdate;
     protected String birthplace;
-    protected int comedianid;
+    protected String comedianid;
  
     public Comedian() {
     }
     
-    public Comedian(int comedianid, String firstname, String lastname, String birthdate, String birthplace) 
+    public Comedian(String comedianid, String firstname, String lastname, String birthdate, String birthplace) 
     {
     	this.comedianid = comedianid;
         this.firstname = firstname;
@@ -19,12 +19,12 @@ public class Comedian {
         this.lastname = lastname;
     }
     
-    public void setComedianid(int comedianid)
+    public void setComedianid(String comedianid)
     {
     	this.comedianid = comedianid;
     }
     
-    public int getComedianid()
+    public String getComedianid()
     {
     	return comedianid;
     }

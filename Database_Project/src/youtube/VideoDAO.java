@@ -54,6 +54,20 @@ public class VideoDAO {
 		statement.executeUpdate("SET FOREIGN_KEY_CHECKS = 1");
  	}
  	
+ 	public void insert(Video video) throws SQLException {
+        connect_func();        
+        String sql = "insert into  video (url, title, description, date, comedianid) values (?, ?, ?, ?, ?)";
+        preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
+        preparedStatement.setString(1, video.getUrl());
+        preparedStatement.setString(2, video.getTitle());
+        preparedStatement.setString(3, video.getDescription());
+        preparedStatement.setString(4, video.getDate());
+        preparedStatement.setString(5, video.getComedianid());
+        preparedStatement.executeUpdate();
+        preparedStatement.close();
+        disconnect();
+    }
+ 	
 	// Function that creates and seeds the table
 	public void createTable() throws SQLException {
 		try {

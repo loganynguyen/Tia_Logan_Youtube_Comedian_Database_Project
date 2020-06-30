@@ -16,18 +16,15 @@
 	<tr>
 
 	<th>Videos</th>
-
-
+	<tr>
+		<td><a href = "youtube.com">Link</a></td>
 	</tr>
 
 	<c:forEach items="${listVideo}" var="video">
 
-<tr>
-
-<td>${video}</td>
-
-
-</tr>
+		<tr>	
+			<td><a src="${listVideo}">${listVideo}</a></td>
+		</tr>
 
 </c:forEach>
 

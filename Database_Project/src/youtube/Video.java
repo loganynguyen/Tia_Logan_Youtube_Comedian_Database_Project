@@ -10,18 +10,20 @@ public class Video {
     public Video() {
     }
 
-    public Video(String url, String title, String description, String date, String comedianId) 
+ 
+
+    public Video(String url, String title, String description, String date) 
     {
         this.url = url;
         this.title = title;
         this.description = description;
         this.date = date;
-        this.comedianId = comedianId;
+        //this.comedianId = comedianId;
     }
  
     public void setUrl(String url)
     {
-    	this.url = url;
+        this.url = url;
     }
  
     public String getUrl() {
@@ -34,7 +36,7 @@ public class Video {
     
     public String getTitle()
     {
-    	return title;
+        return title;
     }
     
     public void setDescription(String description) {
@@ -43,26 +45,26 @@ public class Video {
     
     public String getDescription()
     {
-    	return description;
+        return description;
     }
     
     public void setDate(String date)
     {
-    	this.date = date;
+        this.date = date;
     }
     
     public String getDate()
     {
-    	return date;
+        return date;
     }
     
     public void setComedianid(String comedianId)
     {
-    	this.comedianId = comedianId;
+        this.comedianId = comedianId;
     }
     
     public String getComedianid()
     {
-    	return comedianId;
+        return comedianId;
     }
 }
