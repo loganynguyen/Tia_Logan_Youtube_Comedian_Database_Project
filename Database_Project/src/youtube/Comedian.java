@@ -5,29 +5,29 @@ public class Comedian {
     protected String lastname;
     protected String birthdate;
     protected String birthplace;
-    protected String comedianid;
+    //protected String comedianid;
  
     public Comedian() {
     }
     
-    public Comedian(String comedianid, String firstname, String lastname, String birthdate, String birthplace) 
+    public Comedian(String firstname, String lastname, String birthdate, String birthplace) 
     {
-    	this.comedianid = comedianid;
+    	//this.comedianid = comedianid;
         this.firstname = firstname;
         this.lastname = lastname;
         this.birthdate = birthdate;
         this.lastname = lastname;
     }
-    
-    public void setComedianid(String comedianid)
-    {
-    	this.comedianid = comedianid;
-    }
-    
-    public String getComedianid()
-    {
-    	return comedianid;
-    }
+//    
+//    public void setComedianid(String comedianid)
+//    {
+//    	this.comedianid = comedianid;
+//    }
+//    
+//    public String getComedianid()
+//    {
+//    	return comedianid;
+//    }
  
     public void setFirstname(String firstname)
     {

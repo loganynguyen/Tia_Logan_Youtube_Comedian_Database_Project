@@ -59,13 +59,13 @@ public class ComedianDAO extends HttpServlet {
         resultSet = statement.executeQuery(sql);
          
         while (resultSet.next()) {
-            String comedianid = resultSet.getString("comedianid");
+           // String comedianid = resultSet.getString("comedianid");
             String firstname = resultSet.getString("firstname");
             String lastname = resultSet.getString("lastname");
             String birthday = resultSet.getString("birthday");
             String birthplace = resultSet.getString("birthplace");
              
-            Comedian newComedian = new Comedian(comedianid, firstname, lastname, birthday, birthplace);
+            Comedian newComedian = new Comedian(firstname, lastname, birthday, birthplace);
             listComedians.add(newComedian);
         }        
         resultSet.close();
@@ -74,20 +74,20 @@ public class ComedianDAO extends HttpServlet {
         return listComedians;
     }
     
-    public void insert(Comedian comedian) throws SQLException {
-        connect_func();         
-        String sql = "insert into  comedian (comedianid, firstname, lastname, birthdate, birthplace) values (?, ?, ?, ?, ?)";
-        preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
-        preparedStatement.setString(1, comedian.getComedianid());
-        preparedStatement.setString(2, comedian.getFirstname());
-        preparedStatement.setString(3, comedian.getLastname());
-        preparedStatement.setString(4, comedian.getBirthdate());
-        preparedStatement.setString(5, comedian.getBirthplace());
-        preparedStatement.executeUpdate();
-        preparedStatement.close();
-        disconnect();
-    }
-    
+//    public void insert(Comedian comedian) throws SQLException {
+//        connect_func();         
+//        String sql = "insert into  comedian (firstname, lastname, birthdate, birthplace) values (?, ?, ?, ?)";
+//        preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
+////        preparedStatement.setString(1, comedian.getComedianid());
+//        preparedStatement.setString(1, comedian.getFirstname());
+//        preparedStatement.setString(2, comedian.getLastname());
+//        preparedStatement.setString(3, comedian.getBirthdate());
+//        preparedStatement.setString(4, comedian.getBirthplace());
+//        preparedStatement.executeUpdate();
+//        preparedStatement.close();
+//        disconnect();
+//    }
+//    
     // Function that drops the table
      public void dropTable() throws SQLException {
         connect_func();
@@ -102,7 +102,7 @@ public class ComedianDAO extends HttpServlet {
         try {
             connect_func();
             String s = "CREATE TABLE comedian (" +
-                    "comedianid VARCHAR(20) NOT NULL," +
+                    "comedianid INTEGER AUTO_INCREMENT=1," +
                     "firstname VARCHAR(20) NOT NULL," +
                     "lastname VARCHAR(20) NOT NULL," +
                     "birthdate VARCHAR(20) NOT NULL," +
@@ -110,17 +110,17 @@ public class ComedianDAO extends HttpServlet {
                     "PRIMARY KEY(comedianid) )";
             
             
-            String s2 = "INSERT INTO comedian(comedianid, firstname, lastname, birthdate, birthplace) VALUES" +
-                    "('1', 'Bob', 'Ricks', '8-8-1965', 'Memphis'), " +
-                    "('2', 'Terry', 'Rickson', '1-30-1975', 'Detroit'), " +
-                    "('3', 'Miles', 'Murray', '7-23-1945', 'San Francisco'), " +
-                    "('4', 'Sam', 'Antha', '1-4-1949', 'LA'), " +
-                    "('5', 'Kelly', 'Kandle', '3-3-2007', 'Denver'), " +
-                    "('6', 'Jordan', 'Jet', '6-15-1989', 'DC'), " +
-                    "('7', 'Li', 'Win', '9-10-1991', 'Baltimore'), " +
-                    "('8', 'Kevin', 'Kinard', '7-5-1932', 'Chicago'), " +
-                    "('9', 'Max', 'Muda', '2-21-2001', 'Detroit'), " +
-                    "('10', 'Maxine', 'Heller', '2-11-2011', 'Warren');";
+            String s2 = "INSERT INTO comedian(firstname, lastname, birthdate, birthplace) VALUES" +
+                    "('Bob', 'Ricks', '8-8-1965', 'Memphis'), " +
+                    "('Terry', 'Rickson', '1-30-1975', 'Detroit'), " +
+                    "('Miles', 'Murray', '7-23-1945', 'San Francisco'), " +
+                    "('Sam', 'Antha', '1-4-1949', 'LA'), " +
+                    "('Kelly', 'Kandle', '3-3-2007', 'Denver'), " +
+                    "('Jordan', 'Jet', '6-15-1989', 'DC'), " +
+                    "('Li', 'Win', '9-10-1991', 'Baltimore'), " +
+                    "('Kevin', 'Kinard', '7-5-1932', 'Chicago'), " +
+                    "('Max', 'Muda', '2-21-2001', 'Detroit'), " +
+                    "('Maxine', 'Heller', '2-11-2011', 'Warren');";
             statement.executeUpdate(s);
             System.out.println("'Comedian' table created.");
             statement.executeUpdate(s2);

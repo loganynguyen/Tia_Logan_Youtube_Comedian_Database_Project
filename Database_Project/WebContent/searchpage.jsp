@@ -27,6 +27,7 @@
 				<tbody>
 					<tr>
 						<td><input type="text" name="field"/></td>
+						
 						<td><button type="submit" id="search" value="search">Search</button></td>
 					</tr>
 					<tr>
