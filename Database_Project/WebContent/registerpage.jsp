@@ -54,7 +54,7 @@
 						<td><button type="submit" id="register" value="register">Submit</button></td>
 					</tr>
 					<tr>
-						<td colspan="2"><a href="index.jsp">Already Registered? Login Here</a></td>
+						<td colspan="2"><a href="loginpage.jsp">Already Registered? Login Here</a></td>
 					</tr>
 			</table>
 		</center>

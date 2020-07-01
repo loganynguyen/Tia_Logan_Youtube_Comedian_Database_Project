@@ -15,7 +15,7 @@
 	
 	<center>
 	
-	    <form action="videoInsert.jsp">
+	    <form action="videoinsert.jsp">
 			<button type="submit">Insert Video</button>
 		</form>
 		<br>
@@ -23,7 +23,7 @@
 			<button type="submit">Search Video</button>
 		</form>
 		
-		<h3 colspan="2"><a href="index.jsp">Logout</a></td>
+		<h3 colspan="2"><a href="loginpage.jsp">Logout</a></td>
 	</center>
 
 </body>

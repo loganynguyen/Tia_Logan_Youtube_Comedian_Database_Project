@@ -12,14 +12,10 @@
 </head>
 
 <body>
-	
-	<h2 align="center">Welcome to your account!</h1>
-	
 	<center>
-	<form action="videoInsert.jsp">
-			<button type="submit">Insert Video</button>
+		<form action="searchpage.jsp">
+			<button type="submit">Search Video</button>
 		</form>
-		<h3 colspan="2"><a href="index.jsp">Logout</a></td>
 	</center>
 
 </body>

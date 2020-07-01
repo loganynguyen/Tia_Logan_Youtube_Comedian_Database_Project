@@ -58,8 +58,8 @@ public class FunctionDAO {
         }
     }
     
-     public List<String> listAllVideo(String comedianFirstName) throws SQLException {
-            List<String> listVideo = new ArrayList<String>();        
+     public List<Video> listAllVideo(String comedianFirstName) throws SQLException {
+            List<Video> listVideo = new ArrayList<Video>();        
             String sql1 = "SELECT comedianid FROM comedian where firstname='"+comedianFirstName+"'";      
             
             connect_func();
@@ -69,12 +69,17 @@ public class FunctionDAO {
             resultSet.next();
             String comedianid = resultSet.getString("comedianid");
            
-            String sql2 = "SELECT url FROM video where comedianid='"+comedianid+"'";      
+            String sql2 = "SELECT * FROM video where comedianid='"+comedianid+"'";      
             resultSet = statement.executeQuery(sql2);
             while (resultSet.next()) 
             {
                 String url = resultSet.getString("url");
-                listVideo.add(url);
+                String t = resultSet.getString("title");
+                String d = resultSet.getString("description");
+                String date = resultSet.getString("date");
+
+                Video v = new Video(url, t, d, date);
+                listVideo.add(v);
             }
             
             resultSet.close();
@@ -82,5 +87,4 @@ public class FunctionDAO {
             disconnect();        
             return listVideo;
         }
-     
 }

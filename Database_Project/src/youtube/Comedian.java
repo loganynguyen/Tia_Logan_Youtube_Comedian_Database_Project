@@ -18,7 +18,7 @@ public class Comedian {
         this.birthdate = birthdate;
         this.lastname = lastname;
     }
-//    
+    
 //    public void setComedianid(String comedianid)
 //    {
 //    	this.comedianid = comedianid;

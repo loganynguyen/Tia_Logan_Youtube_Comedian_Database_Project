@@ -104,7 +104,7 @@ public class ControlServlet extends HttpServlet
         favoriteDAO.createTable();
         System.out.println("Database successfully initalized!");
        
-        RequestDispatcher dispatcher = request.getRequestDispatcher("success.jsp");
+        RequestDispatcher dispatcher = request.getRequestDispatcher("root_successpage.jsp");
         dispatcher.forward(request, response);
     }
    
@@ -116,16 +116,16 @@ public class ControlServlet extends HttpServlet
         RequestDispatcher dispatcher;
         if(userDAO.isUserValid(email, password) && !email.isEmpty()) {
             if(email.contentEquals("root")) {
-                dispatcher = request.getRequestDispatcher("initialize.jsp");
+                dispatcher = request.getRequestDispatcher("initializepage.jsp");
                 dispatcher.forward(request, response);
                 System.out.println("Welcome root user!");
             } else {
-            	dispatcher = request.getRequestDispatcher("mainpage.jsp");
+            	dispatcher = request.getRequestDispatcher("user_successpage.jsp");
                 dispatcher.forward(request, response);
                 System.out.println("Welcome user!");
             }
         } else {
-            dispatcher = request.getRequestDispatcher("index.jsp");
+            dispatcher = request.getRequestDispatcher("loginpage.jsp");
             dispatcher.forward(request, response);
             System.out.println("Please enter correct credentials!");
         }
@@ -145,7 +145,7 @@ public class ControlServlet extends HttpServlet
             if(!userDAO.isDuplicateEmail(email)) {
                 User newUser = new User(email, password, firstname, lastname, age);
                 userDAO.insert(newUser);
-                dispatcher = request.getRequestDispatcher("index.jsp");
+                dispatcher = request.getRequestDispatcher("loginpage.jsp");
                 dispatcher.forward(request, response);
                 System.out.println("Registration complete");
             } else {
@@ -166,13 +166,13 @@ public class ControlServlet extends HttpServlet
     {
         RequestDispatcher dispatcher;
         String firstName = request.getParameter("field");
-        List<String> listVideo = functionDAO.listAllVideo(firstName);
+        List<Video> listVideo = functionDAO.listAllVideo(firstName);
         for (int i = 0; i < listVideo.size(); i++)
         {
-        	System.out.println(listVideo.get(i));
+        	System.out.println(listVideo.get(i).getUrl());
         }
         request.setAttribute("listVideo", listVideo);      
-        dispatcher = request.getRequestDispatcher("listVideo.jsp");      
+        dispatcher = request.getRequestDispatcher("searchlistpage.jsp");      
         dispatcher.forward(request, response);
         System.out.println("Printing the videos");
     }
@@ -192,10 +192,8 @@ public class ControlServlet extends HttpServlet
        
         Video newVideo = new Video(url, title, description, date);
         videoDAO.insert(newVideo);
-        dispatcher = request.getRequestDispatcher("videoInsert.jsp");
+        dispatcher = request.getRequestDispatcher("videoinsertpage.jsp");
         dispatcher.forward(request, response);
-        System.out.println("Video submitted");
-       
-       
+        System.out.println("Video submitted");    
     }
 }

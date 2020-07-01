@@ -102,7 +102,7 @@ public class ComedianDAO extends HttpServlet {
         try {
             connect_func();
             String s = "CREATE TABLE comedian (" +
-                    "comedianid INTEGER AUTO_INCREMENT=1," +
+                    "comedianid INTEGER NOT NULL AUTO_INCREMENT," +
                     "firstname VARCHAR(20) NOT NULL," +
                     "lastname VARCHAR(20) NOT NULL," +
                     "birthdate VARCHAR(20) NOT NULL," +

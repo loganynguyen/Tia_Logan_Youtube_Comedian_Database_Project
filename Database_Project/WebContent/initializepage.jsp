@@ -20,7 +20,7 @@
 			<button type="submit" id="initialize" value="initialize">Initalize</button>
 		</form>
 		
-		<h3 colspan="2"><a href="index.jsp">Logout</a></td>
+		<h3 colspan="2"><a href="loginpage.jsp">Logout</a></td>
 	</center>
 
 </body>

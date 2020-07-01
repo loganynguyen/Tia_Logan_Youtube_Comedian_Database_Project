@@ -31,7 +31,7 @@
 						<td><button type="submit" id="search" value="search">Search</button></td>
 					</tr>
 					<tr>
-						<td colspan="2"><a href="index.jsp">Login</a></td>
+						<td colspan="2"><a href="loginpage.jsp">Login</a></td>
 					</tr>
 			</table>
 		</center>
