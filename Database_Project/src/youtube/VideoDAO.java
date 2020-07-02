@@ -86,8 +86,8 @@ public class VideoDAO {
 			
 			// seed the table with 10 users
 			String s2 = "INSERT INTO video(url, title, description, date, comedianId) VALUES" +
-					"('youtube.com', 'videos', 'Share your own videos', '2014-12-28', '1'), " +
-					"('google.com', 'general', 'Search anything you want', '2015-1-29', '2'), " +
+					"('youtube.com', 'Christmas Special', 'This holiday season, Bob Ricks takes it to a new level of funny.', '2014-12-25', '1'), " +
+					"('google.com', 'Ricks, LIVE! at the Toyota Arena', 'Legendary comedian, Bob Ricks, takes the stage at the Toyta Arena.', '2015-1-29', '1'), " +
 					"('wix.com', 'website creation', 'Very helpful in making sites', '2016-2-18', '3'), " +
 					"('yahoo.com', 'general', 'A very helpful search engine', '2017-3-19', '4'), " +
 					"('gmail.com', 'mailing services', 'Can send emails from any part to the world and recieve emails too', '2017-4-20', '5'), " +
