@@ -112,7 +112,7 @@ public class ComedianDAO extends HttpServlet {
             
             String s2 = "INSERT INTO comedian(firstname, lastname, birthdate, birthplace) VALUES" +
                     "('Bob', 'Ricks', '8-8-1965', 'Memphis'), " +
-                    "('Terry', 'Rickson', '1-30-1975', 'Detroit'), " +
+                    "('Bob', 'Terry', '1-30-1975', 'Detroit'), " +
                     "('Miles', 'Murray', '7-23-1945', 'San Francisco'), " +
                     "('Sam', 'Antha', '1-4-1949', 'LA'), " +
                     "('Kelly', 'Kandle', '3-3-2007', 'Denver'), " +

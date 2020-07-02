@@ -170,12 +170,12 @@ public class ControlServlet extends HttpServlet
         RequestDispatcher dispatcher;
         String firstName = request.getParameter("field");
         List<Video> listVideo = functionDAO.listAllVideo(firstName);
-        for (int i = 0; i < listVideo.size(); i++)
-        {
-        	System.out.println(listVideo.get(i).getUrl());
-        	System.out.println(listVideo.get(i).getDescription());
-        	System.out.println(listVideo.get(i).getDate());
-        }
+//        for (int i = 0; i < listVideo.size(); i++)
+//        {
+//        	System.out.println(listVideo.get(i).getUrl());
+//        	System.out.println(listVideo.get(i).getDescription());
+//        	System.out.println(listVideo.get(i).getDate());
+//        }
         request.setAttribute("listVideo", listVideo);      
         dispatcher = request.getRequestDispatcher("searchlistpage.jsp");      
         dispatcher.forward(request, response);
