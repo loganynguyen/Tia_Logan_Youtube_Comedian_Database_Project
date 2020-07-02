@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import java.util.Date;
+import java.util.ArrayList;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
@@ -166,18 +167,63 @@ public class ControlServlet extends HttpServlet
     private void search(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException
     {
         RequestDispatcher dispatcher;
-        String firstName = request.getParameter("field");
-        List<Video> listVideo = videoDAO.listAllVideo(firstName);
-//        for (int i = 0; i < listVideo.size(); i++)
-//        {
-//        	System.out.println(listVideo.get(i).getUrl());
-//        	System.out.println(listVideo.get(i).getDescription());
-//        	System.out.println(listVideo.get(i).getDate());
-//        }
+        
+        List<Video> listVideo = new ArrayList<Video>();
+        List<Video> listVideo2 = new ArrayList<Video>();
+        List<Video> temp = new ArrayList<Video>();
+
+        
+        // Grab the entire long string of search terms and split it up into individual smaller strings
+        String field = request.getParameter("field");
+        String[] tags = field.split(" ");
+        
+        // if we have more than one word searched then we need to check the possibility that we searched for a first and last name and then we will only want videos from that specific comedian
+        if (tags.length > 1)
+        {
+            for (int i = 0; i < (tags.length - 1); i++)
+            {
+            	temp = videoDAO.listAllVideo(tags[i], tags[i+1]);
+            }
+            
+            // if we found no exact comedian, then we can just search each string at a time
+            if (temp.size() == 0)
+            {
+            	for (String a: tags)
+                {
+                    temp = videoDAO.listAllVideo(a);
+                    
+                    // now add all these videos to the 'listVideo' ArrayList
+                    for (int i = 0; i < temp.size(); i++)
+                    {
+                    	listVideo2.add(temp.get(i));
+                    }
+                }
+            }
+        }
+        
+        // else just search each single string at a time
+        else
+        {
+        	// For each one of those tags / search terms, add videos that to the Video arrayList if they contain that tag
+            for (String a: tags)
+            {
+                temp = videoDAO.listAllVideo(a);
+                
+                // now add all these videos to the 'listVideo' ArrayList
+                for (int i = 0; i < temp.size(); i++)
+                {
+                	listVideo2.add(temp.get(i));
+                }
+            }
+        }
+        
+        // make sure the final list does not have duplicate videos    
+        listVideo = videoDAO.deleteDuplicates(listVideo2);
+        
         request.setAttribute("listVideo", listVideo);      
         dispatcher = request.getRequestDispatcher("searchlistpage.jsp");      
         dispatcher.forward(request, response);
-        System.out.println("Printing the videos");
+        System.out.println("Printing the videos...");
     }
    
     private void videoSubmit(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException
