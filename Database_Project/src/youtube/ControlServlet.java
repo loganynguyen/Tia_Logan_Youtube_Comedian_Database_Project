@@ -84,6 +84,9 @@ public class ControlServlet extends HttpServlet
             case "/initialize":
                 initializeDatabase(request, response);
                 break;
+            case "/watch":
+            	watch(request, response);
+            	break;
             }
         } catch (SQLException ex) { throw new ServletException(ex); }
     }
@@ -170,6 +173,8 @@ public class ControlServlet extends HttpServlet
         for (int i = 0; i < listVideo.size(); i++)
         {
         	System.out.println(listVideo.get(i).getUrl());
+        	System.out.println(listVideo.get(i).getDescription());
+        	System.out.println(listVideo.get(i).getDate());
         }
         request.setAttribute("listVideo", listVideo);      
         dispatcher = request.getRequestDispatcher("searchlistpage.jsp");      
@@ -195,5 +200,17 @@ public class ControlServlet extends HttpServlet
         dispatcher = request.getRequestDispatcher("videoinsertpage.jsp");
         dispatcher.forward(request, response);
         System.out.println("Video submitted");    
+    }
+    
+    private void watch(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException
+    {
+        RequestDispatcher dispatcher;
+        String title = request.getParameter("title");
+        System.out.println(title);
+
+        request.setAttribute("title", title);      
+        dispatcher = request.getRequestDispatcher("watchvideopage.jsp");      
+        dispatcher.forward(request, response);
+        System.out.println("Going to the specific video...");
     }
 }

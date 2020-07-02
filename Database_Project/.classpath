@@ -18,5 +18,8 @@
 			<attribute name="owner.project.facets" value="java"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="D:/Workspace/Eclipse/Database_Project/Database_Project/WebContent/WEB-INF/lib/jstl-1.2.jar"/>
+	<classpathentry kind="lib" path="D:/Workspace/Eclipse/Database_Project/Database_Project/WebContent/WEB-INF/lib/mysql-connector-java-8.0.13.jar"/>
+	<classpathentry kind="lib" path="D:/Workspace/Eclipse/Database_Project/Database_Project/WebContent/WEB-INF/lib/servlet-api.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

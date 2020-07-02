@@ -20,14 +20,20 @@
 	    <form action="videoinsertpage.jsp">
 			<button type="submit">Upload a Video</button>
 		</form>
+		
+		<br>
+		
 		<form action="searchpage.jsp">
 			<button type="submit">Search Videos</button>
 		</form>
+		
+		<br>
+		
 		<form action="user_favoritepage.jsp">
 			<button type="submit">Your Favorite Comedians List</button>
 		</form>
 		
-		<h3 colspan="2"><a href="loginpage.jsp">Logout</a></td>
+		<h3 colspan="2"><a href="loginpage.jsp">logout</a></td>
 		
 	</center>
 

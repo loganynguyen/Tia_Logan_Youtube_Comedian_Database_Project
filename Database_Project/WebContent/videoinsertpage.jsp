@@ -1,6 +1,4 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1" %>
-
-
 <!DOCTYPE html>
 
 <html>
@@ -8,7 +6,6 @@
 <head>
 	
 	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-	
 	<title>Youtube</title>
 
 </head>
@@ -21,7 +18,7 @@
 				<center><h2>Video Submission Page</h2></center>
 				<thead>
 					<tr>
-						<th colspan="2">Enter the following details of the video</th>
+						<th colspan="2">Enter the following details of the video:</th>
 					</tr>
 				</thead>
 				
