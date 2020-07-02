@@ -16,16 +16,18 @@
 	<h2 align="center">Welcome to your account!</h1>
 	
 	<center>
-		<form action="videoInsert.jsp">
-			<button type="submit">Insert Video</button>
+		<form action="videoinsertpage.jsp">
+			<button type="submit">Upload a Video</button>
 		</form>
 		<form action="searchpage.jsp">
-			<button type="submit">Search Video</button>
+			<button type="submit">Search Videos</button>
 		</form>
 		<form action="user_favoritepage.jsp">
-			<button type="submit">Favorite Comedians List</button>
+			<button type="submit">Your Favorite Comedians List</button>
 		</form>
+		
 		<h3 colspan="2"><a href="loginpage.jsp">Logout</a></td>
+		
 	</center>
 
 </body>
