@@ -39,7 +39,6 @@ public class ControlServlet extends HttpServlet
     private VideoDAO videoDAO;
     private ComedianDAO comedianDAO;
     private FavoriteDAO favoriteDAO;
-    private FunctionDAO functionDAO;
     
     // Initialize the table objects
     public void init() {
@@ -49,7 +48,6 @@ public class ControlServlet extends HttpServlet
         videoDAO = new VideoDAO();
         comedianDAO = new ComedianDAO();
         favoriteDAO = new FavoriteDAO();
-        functionDAO = new FunctionDAO();
     }
    
     // doPost -> doGet
@@ -169,7 +167,7 @@ public class ControlServlet extends HttpServlet
     {
         RequestDispatcher dispatcher;
         String firstName = request.getParameter("field");
-        List<Video> listVideo = functionDAO.listAllVideo(firstName);
+        List<Video> listVideo = videoDAO.listAllVideo(firstName);
 //        for (int i = 0; i < listVideo.size(); i++)
 //        {
 //        	System.out.println(listVideo.get(i).getUrl());
