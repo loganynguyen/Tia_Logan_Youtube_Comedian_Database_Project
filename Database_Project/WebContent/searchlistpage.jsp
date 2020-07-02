@@ -31,7 +31,7 @@
                     <td><c:out value="${video.description}" /></td>
                  	<td>
                  		<form method="post" action="watch">
-=							<input type="hidden" name="title" id="title" value="${video.title}" />
+							<input type="hidden" name="title" id="title" value="${video.title}" />
 							<button type="submit">Watch</button>
 						</form>
 					</td>
