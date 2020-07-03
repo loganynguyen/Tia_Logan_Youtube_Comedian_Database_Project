@@ -23,6 +23,7 @@
                 <th>Title</th>
                 <th>Comedian</th>
                 <th>Description</th>
+                <th></th>
             </tr>
             
             <c:forEach var="video" items="${listVideo}">
@@ -31,7 +32,7 @@
                     <td><c:out value="${video.description}" /></td>
                  	<td>
                  		<form method="post" action="watch">
-							<input type="hidden" name="title" id="title" value="${video.title}" />
+							<input type="hidden" name="url" id="url" value="${video.url}" />
 							<button type="submit">Watch</button>
 						</form>
 					</td>

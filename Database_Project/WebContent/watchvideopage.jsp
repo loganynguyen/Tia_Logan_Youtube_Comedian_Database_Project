@@ -15,16 +15,23 @@
 
 <body>
 	<center>
-	
-		<c:forEach var="title" items="${title}">
-	                <tr>
-	                    <td><c:out value="${title}" /></td>
-	                </tr>
-	    </c:forEach>
-           	
-		<form action="searchpage.jsp">
-			<button type="submit">Search another video</button>
-		</form>
+        <c:forEach var="video" items="${listVideo}">
+		
+	        <video controls>
+				<source id="${video.url}" src="" type=video/mp4>
+				<source id="${video.url}" src="" type=video/ogg>
+				<source id="${video.url}" src="" type=video/webm>
+				Your browser doesn't support the video tag.			
+			</video>
+			
+			<a href="${video.url}">"${video.url}"</a>					
+			<h2><c:out value="${video.title}" /></h2>
+	        <h5><c:out value="${video.description}" /></h4>
+			         	
+			<form action="searchpage.jsp">
+				<button type="submit">Search another video</button>
+			</form>
+		</c:forEach>
 		
 	</center>
 

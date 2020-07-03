@@ -220,15 +220,6 @@ public class ControlServlet extends HttpServlet
         // make sure the final list does not have duplicate videos    
         listVideo = videoDAO.deleteDuplicates(listVideoTemp);
         
-        System.out.println("===");
-		
-        for(int i = 0; i < listVideo.size(); i++)
- 		{
-        	
-			System.out.println(listVideo.get(i).getTitle());
-
- 		}
-        
         request.setAttribute("listVideo", listVideo);      
         dispatcher = request.getRequestDispatcher("searchlistpage.jsp");      
         dispatcher.forward(request, response);
@@ -258,10 +249,12 @@ public class ControlServlet extends HttpServlet
     private void watch(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException
     {
         RequestDispatcher dispatcher;
-        String title = request.getParameter("title");
-        System.out.println(title);
-
-        request.setAttribute("title", title);      
+        String url = request.getParameter("url");
+        Video video = videoDAO.retrieveVideoByUrl(url);
+        List<Video> listVideo = new ArrayList<Video>();
+        listVideo.add(video);
+        
+        request.setAttribute("listVideo", listVideo);      
         dispatcher = request.getRequestDispatcher("watchvideopage.jsp");      
         dispatcher.forward(request, response);
         System.out.println("Going to the specific video...");

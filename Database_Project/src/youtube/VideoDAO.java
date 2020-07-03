@@ -54,6 +54,29 @@ public class VideoDAO {
 		statement.executeUpdate("SET FOREIGN_KEY_CHECKS = 1");
  	}
  	
+ 	// Function that returns a specific video baesd on a url
+ 	public Video retrieveVideoByUrl(String url) throws SQLException {
+ 		
+ 		connect_func();
+ 		
+ 		String sql = "SELECT * FROM video where url='" + url + "'";
+        statement = (Statement) connect.createStatement();
+        resultSet = statement.executeQuery(sql);
+        resultSet.next();
+
+        String u = resultSet.getString("url");
+        String t = resultSet.getString("title");
+        String de = resultSet.getString("description");
+        String da = resultSet.getString("date");
+
+    	Video v = new Video(u, t, de, da);
+    	
+        resultSet.close();
+        statement.close();         
+        disconnect();
+ 		return v;
+ 	} 
+ 	
  	// Function to list all videos by any tag of a comedian
  	public List<Video> listAllVideo(String searchTerm) throws SQLException {
         
@@ -148,7 +171,7 @@ public class VideoDAO {
                 String t = resultSet.getString("title");
                 String d = resultSet.getString("description");
                 String date = resultSet.getString("date");
-                //System.out.println(t);
+
                 Video v = new Video(url, t, d, date);
                 listVideo.add(v);
         	}
@@ -166,13 +189,9 @@ public class VideoDAO {
         List<Video> v2 = new ArrayList<Video>();
         int numDuplicates;
  		
- 		for(int m = 0; m < v.size(); m++)
- 		{
- 			numDuplicates = 0;
-			System.out.println(": " + m + " : " + v.get(m).getTitle());
- 			
- 			for(int n = 0; n < v2.size(); n++)
- 	 		{
+ 		for(int m = 0; m < v.size(); m++) {
+ 			numDuplicates = 0;			
+ 			for(int n = 0; n < v2.size(); n++) {
 				if(v.get(m).getTitle().contentEquals(v2.get(n).getTitle()))
 					numDuplicates++;
  			}
