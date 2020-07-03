@@ -74,20 +74,52 @@ public class ComedianDAO extends HttpServlet {
         return listComedians;
     }
     
-//    public void insert(Comedian comedian) throws SQLException {
-//        connect_func();         
-//        String sql = "insert into  comedian (firstname, lastname, birthdate, birthplace) values (?, ?, ?, ?)";
-//        preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
-////        preparedStatement.setString(1, comedian.getComedianid());
-//        preparedStatement.setString(1, comedian.getFirstname());
-//        preparedStatement.setString(2, comedian.getLastname());
-//        preparedStatement.setString(3, comedian.getBirthdate());
-//        preparedStatement.setString(4, comedian.getBirthplace());
-//        preparedStatement.executeUpdate();
-//        preparedStatement.close();
-//        disconnect();
-//    }
-//    
+    public int getComedianId(String firstname, String lastname) throws SQLException 
+    {
+    	String s = "Select * comedianid from comedian where firstname='" + firstname + "' and lastname='" + lastname + "'";
+    	connect_func();
+    	int id = 0;
+    	statement =  (Statement) connect.createStatement();
+    	resultSet = statement.executeQuery(s);
+        while (resultSet.next()) 
+        {
+        	id = resultSet.getInt("comedianid");
+        }
+        return id;
+    }
+    
+    public void insert(Comedian comedian) throws SQLException {
+        connect_func();         
+        String sql = "insert into  comedian (firstname, lastname, birthdate, birthplace) values (?, ?, ?, ?)";
+        preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
+        //preparedStatement.setString(1, comedian.getComedianid());
+        preparedStatement.setString(1, comedian.getFirstname());
+        preparedStatement.setString(2, comedian.getLastname());
+        preparedStatement.setString(3, comedian.getBirthdate());
+        preparedStatement.setString(4, comedian.getBirthplace());
+        preparedStatement.executeUpdate();
+        preparedStatement.close();
+        disconnect();
+    }
+    
+    
+    public boolean ifComedianExist(String firstname, String lastname) throws SQLException 
+    {
+		connect_func();
+		boolean status = false;
+		Comedian comedian = new Comedian();
+		comedian.setFirstname(firstname);
+		comedian.setLastname(lastname);
+		//statement = (Statement) connect.createStatement();
+		PreparedStatement preparedStatement = connect.prepareStatement("Select * from user where firstname = ? and lastname = ?"); 
+        preparedStatement.setString(1, comedian.getFirstname());
+	    preparedStatement.setString(2, comedian.getLastname());
+	    resultSet = preparedStatement.executeQuery();
+	    status = resultSet.next();
+        return status;
+	}
+    
+    
     // Function that drops the table
      public void dropTable() throws SQLException {
         connect_func();

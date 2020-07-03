@@ -65,27 +65,27 @@ public class ReviewDAO {
 			
 			// create the review table
 			String s = "CREATE TABLE review (" +
+					"reviewId INTEGER NOT NULL AUO_INCREMENT," +
 					"url VARCHAR(50) NOT NULL," +
 					"username VARCHAR(50) NOT NULL," +
 					"remark VARCHAR(100) NOT NULL," +
-					"score VARCHAR(20) NOT NULL," +
-					"reviewId VARCHAR(2) NOT NULL," +
+					"score CHAR(1) NOT NULL," +
 					"PRIMARY KEY(reviewId) );";
 			statement.executeUpdate(s);
 			System.out.println("'Review' table created.");
 			
 			// seed the table with 10 reviews
-			String s2 = "INSERT INTO review(url, username, remark, score, reviewId) VALUES" +
-					"('youtube.com', 'mary@gmail.com', 'Somany videos and really helpful', 'Poor', '1'), " +
-					"('google.com', 'luke@gmail.com', 'Can search anything you want', 'Fair', '2'), " +
-					"('wix.com', 'john@gmail.com', 'Very helpful in making sites', 'Good', '3'), " +
-					"('yahoo.com', 'tess@gmail.com', 'Very helpful search engine', 'Excellent', '4'), " +
-					"('gmail.com', 'tia@gmail.com', 'Can send emails from any part to the world and recieve emails too', 'Good', '5'), " +
-					"('facebook.com', 'logan@gmail.com', 'Upload photos and videos', 'Poor', '6'), " +
-					"('amazon.com', 'junwen@gmail.com', 'purchase anything you want and get delivered in 2 days', 'Fair', '7'), " +
-					"('instagram.com', 'evan@gmail.com', 'Upload status and stories', 'Fair', '8'), " +
-					"('samsung.com', 'evanlogan@gmail.com', 'purchase phones you want', 'Poor', '9'), " +
-					"('ebay.com', 'bob@gmail.com', 'Very cheap shopping but ships slow', 'Excellent', '10');";
+			String s2 = "INSERT INTO review(url, username, remark, score) VALUES" +
+					"('youtube.com', 'mary@gmail.com', 'Somany videos and really helpful', 'P'), " +
+					"('google.com', 'luke@gmail.com', 'Can search anything you want', 'F'), " +
+					"('wix.com', 'john@gmail.com', 'Very helpful in making sites', 'G'), " +
+					"('yahoo.com', 'tess@gmail.com', 'Very helpful search engine', 'E'), " +
+					"('gmail.com', 'tia@gmail.com', 'Can send emails from any part to the world and recieve emails too', 'G'), " +
+					"('facebook.com', 'logan@gmail.com', 'Upload photos and videos', 'P'), " +
+					"('amazon.com', 'junwen@gmail.com', 'purchase anything you want and get delivered in 2 days', 'F'), " +
+					"('instagram.com', 'evan@gmail.com', 'Upload status and stories', 'F'), " +
+					"('samsung.com', 'evanlogan@gmail.com', 'purchase phones you want', 'P'), " +
+					"('ebay.com', 'bob@gmail.com', 'Very cheap shopping but ships slow', 'E');";
 			statement.executeUpdate(s2);
 			System.out.println("10 reviews added.");
 			

@@ -142,15 +142,28 @@ public class VideoDAO {
 //        return listVideo;
 //    }
 // 	
+ 	public int getNoOfVideos(Video video)throws SQLException
+ 	{
+        connect_func();        
+        String postUser = video.getPostUser();
+        String postDate = video.getDate();
+        String sql = "SELECT COUNT(date) AS total FROM video WHERE date='" + postDate + "' AND postuser='" + postUser + "'";
+        resultSet = statement.executeQuery(sql);
+        resultSet.next();
+        int number = resultSet.getInt("total");
+        return number;
+ 	}
  	public void insert(Video video) throws SQLException {
         connect_func();        
-        String sql = "insert into  video (url, title, description, date, comedianid) values (?, ?, ?, ?, ?)";
+        
+        String sql = "insert into  video (url, title, description, date, comedianid, postuser) values (?, ?, ?, ?, ?, ?)";
         preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
         preparedStatement.setString(1, video.getUrl());
         preparedStatement.setString(2, video.getTitle());
         preparedStatement.setString(3, video.getDescription());
         preparedStatement.setString(4, video.getDate());
-        preparedStatement.setString(5, video.getComedianid());
+        preparedStatement.setInt(5, video.getComedianid());
+        preparedStatement.setString(5, video.getPostUser());
         preparedStatement.executeUpdate();
         preparedStatement.close();
         disconnect();
@@ -167,23 +180,24 @@ public class VideoDAO {
 					"title VARCHAR(50) NOT NULL," +
 					"description VARCHAR(100) NOT NULL," +
 					"date VARCHAR(20) NOT NULL," +
-					"comedianId VARCHAR(2) NOT NULL," +
+					"comedianId INTEGER NOT NULL," +
+					"postuser VARCHAR(50) NOT NULL" +
 					"PRIMARY KEY(url) );";
 			statement.executeUpdate(s);
 			System.out.println("'Video' table created.");
 			
 			// seed the table with 10 users
-			String s2 = "INSERT INTO video(url, title, description, date, comedianId) VALUES" +
-					"('youtube.com', 'Christmas Special', 'This holiday season, Bob Ricks takes it to a new level of funny.', '2014-12-25', '1'), " +
-					"('google.com', 'Ricks, LIVE! at the Toyota Arena', 'Legendary comedian, Bob Ricks, takes the stage at the Toyta Arena.', '2015-1-29', '1'), " +
-					"('wix.com', 'The Best of Bob Terry', 'A collection of his best jokes.', '2016-2-18', '2'), " +
-					"('yahoo.com', 'general', 'A very helpful search engine', '2017-3-19', '4'), " +
-					"('gmail.com', 'mailing services', 'Can send emails from any part to the world and recieve emails too', '2017-4-20', '5'), " +
-					"('facebook.com', 'social media', 'Upload photos and videos', '2018-4-24', '6'), " +
-					"('amazon.com', 'shopping', 'Purchase anything you want and get it delivered in 2 days', '2011-3-2', '7'), " +
-					"('instagram.com', 'social media', 'Upload status and stories', '2019-6-13', '8'), " +
-					"('samsung.com', 'shopping', 'Purchase phones you want', '2011-3-2', '9'), " +
-					"('ebay.com', 'shopping', 'Very cheap shopping but ships slow', '2020-1-1', '10');";
+			String s2 = "INSERT INTO video(url, title, description, date, comedianId, postuser, 'mary@gmail.com') VALUES" +
+					"('youtube.com', 'Christmas Special', 'This holiday season, Bob Ricks takes it to a new level of funny.', '2014-12-25', '1', 'luke@gmail.com'), " +
+					"('google.com', 'Ricks, LIVE! at the Toyota Arena', 'Legendary comedian, Bob Ricks, takes the stage at the Toyta Arena.', '2015-1-29', '1', 'evanlogan@gmail.com'), " +
+					"('wix.com', 'The Best of Bob Terry', 'A collection of his best jokes.', '2016-2-18', '2', 'tia@gmail.com'), " +
+					"('yahoo.com', 'general', 'A very helpful search engine', '2017-3-19', '4', 'junwen@gmail.com'), " +
+					"('gmail.com', 'mailing services', 'Can send emails from any part to the world and recieve emails too', '2017-4-20', '5', 'evanlogan@gmail.com'), " +
+					"('facebook.com', 'social media', 'Upload photos and videos', '2018-4-24', '6', 'luke@gmail.com'), " +
+					"('amazon.com', 'shopping', 'Purchase anything you want and get it delivered in 2 days', '2011-3-2', '7', 'logan@gmail.com'), " +
+					"('instagram.com', 'social media', 'Upload status and stories', '2019-6-13', '8', 'tia@gmail.com'), " +
+					"('samsung.com', 'shopping', 'Purchase phones you want', '2011-3-2', '9', 'junwen@gmail.com'), " +
+					"('ebay.com', 'shopping', 'Very cheap shopping but ships slow', '2020-1-1', '10', 'luke@gmail.com');";
 			statement.executeUpdate(s2);
 			System.out.println("10 videos added.");
 			

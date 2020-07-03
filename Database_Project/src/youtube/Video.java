@@ -5,20 +5,22 @@ public class Video {
     protected String title;
     protected String description;
     protected String date;
-    protected String comedianId;
+    protected Integer comedianId; 
+    protected String postUser;
  
     public Video() {
     }
 
  
 
-    public Video(String url, String title, String description, String date) 
+    public Video(String url, String title, String description, String date, Integer comedianId, String postUser) 
     {
         this.url = url;
         this.title = title;
         this.description = description;
         this.date = date;
-        //this.comedianId = comedianId;
+        this.comedianId = comedianId;
+        this.postUser = postUser;
     }
  
     public void setUrl(String url)
@@ -58,14 +60,23 @@ public class Video {
         return date;
     }
     
-    public void setComedianid(String comedianId)
+    public void setComedianid(int comedianId)
     {
         this.comedianId = comedianId;
     }
     
-    public String getComedianid()
+    public int getComedianid()
     {
         return comedianId;
+    }
+    
+    public void setPostUser(String postUser)
+    {
+    	this.postUser = postUser;
+    }
+    public String getPostUser()
+    {
+    	return postUser;
     }
 }
 
