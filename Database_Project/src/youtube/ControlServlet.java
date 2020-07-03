@@ -6,8 +6,10 @@ import java.io.PrintWriter;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.LinkedHashSet;
 
 import java.util.Date;
+import java.util.ArrayList;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
@@ -93,8 +95,13 @@ public class ControlServlet extends HttpServlet
             case "/watch":
             	watch(request, response);
             	break;
+<<<<<<< HEAD
             case "/logout":
             	logout(request, response);
+=======
+            case "/review":
+            	review(request, response);
+>>>>>>> branch 'master' of https://github.com/tia-gijo/Database_Project.git
             	break;
             }
         } catch (SQLException ex) { throw new ServletException(ex); }
@@ -191,35 +198,62 @@ public class ControlServlet extends HttpServlet
     private void search(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException
     {
         RequestDispatcher dispatcher;
-        String firstName = request.getParameter("field");
-        List<Video> listVideo = videoDAO.listAllVideo(firstName);
+        boolean foundFullName = false;
+        List<Video> listVideoTemp = new ArrayList<Video>();
+        List<Video> listVideo = new ArrayList<Video>();
+
+        // Grab the entire long string of search terms and split it up into individual smaller strings
+        String field = request.getParameter("field");
+        String[] tags = field.split(" ");
+        
+        // look for the possibility of a search term that was a full name
+        if (tags.length > 1)
+        {
+            for (int i = 0; i < (tags.length - 1); i++)
+            {
+                List<Video> temp = new ArrayList<Video>();
+                temp = videoDAO.listAllVideo(tags[i], tags[i+1]);
+                
+                if (temp.size() > 0) // if we found the full name of at least one comedian
+            	{
+            		// now add all these videos to the 'listVideo' ArrayList
+                    for (int j = 0; j < temp.size(); j++)
+                    {
+                        //System.out.print("<<<1 " + temp.get(j).getTitle());
+                        listVideoTemp.add(temp.get(j));
+                    }
+                    
+                    foundFullName = true;
+            	}
+            }
+            
+            
+        }
+                       
+        // if we didn't find a full name then just return results of all the search terms
+        if (foundFullName == false)
+        {
+        	for (String a: tags)
+            {
+                List<Video> temp3 = new ArrayList<Video>();
+                temp3 = videoDAO.listAllVideo(a);
+                
+                // now add all these videos to the 'listVideo' ArrayList
+                for (int i = 0; i < temp3.size(); i++)
+                {
+                    //System.out.print("<<<2 " + temp3.get(i).getTitle());
+                    listVideoTemp.add(temp3.get(i));
+                }
+            }
+        }
+        
+        // make sure the final list does not have duplicate videos    
+        listVideo = videoDAO.deleteDuplicates(listVideoTemp);
+        
         request.setAttribute("listVideo", listVideo);      
         dispatcher = request.getRequestDispatcher("searchlistpage.jsp");      
         dispatcher.forward(request, response);
-        System.out.println("Printing the videos");
-        
-//        // if you want to separate in the begining
-//        RequestDispatcher dispatcher;
-//        String input = request.getParameter("field");
-//        String[] name = input.split(" ");
-//        String firstName = name[0];
-//        String lastName = name[1];
-//        if(name.length == 1)
-//        {
-//        	List<Video> listVideo = videoDAO.listAllVideo(firstName);
-////          request.setAttribute("listVideo", listVideo);      
-//            dispatcher = request.getRequestDispatcher("searchlistpage.jsp");      
-//            dispatcher.forward(request, response);
-//            System.out.println("Printing the videos");
-//        }
-//        else if(name.length == 2)
-//        {
-//        	List<Video> listVideo = videoDAO.listAllVideo(firstName, lastName);
-////          request.setAttribute("listVideo", listVideo);      
-//            dispatcher = request.getRequestDispatcher("searchlistpage.jsp");      
-//            dispatcher.forward(request, response);
-//            System.out.println("Printing the videos");
-//        }
+        System.out.println("Printing the videos...");
     }
    
     private void videoSubmit(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException
@@ -313,12 +347,27 @@ public class ControlServlet extends HttpServlet
     private void watch(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException
     {
         RequestDispatcher dispatcher;
-        String title = request.getParameter("title");
-        System.out.println(title);
-
-        request.setAttribute("title", title);      
+        String url = request.getParameter("url");
+        Video video = videoDAO.retrieveVideoByUrl(url);
+        List<Video> listVideo = new ArrayList<Video>();
+        listVideo.add(video);
+        
+        request.setAttribute("listVideo", listVideo);      
         dispatcher = request.getRequestDispatcher("watchvideopage.jsp");      
         dispatcher.forward(request, response);
         System.out.println("Going to the specific video...");
+    }
+    
+    private void review(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException
+    {
+        RequestDispatcher dispatcher;
+        Video video = request.getVideo();
+        User user
+        String remark = request.getParameter("review");
+        String score = request.getParameter("score");
+        
+        Review r = reviewDAO.insert(video, user, remark, score);
+                
+        System.out.println("Review posted");
     }
 }

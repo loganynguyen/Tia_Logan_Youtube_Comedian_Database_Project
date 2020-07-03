@@ -5,18 +5,18 @@ public class Review {
     protected String username;
     protected String remark;
     protected String score;
-    protected String reviewId;
+    //protected String reviewId;
  
     public Review() {
     }
     
-    public Review(String url, String username, String remark, String score, String reviewId)
+    public Review(String url, String username, String remark, String score)
     {
         this.url = url;
         this.username = username;
         this.remark = remark;
         this.score = score;
-        this.reviewId = reviewId;
+        //this.reviewId = reviewId;
     }
  
     public void setUrl(String url)
@@ -56,15 +56,13 @@ public class Review {
     	return score;
     }
     
-    public void setReviewid(String reviewId)
-    {
-    	this.reviewId = reviewId;
-    }
-    
-    public String getReviewid()
-    {
-    	return reviewId;
-    }
-}	
-
-// comment
+//    public void setReviewid(String reviewId)
+//    {
+//    	this.reviewId = reviewId;
+//    }
+//    
+//    public String getReviewid()
+//    {
+//    	return reviewId;
+//    }
+}

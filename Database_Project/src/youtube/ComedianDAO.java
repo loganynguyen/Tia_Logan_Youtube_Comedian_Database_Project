@@ -143,16 +143,16 @@ public class ComedianDAO extends HttpServlet {
             
             
             String s2 = "INSERT INTO comedian(firstname, lastname, birthdate, birthplace) VALUES" +
-                    "('Bob', 'Ricks', '8-8-1965', 'Memphis'), " +
-                    "('Bob', 'Terry', '1-30-1975', 'Detroit'), " +
-                    "('Miles', 'Murray', '7-23-1945', 'San Francisco'), " +
-                    "('Sam', 'Antha', '1-4-1949', 'LA'), " +
-                    "('Kelly', 'Kandle', '3-3-2007', 'Denver'), " +
-                    "('Jordan', 'Jet', '6-15-1989', 'DC'), " +
-                    "('Li', 'Win', '9-10-1991', 'Baltimore'), " +
-                    "('Kevin', 'Kinard', '7-5-1932', 'Chicago'), " +
-                    "('Max', 'Muda', '2-21-2001', 'Detroit'), " +
-                    "('Maxine', 'Heller', '2-11-2011', 'Warren');";
+                    "('Jim', 'Jefferies', '8-8-1965', 'Memphis'), " +
+                    "('Bo', 'Burnham', '1-30-1975', 'Detroit'), " +
+                    "('Bill', 'Hicks', '7-23-1945', 'San Francisco'), " +
+                    "('Kevin', 'Hart', '1-4-1949', 'LA'), " +
+                    "('Sam', 'Morril', '3-3-2007', 'Denver'), " +
+                    "('George', 'Carlin', '6-15-1989', 'DC'), " +
+                    "('Bill', 'Burr', '9-10-1991', 'Baltimore'), " +
+                    "('Joe', 'Wong', '7-5-1932', 'Chicago'), " +
+                    "('Mark', 'Normand', '2-21-2001', 'Detroit'), " +
+                    "('Brian', 'Regan', '2-11-2011', 'Warren');";
             statement.executeUpdate(s);
             System.out.println("'Comedian' table created.");
             statement.executeUpdate(s2);
