@@ -198,9 +198,7 @@ public class ControlServlet extends HttpServlet
                     
                     foundFullName = true;
             	}
-            }
-            
-            
+            }         
         }
                        
         // if we didn't find a full name then just return results of all the search terms
@@ -266,12 +264,12 @@ public class ControlServlet extends HttpServlet
     private void review(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException
     {
         RequestDispatcher dispatcher;
-        Video video = request.getVideo();
-        User user
+        //Video video = request.getVideo();
+        //User user = request.getUser();
         String remark = request.getParameter("review");
         String score = request.getParameter("score");
         
-        Review r = reviewDAO.insert(video, user, remark, score);
+        //Review r = reviewDAO.insert(video, user, remark, score);
                 
         System.out.println("Review posted");
     }
