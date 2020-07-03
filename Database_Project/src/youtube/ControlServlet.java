@@ -6,6 +6,7 @@ import java.io.PrintWriter;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.LinkedHashSet;
 
 import java.util.Date;
 import java.util.ArrayList;
@@ -167,92 +168,71 @@ public class ControlServlet extends HttpServlet
     private void search(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException
     {
         RequestDispatcher dispatcher;
-        
+        boolean foundFullName = false;
+        List<Video> listVideoTemp = new ArrayList<Video>();
         List<Video> listVideo = new ArrayList<Video>();
-        List<Video> listVideo2 = new ArrayList<Video>();
-        List<Video> temp = new ArrayList<Video>();
 
-        
         // Grab the entire long string of search terms and split it up into individual smaller strings
         String field = request.getParameter("field");
         String[] tags = field.split(" ");
         
-        // if we have more than one word searched then we need to check the possibility that we searched for a first and last name and then we will only want videos from that specific comedian
+        // look for the possibility of a search term that was a full name
         if (tags.length > 1)
         {
             for (int i = 0; i < (tags.length - 1); i++)
             {
-            	temp = videoDAO.listAllVideo(tags[i], tags[i+1]);
+                List<Video> temp = new ArrayList<Video>();
+                temp = videoDAO.listAllVideo(tags[i], tags[i+1]);
+                
+                if (temp.size() > 0) // if we found the full name of at least one comedian
+            	{
+            		// now add all these videos to the 'listVideo' ArrayList
+                    for (int j = 0; j < temp.size(); j++)
+                    {
+                        //System.out.print("<<<1 " + temp.get(j).getTitle());
+                        listVideoTemp.add(temp.get(j));
+                    }
+                    
+                    foundFullName = true;
+            	}
             }
             
-            // if we found no exact comedian, then we can just search each string at a time
-            if (temp.size() == 0)
-            {
-            	for (String a: tags)
-                {
-                    temp = videoDAO.listAllVideo(a);
-                    
-                    // now add all these videos to the 'listVideo' ArrayList
-                    for (int i = 0; i < temp.size(); i++)
-                    {
-                    	listVideo2.add(temp.get(i));
-                    }
-                }
-            }
+            
         }
-        
-        // else just search each single string at a time
-        else
+                       
+        // if we didn't find a full name then just return results of all the search terms
+        if (foundFullName == false)
         {
-        	// For each one of those tags / search terms, add videos that to the Video arrayList if they contain that tag
-            for (String a: tags)
+        	for (String a: tags)
             {
-                temp = videoDAO.listAllVideo(a);
+                List<Video> temp3 = new ArrayList<Video>();
+                temp3 = videoDAO.listAllVideo(a);
                 
                 // now add all these videos to the 'listVideo' ArrayList
-                for (int i = 0; i < temp.size(); i++)
+                for (int i = 0; i < temp3.size(); i++)
                 {
-                	listVideo2.add(temp.get(i));
+                    //System.out.print("<<<2 " + temp3.get(i).getTitle());
+                    listVideoTemp.add(temp3.get(i));
                 }
             }
         }
         
         // make sure the final list does not have duplicate videos    
-        listVideo = videoDAO.deleteDuplicates(listVideo2);
+        listVideo = videoDAO.deleteDuplicates(listVideoTemp);
+        
+        System.out.println("===");
+		
+        for(int i = 0; i < listVideo.size(); i++)
+ 		{
+        	
+			System.out.println(listVideo.get(i).getTitle());
+
+ 		}
         
         request.setAttribute("listVideo", listVideo);      
         dispatcher = request.getRequestDispatcher("searchlistpage.jsp");      
         dispatcher.forward(request, response);
         System.out.println("Printing the videos...");
-        String firstName = request.getParameter("field");
-        List<Video> listVideo = videoDAO.listAllVideo(firstName);
-        request.setAttribute("listVideo", listVideo);      
-        dispatcher = request.getRequestDispatcher("searchlistpage.jsp");      
-        dispatcher.forward(request, response);
-        System.out.println("Printing the videos");
-        
-//        // if you want to separate in the begining
-//        RequestDispatcher dispatcher;
-//        String input = request.getParameter("field");
-//        String[] name = input.split(" ");
-//        String firstName = name[0];
-//        String lastName = name[1];
-//        if(name.length == 1)
-//        {
-//        	List<Video> listVideo = videoDAO.listAllVideo(firstName);
-////          request.setAttribute("listVideo", listVideo);      
-//            dispatcher = request.getRequestDispatcher("searchlistpage.jsp");      
-//            dispatcher.forward(request, response);
-//            System.out.println("Printing the videos");
-//        }
-//        else if(name.length == 2)
-//        {
-//        	List<Video> listVideo = videoDAO.listAllVideo(firstName, lastName);
-////          request.setAttribute("listVideo", listVideo);      
-//            dispatcher = request.getRequestDispatcher("searchlistpage.jsp");      
-//            dispatcher.forward(request, response);
-//            System.out.println("Printing the videos");
-//        }
     }
    
     private void videoSubmit(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException

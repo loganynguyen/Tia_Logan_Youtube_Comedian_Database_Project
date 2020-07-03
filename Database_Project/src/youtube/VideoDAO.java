@@ -54,6 +54,7 @@ public class VideoDAO {
 		statement.executeUpdate("SET FOREIGN_KEY_CHECKS = 1");
  	}
  	
+ 	// Function to list all videos by any tag of a comedian
  	public List<Video> listAllVideo(String searchTerm) throws SQLException {
         
  	 	connect_func();
@@ -62,7 +63,7 @@ public class VideoDAO {
     	List<Video> listVideo = new ArrayList<Video>(); // this will store all the videos that we find
 	 	List<String> tags = new ArrayList<String>(); // this will store all the tags that we will search for videos
 	 	
-	 	// // FIRST: we will search by firstname then lastname // //
+	 	// // FIRST: search by comedian name // //
 	 	
 	 	// was the search term a firstname? collect all comedian IDs that are the same
 	 	String sql1 = "SELECT comedianid FROM comedian where firstname='"+searchTerm+"'";      
@@ -96,27 +97,27 @@ public class VideoDAO {
                 String d = resultSet.getString("description");
                 String date = resultSet.getString("date");
 
-                Video v = new Video(url, t, d, date);
-                listVideo.add(v);
+            	Video v = new Video(url, t, d, date);
+            	listVideo.add(v);
         	}
         }
         
-        // // SECOND: now we will search by tags // //
+        // // SECOND: search by tag // //
         
-        // was the search term a tag? collect all comedian IDs that are the same
 //        String sql4 = "SELECT comedianid FROM comedian where tags='"+searchTerm+"'";      
 //        resultSet = statement.executeQuery(sql4);
 //        while (resultSet.next())
 //        {
 //            tags.add(resultSet.getString("comedianid"));
 //        }
-                            
+                          
         resultSet.close();
         statement.close();         
         disconnect();        
         return listVideo;
     }
  	
+ 	// Function to list all videos by full name of the comedian
  	public List<Video> listAllVideo(String first, String last) throws SQLException {
  		connect_func();
         statement = (Statement) connect.createStatement();
@@ -147,7 +148,7 @@ public class VideoDAO {
                 String t = resultSet.getString("title");
                 String d = resultSet.getString("description");
                 String date = resultSet.getString("date");
-                System.out.println(t);
+                //System.out.println(t);
                 Video v = new Video(url, t, d, date);
                 listVideo.add(v);
         	}
@@ -159,63 +160,31 @@ public class VideoDAO {
  		return listVideo;
  	}
  	
+ 	// Function to delete any duplicate videos in a list
  	public List<Video> deleteDuplicates(List<Video> v) throws SQLException {
  		
- 		List<Video> v2 = new ArrayList<Video>();
+        List<Video> v2 = new ArrayList<Video>();
+        int numDuplicates;
+ 		
+ 		for(int m = 0; m < v.size(); m++)
+ 		{
+ 			numDuplicates = 0;
+			System.out.println(": " + m + " : " + v.get(m).getTitle());
  			
- 		for(Video element : v)
-		{
- 			if(!v2.contains(element))
- 				v2.add(element);
-		}
- 				
+ 			for(int n = 0; n < v2.size(); n++)
+ 	 		{
+				if(v.get(m).getTitle().contentEquals(v2.get(n).getTitle()))
+					numDuplicates++;
+ 			}
+ 			
+ 			if(numDuplicates == 0)
+ 				v2.add(v.get(m));
+ 		}
+ 		
 		return v2;
  	}
  	
-// 	public List<Video> listAllVideo(String comedianFirstName, String comedianLastName) throws SQLException 
-// 	{
-//        
-// 	 	connect_func();
-//        statement = (Statement) connect.createStatement();
-//        
-//    	List<Video> listVideo = new ArrayList<Video>();
-//	 	List<String> tags = new ArrayList<String>();
-//	 	
-//	 	// collect all the different names
-//	 	String sql1 = "SELECT comedianid FROM comedian where firstname='"+comedianFirstName+"'";      
-//        resultSet = statement.executeQuery(sql1);
-//        while (resultSet.next())
-//        {
-//            tags.add(resultSet.getString("comedianid"));
-//        }
-//        
-//        // go through all the videos of each comedian
-//        String sql2;
-//        for (int i = 0; i < tags.size(); i++)
-//        {
-//            // select the next comedian
-//        	sql2 = "SELECT * FROM video where comedianid='"+tags.get(i)+"'";
-//            resultSet = statement.executeQuery(sql2);
-//            
-//            // add all their videos to the listVideo object
-//            while (resultSet.next())
-//            {
-//                String url = resultSet.getString("url");
-//                String t = resultSet.getString("title");
-//                String d = resultSet.getString("description");
-//                String date = resultSet.getString("date");
-//
-//                Video v = new Video(url, t, d, date);
-//                listVideo.add(v);
-//        	}
-//        }
-//                    
-//        resultSet.close();
-//        statement.close();         
-//        disconnect();        
-//        return listVideo;
-//    }
-// 	
+ 	// Function to insert a new video into the database
  	public void insert(Video video) throws SQLException {
         connect_func();        
         String sql = "insert into  video (url, title, description, date, comedianid) values (?, ?, ?, ?, ?)";
