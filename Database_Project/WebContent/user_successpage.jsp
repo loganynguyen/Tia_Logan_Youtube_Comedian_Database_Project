@@ -12,6 +12,8 @@
 </head>
 
 <body>
+<p align = 'right'><form method = "post" action="logout"><button type="submit" id="logout" value="logout">logout</button></form></p>
+
 	
 	<h2 align="center">Welcome to your account!</h1>
 	

@@ -183,6 +183,63 @@ public class VideoDAO {
  		return listVideo;
  	}
  	
+<<<<<<< HEAD
+// 	public List<Video> listAllVideo(String comedianFirstName, String comedianLastName) throws SQLException 
+// 	{
+//        
+// 	 	connect_func();
+//        statement = (Statement) connect.createStatement();
+//        
+//    	List<Video> listVideo = new ArrayList<Video>();
+//	 	List<String> tags = new ArrayList<String>();
+//	 	
+//	 	// collect all the different names
+//	 	String sql1 = "SELECT comedianid FROM comedian where firstname='"+comedianFirstName+"'";      
+//        resultSet = statement.executeQuery(sql1);
+//        while (resultSet.next())
+//        {
+//            tags.add(resultSet.getString("comedianid"));
+//        }
+//        
+//        // go through all the videos of each comedian
+//        String sql2;
+//        for (int i = 0; i < tags.size(); i++)
+//        {
+//            // select the next comedian
+//        	sql2 = "SELECT * FROM video where comedianid='"+tags.get(i)+"'";
+//            resultSet = statement.executeQuery(sql2);
+//            
+//            // add all their videos to the listVideo object
+//            while (resultSet.next())
+//            {
+//                String url = resultSet.getString("url");
+//                String t = resultSet.getString("title");
+//                String d = resultSet.getString("description");
+//                String date = resultSet.getString("date");
+//
+//                Video v = new Video(url, t, d, date);
+//                listVideo.add(v);
+//        	}
+//        }
+//                    
+//        resultSet.close();
+//        statement.close();         
+//        disconnect();        
+//        return listVideo;
+//    }
+// 	
+ 	public int getNoOfVideos(Video video)throws SQLException
+ 	{
+        connect_func();        
+        String postUser = video.getPostUser();
+        String postDate = video.getDate();
+        String sql = "SELECT COUNT(date) AS total FROM video WHERE date='" + postDate + "' AND postuser='" + postUser + "'";
+        resultSet = statement.executeQuery(sql);
+        resultSet.next();
+        int number = resultSet.getInt("total");
+        return number;
+ 	}
+=======
  	// Function to delete any duplicate videos in a list
  	public List<Video> deleteDuplicates(List<Video> v) throws SQLException {
  		
@@ -204,15 +261,18 @@ public class VideoDAO {
  	}
  	
  	// Function to insert a new video into the database
+>>>>>>> branch 'master' of https://github.com/tia-gijo/Database_Project.git
  	public void insert(Video video) throws SQLException {
         connect_func();        
-        String sql = "insert into  video (url, title, description, date, comedianid) values (?, ?, ?, ?, ?)";
+        
+        String sql = "insert into  video (url, title, description, date, comedianid, postuser) values (?, ?, ?, ?, ?, ?)";
         preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
         preparedStatement.setString(1, video.getUrl());
         preparedStatement.setString(2, video.getTitle());
         preparedStatement.setString(3, video.getDescription());
         preparedStatement.setString(4, video.getDate());
-        preparedStatement.setString(5, video.getComedianid());
+        preparedStatement.setInt(5, video.getComedianid());
+        preparedStatement.setString(5, video.getPostUser());
         preparedStatement.executeUpdate();
         preparedStatement.close();
         disconnect();
@@ -229,12 +289,26 @@ public class VideoDAO {
 					"title VARCHAR(100) NOT NULL," +
 					"description VARCHAR(500) NOT NULL," +
 					"date VARCHAR(20) NOT NULL," +
-					"comedianId VARCHAR(2) NOT NULL," +
+					"comedianId INTEGER NOT NULL," +
+					"postuser VARCHAR(50) NOT NULL" +
 					"PRIMARY KEY(url) );";
 			statement.executeUpdate(s);
 			System.out.println("'Video' table created.");
 			
 			// seed the table with 10 users
+<<<<<<< HEAD
+			String s2 = "INSERT INTO video(url, title, description, date, comedianId, postuser, 'mary@gmail.com') VALUES" +
+					"('youtube.com', 'Christmas Special', 'This holiday season, Bob Ricks takes it to a new level of funny.', '2014-12-25', '1', 'luke@gmail.com'), " +
+					"('google.com', 'Ricks, LIVE! at the Toyota Arena', 'Legendary comedian, Bob Ricks, takes the stage at the Toyta Arena.', '2015-1-29', '1', 'evanlogan@gmail.com'), " +
+					"('wix.com', 'The Best of Bob Terry', 'A collection of his best jokes.', '2016-2-18', '2', 'tia@gmail.com'), " +
+					"('yahoo.com', 'general', 'A very helpful search engine', '2017-3-19', '4', 'junwen@gmail.com'), " +
+					"('gmail.com', 'mailing services', 'Can send emails from any part to the world and recieve emails too', '2017-4-20', '5', 'evanlogan@gmail.com'), " +
+					"('facebook.com', 'social media', 'Upload photos and videos', '2018-4-24', '6', 'luke@gmail.com'), " +
+					"('amazon.com', 'shopping', 'Purchase anything you want and get it delivered in 2 days', '2011-3-2', '7', 'logan@gmail.com'), " +
+					"('instagram.com', 'social media', 'Upload status and stories', '2019-6-13', '8', 'tia@gmail.com'), " +
+					"('samsung.com', 'shopping', 'Purchase phones you want', '2011-3-2', '9', 'junwen@gmail.com'), " +
+					"('ebay.com', 'shopping', 'Very cheap shopping but ships slow', '2020-1-1', '10', 'luke@gmail.com');";
+=======
 			String s2 = "INSERT INTO video(url, title, description, date, comedianId) VALUES" +
 					"('https://www.youtube.com/watch?v=lychTT79gKI', 'Jim Jefferies - The Rules Of Being On An Airplane', '#JimJefferies on plane etiquette, getting flack for using the C-word, and lying about being gay to win arguments.', '2017-1-20', '1'), " +
 					"('https://www.youtube.com/watch?v=QdAhlnj97B0', 'Bo Burnham - Sad', '#BoBurnham wows the audience with his poetry and then performs a song about all the sadness in the world.', '2015-8-31', '2'), " +
@@ -249,6 +323,7 @@ public class VideoDAO {
 					"('https://www.youtube.com/watch?v=tDolNU89SXI', 'Mark Normand: Out To Lunch - Full Special', 'In his third comedy hour he covers it all: Drinking, anxiety, gays, naughty words, trans, race & the ladies.', '2020-5-12', '9'), " +
 					"('https://www.youtube.com/watch?v=B7sgN1Hb2zY', 'Brian Regan Stand Up Comedy Full HD Best Comedian Ever', 'Brian Regan Stand Up Comedy Full HD Best Comedian Ever', '2017-4-4', '10'); ";
 
+>>>>>>> branch 'master' of https://github.com/tia-gijo/Database_Project.git
 			statement.executeUpdate(s2);
 			System.out.println("12 videos added.");
 			

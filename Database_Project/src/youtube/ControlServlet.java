@@ -26,6 +26,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -41,6 +42,8 @@ public class ControlServlet extends HttpServlet
     private VideoDAO videoDAO;
     private ComedianDAO comedianDAO;
     private FavoriteDAO favoriteDAO;
+    private TagDAO tagDAO;
+    private HttpSession session = null;
     
     // Initialize the table objects
     public void init() {
@@ -50,6 +53,7 @@ public class ControlServlet extends HttpServlet
         videoDAO = new VideoDAO();
         comedianDAO = new ComedianDAO();
         favoriteDAO = new FavoriteDAO();
+        tagDAO = new TagDAO();
     }
    
     // doPost -> doGet
@@ -73,6 +77,10 @@ public class ControlServlet extends HttpServlet
                 System.out.println("Registering...");
                 register(request, response);
                 break;
+            case "/comedianRegister":
+                System.out.println("Registering...");
+                comedianRegister(request, response);
+                break;
             case "/search":
                 System.out.println("Searching...");
                 search(request, response);
@@ -87,8 +95,13 @@ public class ControlServlet extends HttpServlet
             case "/watch":
             	watch(request, response);
             	break;
+<<<<<<< HEAD
+            case "/logout":
+            	logout(request, response);
+=======
             case "/review":
             	review(request, response);
+>>>>>>> branch 'master' of https://github.com/tia-gijo/Database_Project.git
             	break;
             }
         } catch (SQLException ex) { throw new ServletException(ex); }
@@ -118,9 +131,14 @@ public class ControlServlet extends HttpServlet
     private void login(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException {
         String email = request.getParameter("email");
         String password = request.getParameter("password");
+        Login login = new Login(email, password);
        
         RequestDispatcher dispatcher;
         if(userDAO.isUserValid(email, password) && !email.isEmpty()) {
+        	session = request.getSession();
+        	session.setAttribute("currentUsername", login.getEmail());
+        	session.setAttribute("currentPassword", login.getPassword());
+        	
             if(email.contentEquals("root")) {
                 dispatcher = request.getRequestDispatcher("initializepage.jsp");
                 dispatcher.forward(request, response);
@@ -136,6 +154,15 @@ public class ControlServlet extends HttpServlet
             System.out.println("Please enter correct credentials!");
         }
     }
+    
+    private void logout(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException {
+    	RequestDispatcher dispatcher;
+    	session = request.getSession();
+        session.invalidate();
+        //response.sendRedirect("loginpage.jsp");
+        dispatcher = request.getRequestDispatcher("loginpage.jsp");
+        dispatcher.forward(request, response);
+   }
    
     // Function to register a new user
     private void register(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException {
@@ -229,22 +256,90 @@ public class ControlServlet extends HttpServlet
    
     private void videoSubmit(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException
     {
+    	session = request.getSession(false);
+    	if(session != null || request.isRequestedSessionIdValid())
+    	{
+    		String currentUser = (String) session.getAttribute("currentUsername");
+    		 		
+    		RequestDispatcher dispatcher;
+            String url = request.getParameter("url");
+            String firstName = request.getParameter("comedianf");
+            String lastName = request.getParameter("comedianl");
+            String title = request.getParameter("title");
+            String description = request.getParameter("description");
+            String tag = request.getParameter("tag");
+            String[] tagList = tag.split(", ");
+           
+            DateFormat df = new SimpleDateFormat("dd/MM/yy");
+            Date dateobj = new Date();
+            String date = df.format(dateobj);
+            
+            if(comedianDAO.ifComedianExist(firstName, lastName))
+            {
+            	int id = comedianDAO.getComedianId(firstName, lastName);
+            	Video newVideo = new Video(url, title, description, date, id, currentUser);
+            	int numberOfvideos = videoDAO.getNoOfVideos(newVideo);
+            	if(numberOfvideos < 5)
+            	{
+            		videoDAO.insert(newVideo);
+                	for(int i = 0; i < tagList.length; i++){
+                		Tag tagRow = new Tag(url, tagList[i]);
+                		tagDAO.insert(tagRow);
+                	}
+                	dispatcher = request.getRequestDispatcher("videoinsertpage.jsp");
+                	dispatcher.forward(request, response);
+                	System.out.println("Video submitted");
+            	}
+            	else
+            	{
+            		response.setContentType("text/html");
+            		PrintWriter out = response.getWriter();
+            		out.print("<script>alert('You have inserted 5 videos today. You cannot insert anymore!'); window.location='loginpage.jsp' </script>");
+            	}
+            	 
+            }
+            else
+            {
+            	// shows an alert box and when the user clicks ok, it will move on to the comedian register page
+            	//dispatcher = request.getRequestDispatcher("comedianregisterpage.jsp");
+         	    //dispatcher.forward(request, response);
+            	response.setContentType("text/html");
+            	PrintWriter pw = response.getWriter();
+            	pw.println("<script type=\"text/javascript\">");
+            	pw.println("alert('Comedian doesnt exist. Register comedian to insert video');");
+            	pw.println("</script>");
+            	dispatcher=request.getRequestDispatcher("comedianregisterpage.jsp");
+            	dispatcher.include(request, response);
+            }
+    	}
+        
+    	else
+    	{
+    		response.sendRedirect("loginpage.jsp");
+    	}   
+    }
+    
+    private void comedianRegister(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException
+    {
         RequestDispatcher dispatcher;
-        String url = request.getParameter("url");
-        String title = request.getParameter("title");
-        String description = request.getParameter("description");
-        String tag = request.getParameter("tag");
-       
-        DateFormat df = new SimpleDateFormat("dd/MM/yy");
-        Date dateobj = new Date();
-        String date = df.format(dateobj);
-        //System.out.println(df.format(dateobj));
-       
-        Video newVideo = new Video(url, title, description, date);
-        videoDAO.insert(newVideo);
-        dispatcher = request.getRequestDispatcher("videoinsertpage.jsp");
-        dispatcher.forward(request, response);
-        System.out.println("Video submitted");    
+        String birthdate = request.getParameter("birthdate");
+        String firstName = request.getParameter("comedianf");
+        String lastName = request.getParameter("comedianl");
+        String birthplace = request.getParameter("birthplace");
+        Comedian newComedian = new Comedian(firstName, lastName, birthdate, birthplace);
+        comedianDAO.insert(newComedian);
+//        dispatcher = request.getRequestDispatcher("videoinsertpage.jsp");
+//        dispatcher.forward(request, response);
+//        
+        response.setContentType("text/html");
+    	PrintWriter pw = response.getWriter();
+    	pw.println("<script type=\"text/javascript\">");
+    	pw.println("alert('Comedian has been registered! Proceed to video insert page');");
+    	pw.println("</script>");
+    	dispatcher=request.getRequestDispatcher("videoinsertpage.jsp");
+    	dispatcher.include(request, response);
+    	System.out.println("Registration complete");
+        
     }
     
     private void watch(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException

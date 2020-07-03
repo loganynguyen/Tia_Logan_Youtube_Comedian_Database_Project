@@ -28,16 +28,14 @@
 						<td><input type="text" name="url"/></td>
 					</tr>
 					
-					<td>
-						 <label >Choose the comedian for the video:</label> </td>
-				    <td>
- 						 <select id="cars" name="cars">
-   						 <option value="volvo">Volvo</option>
-    					<option value="saab">Saab</option>
-   						 <option value="fiat">Fiat</option>
-   						 <option value="audi">Audi</option>
- 						 </select>
-					</td>
+					<tr>
+						<td>Comedian First Name: </td>
+						<td><input type="text" name="comedianf"/></td>
+					</tr>
+						<tr>
+						<td>Comedian Last Name: </td>
+						<td><input type="text" name="comedianl"/></td>
+					</tr>
 					<tr>
 						<td>Title of the video</td>
 						<td><input type="text" name="title"/></td>
