@@ -45,9 +45,19 @@
 				
 				<tbody>
 					<tr>
-						<td><input type="text" name="review"/></td>
+						<td><input type="text" name="remark"/></td>
+
+						<select name="rating">
+							<option value="poor">Poor</option>
+							<option value="fair">Fair</option>							
+							<option value="good">Good</option>
+							<option value="excellent">Excellent</option>
+						</select>
+						
+						<td><input type="hidden" name="url"id="url" value="${video.url}" /></td>									
 						<td><button type="submit" id="review" value="review">Submit</button></td>
 					</tr>
+				</tbody>
 			</table>
 		</center>
 	</form>

@@ -41,7 +41,7 @@
 						<td><button type="submit" id="login" value="login">Login</button></td>
 					</tr>
 					<tr>
-						<td colspan="2"><a href="registerpage.jsp">Register for an account</a></td>
+						<td colspan="2"><a href="initializepage.jsp">Register for an account</a></td>
 					</tr>
 			</table>
 		</center>

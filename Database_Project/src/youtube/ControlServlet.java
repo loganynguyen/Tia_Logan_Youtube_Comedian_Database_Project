@@ -95,13 +95,10 @@ public class ControlServlet extends HttpServlet
             case "/watch":
             	watch(request, response);
             	break;
-<<<<<<< HEAD
             case "/logout":
             	logout(request, response);
-=======
             case "/review":
             	review(request, response);
->>>>>>> branch 'master' of https://github.com/tia-gijo/Database_Project.git
             	break;
             }
         } catch (SQLException ex) { throw new ServletException(ex); }
@@ -358,14 +355,24 @@ public class ControlServlet extends HttpServlet
     
     private void review(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException
     {
-        RequestDispatcher dispatcher;
-        //Video video = request.getVideo();
-        //User user = request.getUser();
-        String remark = request.getParameter("review");
-        String score = request.getParameter("score");
+    	session = request.getSession(false);
+    	if(session != null || request.isRequestedSessionIdValid())
+    	{
+    		String currentUser = (String) session.getAttribute("currentUsername");
+    		
+    		RequestDispatcher dispatcher;
+	        String url = request.getParameter("url");
+	        String remark = request.getParameter("remark");
+	        String score = request.getParameter("rating");
+	        
+	        Review r = reviewDAO.insert(url, currentUser, remark, score);
+	                
+	        System.out.println("Review posted");
+    	}
         
-        //Review r = reviewDAO.insert(video, user, remark, score);
-                
-        System.out.println("Review posted");
+    	else
+    	{
+    		response.sendRedirect("loginpage.jsp");
+    	}   
     }
 }

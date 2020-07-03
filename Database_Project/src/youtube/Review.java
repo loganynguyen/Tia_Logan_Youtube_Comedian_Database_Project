@@ -5,7 +5,7 @@ public class Review {
     protected String username;
     protected String remark;
     protected String score;
-    //protected String reviewId;
+    protected int reviewId;
  
     public Review() {
     }
@@ -56,13 +56,13 @@ public class Review {
     	return score;
     }
     
-//    public void setReviewid(String reviewId)
-//    {
-//    	this.reviewId = reviewId;
-//    }
-//    
-//    public String getReviewid()
-//    {
-//    	return reviewId;
-//    }
+    public void setReviewid(int reviewId)
+    {
+    	this.reviewId = reviewId;
+    }
+    
+    public int getReviewid()
+    {
+    	return reviewId;
+    }
 }

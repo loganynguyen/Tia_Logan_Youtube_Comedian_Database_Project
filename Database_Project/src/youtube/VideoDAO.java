@@ -1,6 +1,7 @@
 package youtube;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -183,51 +184,6 @@ public class VideoDAO {
  		return listVideo;
  	}
  	
-<<<<<<< HEAD
-// 	public List<Video> listAllVideo(String comedianFirstName, String comedianLastName) throws SQLException 
-// 	{
-//        
-// 	 	connect_func();
-//        statement = (Statement) connect.createStatement();
-//        
-//    	List<Video> listVideo = new ArrayList<Video>();
-//	 	List<String> tags = new ArrayList<String>();
-//	 	
-//	 	// collect all the different names
-//	 	String sql1 = "SELECT comedianid FROM comedian where firstname='"+comedianFirstName+"'";      
-//        resultSet = statement.executeQuery(sql1);
-//        while (resultSet.next())
-//        {
-//            tags.add(resultSet.getString("comedianid"));
-//        }
-//        
-//        // go through all the videos of each comedian
-//        String sql2;
-//        for (int i = 0; i < tags.size(); i++)
-//        {
-//            // select the next comedian
-//        	sql2 = "SELECT * FROM video where comedianid='"+tags.get(i)+"'";
-//            resultSet = statement.executeQuery(sql2);
-//            
-//            // add all their videos to the listVideo object
-//            while (resultSet.next())
-//            {
-//                String url = resultSet.getString("url");
-//                String t = resultSet.getString("title");
-//                String d = resultSet.getString("description");
-//                String date = resultSet.getString("date");
-//
-//                Video v = new Video(url, t, d, date);
-//                listVideo.add(v);
-//        	}
-//        }
-//                    
-//        resultSet.close();
-//        statement.close();         
-//        disconnect();        
-//        return listVideo;
-//    }
-// 	
  	public int getNoOfVideos(Video video)throws SQLException
  	{
         connect_func();        
@@ -239,7 +195,7 @@ public class VideoDAO {
         int number = resultSet.getInt("total");
         return number;
  	}
-=======
+
  	// Function to delete any duplicate videos in a list
  	public List<Video> deleteDuplicates(List<Video> v) throws SQLException {
  		
@@ -261,7 +217,6 @@ public class VideoDAO {
  	}
  	
  	// Function to insert a new video into the database
->>>>>>> branch 'master' of https://github.com/tia-gijo/Database_Project.git
  	public void insert(Video video) throws SQLException {
         connect_func();        
         
@@ -296,34 +251,20 @@ public class VideoDAO {
 			System.out.println("'Video' table created.");
 			
 			// seed the table with 10 users
-<<<<<<< HEAD
-			String s2 = "INSERT INTO video(url, title, description, date, comedianId, postuser, 'mary@gmail.com') VALUES" +
-					"('youtube.com', 'Christmas Special', 'This holiday season, Bob Ricks takes it to a new level of funny.', '2014-12-25', '1', 'luke@gmail.com'), " +
-					"('google.com', 'Ricks, LIVE! at the Toyota Arena', 'Legendary comedian, Bob Ricks, takes the stage at the Toyta Arena.', '2015-1-29', '1', 'evanlogan@gmail.com'), " +
-					"('wix.com', 'The Best of Bob Terry', 'A collection of his best jokes.', '2016-2-18', '2', 'tia@gmail.com'), " +
-					"('yahoo.com', 'general', 'A very helpful search engine', '2017-3-19', '4', 'junwen@gmail.com'), " +
-					"('gmail.com', 'mailing services', 'Can send emails from any part to the world and recieve emails too', '2017-4-20', '5', 'evanlogan@gmail.com'), " +
-					"('facebook.com', 'social media', 'Upload photos and videos', '2018-4-24', '6', 'luke@gmail.com'), " +
-					"('amazon.com', 'shopping', 'Purchase anything you want and get it delivered in 2 days', '2011-3-2', '7', 'logan@gmail.com'), " +
-					"('instagram.com', 'social media', 'Upload status and stories', '2019-6-13', '8', 'tia@gmail.com'), " +
-					"('samsung.com', 'shopping', 'Purchase phones you want', '2011-3-2', '9', 'junwen@gmail.com'), " +
-					"('ebay.com', 'shopping', 'Very cheap shopping but ships slow', '2020-1-1', '10', 'luke@gmail.com');";
-=======
-			String s2 = "INSERT INTO video(url, title, description, date, comedianId) VALUES" +
-					"('https://www.youtube.com/watch?v=lychTT79gKI', 'Jim Jefferies - The Rules Of Being On An Airplane', '#JimJefferies on plane etiquette, getting flack for using the C-word, and lying about being gay to win arguments.', '2017-1-20', '1'), " +
-					"('https://www.youtube.com/watch?v=QdAhlnj97B0', 'Bo Burnham - Sad', '#BoBurnham wows the audience with his poetry and then performs a song about all the sadness in the world.', '2015-8-31', '2'), " +
-					"('https://www.youtube.com/watch?v=_px_2mXKry0', 'Bo Burnham Stand-Up 11/30/10 - CONAN on TBS', 'Comedian Bo Burnham wows the crowd with jokes, poems and a song; the comedy triumvirate!', '2016-7-3', '2'), " +
-					"('https://www.youtube.com/watch?v=kMiEGUWBn98', 'Bill Hicks standup comedy 1991 - HBO One Night Stand', 'Bill Hicks half hour standup comedy special, first aired April 27, 1991, is as insightful as it is controversial.', '2019-10-1', '3'), " +
-					"('https://www.youtube.com/watch?v=EOfFRDryVQM', 'Bill Hicks - Relentless [1992] - Stand Up Comedy Show', 'This special is well regarded as the most knowledge spewing and entertainment filled of them all.', '2019-4-31', '3'), " +
-					"('https://www.youtube.com/watch?v=twlb_LJsp4Q', 'Kevin Hart, funniest best jokes comedy', 'Kevin Hart is a beast!', '2016-6-16', '4'), " +
-					"('https://www.youtube.com/watch?v=4Xo3Fq7GGWk', 'Sam Morril: I Got This - Full Special', 'Sam Morril wonders if murderers critique each others work and recalls befriending a vigilante in Cleveland.', '2020-2-10', '5'), " +
-					"('https://www.youtube.com/watch?v=YLuZjpxmsZQ', 'George Carlin on some cultural issues.', 'Masterful performance of George Carlin taken from the show \"Back in Town\", 1996.', '2010-9-14', '6'), " +
-					"('https://www.youtube.com/watch?v=uCJDLgQ6xFk', 'Bill Burr - Let It Go - 2010 - Stand-up Special', 'Comedy of Bill Burr', '2016-7-11', '7'), " +
-					"('https://youtu.be/buSv1jjAels', 'C-SPAN: Joe Wong at RTCA Dinner', 'A debut of Joe Wong', '2010-3-18', '8'), " +
-					"('https://www.youtube.com/watch?v=tDolNU89SXI', 'Mark Normand: Out To Lunch - Full Special', 'In his third comedy hour he covers it all: Drinking, anxiety, gays, naughty words, trans, race & the ladies.', '2020-5-12', '9'), " +
-					"('https://www.youtube.com/watch?v=B7sgN1Hb2zY', 'Brian Regan Stand Up Comedy Full HD Best Comedian Ever', 'Brian Regan Stand Up Comedy Full HD Best Comedian Ever', '2017-4-4', '10'); ";
+			String s2 = "INSERT INTO video(url, title, description, date, comedianId, postuser) VALUES" +
+					"('https://www.youtube.com/watch?v=lychTT79gKI', 'Jim Jefferies - The Rules Of Being On An Airplane', '#JimJefferies on plane etiquette, getting flack for using the C-word, and lying about being gay to win arguments.', '2017-1-20', '1', 'mary@gmail.com'), " +
+					"('https://www.youtube.com/watch?v=QdAhlnj97B0', 'Bo Burnham - Sad', '#BoBurnham wows the audience with his poetry and then performs a song about all the sadness in the world.', '2015-8-31', '2', 'luke@gmail.com'), " +
+					"('https://www.youtube.com/watch?v=_px_2mXKry0', 'Bo Burnham Stand-Up 11/30/10 - CONAN on TBS', 'Comedian Bo Burnham wows the crowd with jokes, poems and a song; the comedy triumvirate!', '2016-7-3', '2', 'luke@gmail.com'), " +
+					"('https://www.youtube.com/watch?v=kMiEGUWBn98', 'Bill Hicks standup comedy 1991 - HBO One Night Stand', 'Bill Hicks half hour standup comedy special, first aired April 27, 1991, is as insightful as it is controversial.', '2019-10-1', '3', 'luke@gmail.com'), " +
+					"('https://www.youtube.com/watch?v=EOfFRDryVQM', 'Bill Hicks - Relentless [1992] - Stand Up Comedy Show', 'This special is well regarded as the most knowledge spewing and entertainment filled of them all.', '2019-4-31', '3', 'mary@gmail.com'), " +
+					"('https://www.youtube.com/watch?v=twlb_LJsp4Q', 'Kevin Hart, funniest best jokes comedy', 'Kevin Hart is a beast!', '2016-6-16', '4', 'logan@gmail.com'), " +
+					"('https://www.youtube.com/watch?v=4Xo3Fq7GGWk', 'Sam Morril: I Got This - Full Special', 'Sam Morril wonders if murderers critique each others work and recalls befriending a vigilante in Cleveland.', '2020-2-10', '5', 'mary@gmail.com'), " +
+					"('https://www.youtube.com/watch?v=YLuZjpxmsZQ', 'George Carlin on some cultural issues.', 'Masterful performance of George Carlin taken from the show \"Back in Town\", 1996.', '2010-9-14', '6', 'logan@gmail.com'), " +
+					"('https://www.youtube.com/watch?v=uCJDLgQ6xFk', 'Bill Burr - Let It Go - 2010 - Stand-up Special', 'Comedy of Bill Burr', '2016-7-11', '7', 'logan@gmail.com'), " +
+					"('https://youtu.be/buSv1jjAels', 'C-SPAN: Joe Wong at RTCA Dinner', 'A debut of Joe Wong', '2010-3-18', '8', 'logan@gmail.com'), " +
+					"('https://www.youtube.com/watch?v=tDolNU89SXI', 'Mark Normand: Out To Lunch - Full Special', 'In his third comedy hour he covers it all: Drinking, anxiety, gays, naughty words, trans, race & the ladies.', '2020-5-12', '9', 'logan@gmail.com'), " +
+					"('https://www.youtube.com/watch?v=B7sgN1Hb2zY', 'Brian Regan Stand Up Comedy Full HD Best Comedian Ever', 'Brian Regan Stand Up Comedy Full HD Best Comedian Ever', '2017-4-4', '10', 'logan@gmail.com'); ";
 
->>>>>>> branch 'master' of https://github.com/tia-gijo/Database_Project.git
 			statement.executeUpdate(s2);
 			System.out.println("12 videos added.");
 			

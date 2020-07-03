@@ -56,6 +56,7 @@
 					<tr>
 						<td colspan="2"><a href="loginpage.jsp">Already Registered? Login Here</a></td>
 					</tr>
+				</tbody>
 			</table>
 		</center>
 	</form>

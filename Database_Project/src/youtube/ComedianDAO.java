@@ -138,9 +138,8 @@ public class ComedianDAO extends HttpServlet {
                     "firstname VARCHAR(20) NOT NULL," +
                     "lastname VARCHAR(20) NOT NULL," +
                     "birthdate VARCHAR(20) NOT NULL," +
-                    "birthplace VARCHAR(20) NOT NULL,"+
+                    "birthplace VARCHAR(20) NOT NULL," +
                     "PRIMARY KEY(comedianid) )";
-            
             
             String s2 = "INSERT INTO comedian(firstname, lastname, birthdate, birthplace) VALUES" +
                     "('Jim', 'Jefferies', '8-8-1965', 'Memphis'), " +
