@@ -33,6 +33,25 @@
 			</form>
 		</c:forEach>
 		
+		<form method="post" action="review">
+		<center>
+			<table border="1" width="30%" cellpadding="5" bgcolor="white">
+				
+				<thead>
+					<tr>
+						<th colspan="2">Submit Review</th>
+					</tr>
+				</thead>
+				
+				<tbody>
+					<tr>
+						<td><input type="text" name="review"/></td>
+						<td><button type="submit" id="review" value="review">Submit</button></td>
+					</tr>
+			</table>
+		</center>
+	</form>
+		
 	</center>
 
 </body>

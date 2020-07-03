@@ -87,6 +87,9 @@ public class ControlServlet extends HttpServlet
             case "/watch":
             	watch(request, response);
             	break;
+            case "/review":
+            	review(request, response);
+            	break;
             }
         } catch (SQLException ex) { throw new ServletException(ex); }
     }
@@ -258,5 +261,18 @@ public class ControlServlet extends HttpServlet
         dispatcher = request.getRequestDispatcher("watchvideopage.jsp");      
         dispatcher.forward(request, response);
         System.out.println("Going to the specific video...");
+    }
+    
+    private void review(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException
+    {
+        RequestDispatcher dispatcher;
+        Video video = request.getVideo();
+        User user
+        String remark = request.getParameter("review");
+        String score = request.getParameter("score");
+        
+        Review r = reviewDAO.insert(video, user, remark, score);
+                
+        System.out.println("Review posted");
     }
 }
