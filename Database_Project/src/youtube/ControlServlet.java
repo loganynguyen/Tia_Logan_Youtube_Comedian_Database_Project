@@ -224,6 +224,35 @@ public class ControlServlet extends HttpServlet
         dispatcher = request.getRequestDispatcher("searchlistpage.jsp");      
         dispatcher.forward(request, response);
         System.out.println("Printing the videos...");
+        String firstName = request.getParameter("field");
+        List<Video> listVideo = videoDAO.listAllVideo(firstName);
+        request.setAttribute("listVideo", listVideo);      
+        dispatcher = request.getRequestDispatcher("searchlistpage.jsp");      
+        dispatcher.forward(request, response);
+        System.out.println("Printing the videos");
+        
+//        // if you want to separate in the begining
+//        RequestDispatcher dispatcher;
+//        String input = request.getParameter("field");
+//        String[] name = input.split(" ");
+//        String firstName = name[0];
+//        String lastName = name[1];
+//        if(name.length == 1)
+//        {
+//        	List<Video> listVideo = videoDAO.listAllVideo(firstName);
+////          request.setAttribute("listVideo", listVideo);      
+//            dispatcher = request.getRequestDispatcher("searchlistpage.jsp");      
+//            dispatcher.forward(request, response);
+//            System.out.println("Printing the videos");
+//        }
+//        else if(name.length == 2)
+//        {
+//        	List<Video> listVideo = videoDAO.listAllVideo(firstName, lastName);
+////          request.setAttribute("listVideo", listVideo);      
+//            dispatcher = request.getRequestDispatcher("searchlistpage.jsp");      
+//            dispatcher.forward(request, response);
+//            System.out.println("Printing the videos");
+//        }
     }
    
     private void videoSubmit(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException

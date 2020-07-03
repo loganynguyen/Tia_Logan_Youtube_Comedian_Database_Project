@@ -172,6 +172,50 @@ public class VideoDAO {
 		return v2;
  	}
  	
+// 	public List<Video> listAllVideo(String comedianFirstName, String comedianLastName) throws SQLException 
+// 	{
+//        
+// 	 	connect_func();
+//        statement = (Statement) connect.createStatement();
+//        
+//    	List<Video> listVideo = new ArrayList<Video>();
+//	 	List<String> tags = new ArrayList<String>();
+//	 	
+//	 	// collect all the different names
+//	 	String sql1 = "SELECT comedianid FROM comedian where firstname='"+comedianFirstName+"'";      
+//        resultSet = statement.executeQuery(sql1);
+//        while (resultSet.next())
+//        {
+//            tags.add(resultSet.getString("comedianid"));
+//        }
+//        
+//        // go through all the videos of each comedian
+//        String sql2;
+//        for (int i = 0; i < tags.size(); i++)
+//        {
+//            // select the next comedian
+//        	sql2 = "SELECT * FROM video where comedianid='"+tags.get(i)+"'";
+//            resultSet = statement.executeQuery(sql2);
+//            
+//            // add all their videos to the listVideo object
+//            while (resultSet.next())
+//            {
+//                String url = resultSet.getString("url");
+//                String t = resultSet.getString("title");
+//                String d = resultSet.getString("description");
+//                String date = resultSet.getString("date");
+//
+//                Video v = new Video(url, t, d, date);
+//                listVideo.add(v);
+//        	}
+//        }
+//                    
+//        resultSet.close();
+//        statement.close();         
+//        disconnect();        
+//        return listVideo;
+//    }
+// 	
  	public void insert(Video video) throws SQLException {
         connect_func();        
         String sql = "insert into  video (url, title, description, date, comedianid) values (?, ?, ?, ?, ?)";
