@@ -45,7 +45,14 @@ if(session != null)
             <c:forEach var="listFav" items="${listFav}">
                 <tr>
                     <td><c:out value="${listFav}" /></td>
-                    <td><a href="delete?id=<c:out value='${listFav}'/>user=<%@ String currentUser = (String) session.getAttribute("currentUsername") %>">Delete</a></td>
+                    
+                    <td>
+                 		<form method="post" action="delete">
+							<input type="hidden" name="id" id="id" value="${listFav}" />
+							<input type="hidden" name="user" id="user" value="" />
+							<button type="submit">Delete</button>
+						</form>
+					</td>
                 </tr>
             </c:forEach>
             <h4><a href="user_successpage.jsp">Home</a></h4>
