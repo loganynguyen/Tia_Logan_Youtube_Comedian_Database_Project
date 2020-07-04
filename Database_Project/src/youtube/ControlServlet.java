@@ -443,6 +443,10 @@ public class ControlServlet extends HttpServlet
             dispatcher.forward(request, response);
             System.out.println("printing favorite comedians...");
     	}
+    	else
+    	{
+    		response.sendRedirect("loginpage.jsp");
+    	}
     }
     
     private void deleteFav(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException 
@@ -460,12 +464,23 @@ public class ControlServlet extends HttpServlet
     	        int id = comedianDAO.getComedianId(comedianFirstName, comedianLastName);
     	        favoriteDAO.delete(id, currentUser);
     	        response.sendRedirect("user_favoritepage.jsp"); 
+    	        
+//                System.out.println("Comedian deleted successfully");
+//		        
+//                response.setContentType("text/html");
+//        		PrintWriter out = response.getWriter();
+//        		out.print("<script>alert('Comedian deleted successfully'); window.location='user_favoritepage.jsp' </script>");
+    	}
+    	else
+    	{
+    		response.sendRedirect("loginpage.jsp");
     	}
         //int id = Integer.parseInt(request.getParameter("id"));
        
     }
     
-    private void addFav(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
+    private void addFav(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException 
+    {
         int id = Integer.parseInt(request.getParameter("id"));
         String user = request.getParameter("user");
 
