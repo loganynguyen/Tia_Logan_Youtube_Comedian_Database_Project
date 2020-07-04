@@ -87,12 +87,6 @@ if(session != null)
 	<form action="searchpage.jsp">
 		<button type="submit">Search another video</button>
 	</form>
-	
-	<br>
-	
-	<form action="searchpage.jsp">
-		<button type="submit">Search another video</button>
-	</form>
 		
 	</center>
 
