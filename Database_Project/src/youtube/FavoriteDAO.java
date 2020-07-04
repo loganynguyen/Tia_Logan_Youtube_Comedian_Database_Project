@@ -100,29 +100,6 @@ public class FavoriteDAO {
         disconnect();       
         return favlist;	
 	}
-	
-	public List<Favorite> getFavObjects (String currentUser) throws SQLException {
-        
-        String sql = "SELECT * FROM favorite where username='" + currentUser + "'";   
-        List<Favorite> favlist = new ArrayList<Favorite>();
-        
-        connect_func();     
-        statement =  (Statement) connect.createStatement();
-        resultSet = statement.executeQuery(sql);
-        while(resultSet.next())
-        {
-            int Cid = resultSet.getInt("comedianId");
-            int Fid = resultSet.getInt("favoriteId");
-            String user = resultSet.getString("username");
-            Favorite favorite = new Favorite(Fid, user, Cid);
-            favlist.add(favorite);
-        }
-        
-        resultSet.close();
-        statement.close();        
-        disconnect();       
-        return favlist;    
-    }
     
     public boolean delete(int comedianid, String username) throws SQLException {
         String sql = "DELETE FROM favorite WHERE username = ? and comedianId = ?";        
