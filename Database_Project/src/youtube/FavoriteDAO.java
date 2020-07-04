@@ -98,12 +98,35 @@ public class FavoriteDAO {
         return list;	
 	}
 	
-    public boolean delete(int comedianid, String user) throws SQLException {
+	public List<Favorite> getFavObjects (String currentUser) throws SQLException {
+        
+        String sql = "SELECT * FROM favorite where username='" + currentUser + "'";   
+        List<Favorite> favlist = new ArrayList<Favorite>();
+        
+        connect_func();     
+        statement =  (Statement) connect.createStatement();
+        resultSet = statement.executeQuery(sql);
+        while(resultSet.next())
+        {
+            int Cid = resultSet.getInt("comedianId");
+            int Fid = resultSet.getInt("favoriteId");
+            String user = resultSet.getString("username");
+            Favorite favorite = new Favorite(Fid, user, Cid);
+            favlist.add(favorite);
+        }
+        
+        resultSet.close();
+        statement.close();        
+        disconnect();       
+        return favlist;    
+    }
+    
+    public boolean delete(int comedianid, String username) throws SQLException {
         String sql = "DELETE FROM favorite WHERE username = ? and comedianId = ?";        
         connect_func();
          
         preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
-        preparedStatement.setString(1, user);
+        preparedStatement.setString(1, username);
         preparedStatement.setInt(2, comedianid);
          
         boolean rowDeleted = preparedStatement.executeUpdate() > 0;
@@ -112,18 +135,28 @@ public class FavoriteDAO {
         return rowDeleted;     
     }
     
-    public boolean add(int comedianid, String user) throws SQLException {
-        String sql = "INSERT INTO favorite WHERE username = ? and comedianId = ?";        
-        connect_func();
-         
-        preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
-        preparedStatement.setString(1, user);
-        preparedStatement.setInt(2, comedianid);
-         
-        boolean rowAdded = preparedStatement.executeUpdate() > 0;
+    public void add(int comedianid, String username) throws SQLException {       
+    	String sql = "insert into favorite (username, comedianId) values (?, ?)";
+		preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
+		preparedStatement.setString(1, username);
+		preparedStatement.setInt(2, comedianid);
+		preparedStatement.executeUpdate();
         preparedStatement.close();
-
-        return rowAdded;     
+        disconnect();
+    }
+    
+    public boolean ifComedianExistsInFavList(int comedianID, String user) throws SQLException
+    {
+        connect_func();
+        boolean status = false;
+       
+        statement = (Statement) connect.createStatement();
+        String s = "Select * from favorite where comedianId='" + comedianID + "' and username='" + user + "'";
+        resultSet = statement.executeQuery(s);
+       
+        if(resultSet.next())
+            status = true;
+        return status;
     }
  	
  	// Function that creates and seeds the table
@@ -135,7 +168,7 @@ public class FavoriteDAO {
             String s = "CREATE TABLE favorite (" +
                     "favoriteId INTEGER NOT NULL AUTO_INCREMENT," +
                     "username VARCHAR(50) NOT NULL," +
-                    "comedianId VARCHAR(50) NOT NULL," +
+                    "comedianId INTEGER NOT NULL," +
                     "PRIMARY KEY(favoriteId) )";
             statement.executeUpdate(s);
             System.out.println("favorite 'table' created.");
