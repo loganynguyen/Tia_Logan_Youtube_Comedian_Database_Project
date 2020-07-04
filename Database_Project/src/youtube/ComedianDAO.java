@@ -20,8 +20,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
- 
-
 public class ComedianDAO extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private static Connection connect = null;
@@ -76,7 +74,7 @@ public class ComedianDAO extends HttpServlet {
     
     public int getComedianId(String firstname, String lastname) throws SQLException 
     {
-    	String s = "Select * comedianid from comedian where firstname='" + firstname + "' and lastname='" + lastname + "'";
+    	String s = "Select comedianid from comedian where firstname='" + firstname + "' and lastname='" + lastname + "'";
     	connect_func();
     	int id = 0;
     	statement =  (Statement) connect.createStatement();
@@ -89,10 +87,14 @@ public class ComedianDAO extends HttpServlet {
     }
     
     public void insert(Comedian comedian) throws SQLException {
-        connect_func();         
-        String sql = "insert into  comedian (firstname, lastname, birthdate, birthplace) values (?, ?, ?, ?)";
+        connect_func();
+        System.out.println(comedian.getFirstname());
+        System.out.println(comedian.getLastname());
+        System.out.println(comedian.getBirthdate());
+        System.out.println(comedian.getBirthplace());
+        
+        String sql = "insert into comedian (firstname, lastname, birthdate, birthplace) values (?, ?, ?, ?)";
         preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
-        //preparedStatement.setString(1, comedian.getComedianid());
         preparedStatement.setString(1, comedian.getFirstname());
         preparedStatement.setString(2, comedian.getLastname());
         preparedStatement.setString(3, comedian.getBirthdate());
@@ -102,21 +104,36 @@ public class ComedianDAO extends HttpServlet {
         disconnect();
     }
     
-    
+    public String getComedianSpecificToID(int id) throws SQLException {
+
+    	String sql = "SELECT * FROM comedian where comedianid='" + id + "'";   
+        connect_func();     
+        statement =  (Statement) connect.createStatement();
+        resultSet = statement.executeQuery(sql);
+        resultSet.next();
+        
+        String firstname = resultSet.getString("firstname");
+        String lastname = resultSet.getString("lastname");
+        String comedian = firstname + " " + lastname;
+        
+        resultSet.close();
+        statement.close();        
+        disconnect();       
+        return comedian;
+    }
+        
     public boolean ifComedianExist(String firstname, String lastname) throws SQLException 
     {
 		connect_func();
 		boolean status = false;
-		Comedian comedian = new Comedian();
-		comedian.setFirstname(firstname);
-		comedian.setLastname(lastname);
-		//statement = (Statement) connect.createStatement();
-		PreparedStatement preparedStatement = connect.prepareStatement("Select * from user where firstname = ? and lastname = ?"); 
-        preparedStatement.setString(1, comedian.getFirstname());
-	    preparedStatement.setString(2, comedian.getLastname());
-	    resultSet = preparedStatement.executeQuery();
-	    status = resultSet.next();
-        return status;
+		
+		statement = (Statement) connect.createStatement();
+		String s = "Select * from comedian where firstname='" + firstname + "' and lastname='" + lastname + "'";
+		resultSet = statement.executeQuery(s);
+		
+	    if(resultSet.next())
+	    	status = true;
+	    return status;
 	}
     
     

@@ -1,6 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %> 
-  
 <!DOCTYPE html>
 
 <html>
@@ -31,26 +30,32 @@ if(session != null)
 }
 %>
 </h4>
-
 <p align = 'right'><form method = "post" action="logout"><button type="submit" id="logout" value="logout">logout</button></form></p>
 
     <div align="center">
 
 		<table border="1" width="70%" align="center">
-            <caption><h2>List of Favorite Comedians</h2></caption>
+            <caption><h2>Reviews</h2></caption>
+            
             <tr>
-                <th>Name</th>
-                <th>Action</th>
+                <th>username</th>
+                <th>remark</th>
+                <th>score</th>
             </tr>
-            <c:forEach var="listFav" items="${listFav}">
+            
+            <c:forEach var="review" items="${listReviews}">
                 <tr>
-                    <td><c:out value="${listFav}" /></td>
-                    <td><a href="delete?id=<c:out value='${listFav}'/>user=<%@ String currentUser = (String) session.getAttribute("currentUsername") %>">Delete</a></td>
+                    <td><c:out value="${review.username}" /></td>
+                    <td><c:out value="${review.remark}" /></td>
+                    <td><c:out value="${review.score}" /></td>
                 </tr>
-            </c:forEach>
-            <h4><a href="user_successpage.jsp">Home</a></h4>
+           	</c:forEach>
         </table>
-    </div>   
+         	
+	</div> 
+	
 </body>
 
 </html>
+
+<!--  review -->

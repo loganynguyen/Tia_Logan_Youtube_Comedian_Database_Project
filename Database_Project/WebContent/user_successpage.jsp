@@ -12,6 +12,25 @@
 </head>
 
 <body>
+<h4>
+<%
+if(session != null)
+{
+	if(session.getAttribute("currentUsername") != null)
+	{
+		String currentUser = (String) session.getAttribute("currentUsername");
+		String currentPassword = (String) session.getAttribute("currentPassword");
+		out.println("Current user: ");
+		out.print(currentUser);
+	}
+	else
+	{
+		response.sendRedirect("loginpage.jsp");
+	}
+}
+%>
+</h4>
+
 <p align = 'right'><form method = "post" action="logout"><button type="submit" id="logout" value="logout">logout</button></form></p>
 
 	
@@ -30,12 +49,9 @@
 		
 		<br>
 		
-		<form action="user_favoritepage.jsp">
-			<button type="submit">Your Favorite Comedians List</button>
+		<form method="post" action="favorite">
+			<button type="submit">View your favorite comedians</button>
 		</form>
-		
-		<h3 colspan="2"><a href="loginpage.jsp">logout</a></td>
-		
 	</center>
 
 </body>

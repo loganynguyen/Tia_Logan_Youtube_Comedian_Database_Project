@@ -100,6 +100,12 @@ public class ControlServlet extends HttpServlet
             case "/review":
             	review(request, response);
             	break;
+            case "/favorite":
+            	favorite(request, response);
+            	break;
+            case "/delete":
+            	deleteFav(request, response);
+            	break;
             }
         } catch (SQLException ex) { throw new ServletException(ex); }
     }
@@ -111,6 +117,8 @@ public class ControlServlet extends HttpServlet
         videoDAO.dropTable();
         comedianDAO.dropTable();
         favoriteDAO.dropTable();
+        tagDAO.dropTable();
+
         System.out.println("All tables dropped.");
        
         userDAO.createTable();
@@ -118,6 +126,8 @@ public class ControlServlet extends HttpServlet
         videoDAO.createTable();
         comedianDAO.createTable();
         favoriteDAO.createTable();
+        tagDAO.createTable();
+
         System.out.println("Database successfully initalized!");
        
         RequestDispatcher dispatcher = request.getRequestDispatcher("root_successpage.jsp");
@@ -222,7 +232,7 @@ public class ControlServlet extends HttpServlet
                     
                     foundFullName = true;
             	}
-            }         
+            }
         }
                        
         // if we didn't find a full name then just return results of all the search terms
@@ -244,6 +254,12 @@ public class ControlServlet extends HttpServlet
         
         // make sure the final list does not have duplicate videos    
         listVideo = videoDAO.deleteDuplicates(listVideoTemp);
+                
+        // adding the full name of the comedian to the video object
+        for(int i = 0; i < listVideo.size(); i++)
+    	{
+        	listVideo.get(i).setFullName(comedianDAO.getComedianSpecificToID(listVideo.get(i).getComedianid()));
+    	}
         
         request.setAttribute("listVideo", listVideo);      
         dispatcher = request.getRequestDispatcher("searchlistpage.jsp");      
@@ -257,7 +273,7 @@ public class ControlServlet extends HttpServlet
     	if(session != null || request.isRequestedSessionIdValid())
     	{
     		String currentUser = (String) session.getAttribute("currentUsername");
-    		 		
+    		 		 
     		RequestDispatcher dispatcher;
             String url = request.getParameter("url");
             String firstName = request.getParameter("comedianf");
@@ -270,12 +286,13 @@ public class ControlServlet extends HttpServlet
             DateFormat df = new SimpleDateFormat("dd/MM/yy");
             Date dateobj = new Date();
             String date = df.format(dateobj);
+            System.out.println(date);
             
             if(comedianDAO.ifComedianExist(firstName, lastName))
             {
             	int id = comedianDAO.getComedianId(firstName, lastName);
             	Video newVideo = new Video(url, title, description, date, id, currentUser);
-            	int numberOfvideos = videoDAO.getNoOfVideos(newVideo);
+            	int numberOfvideos = videoDAO.getNumOfVideos(newVideo);
             	if(numberOfvideos < 5)
             	{
             		videoDAO.insert(newVideo);
@@ -283,17 +300,17 @@ public class ControlServlet extends HttpServlet
                 		Tag tagRow = new Tag(url, tagList[i]);
                 		tagDAO.insert(tagRow);
                 	}
-                	dispatcher = request.getRequestDispatcher("videoinsertpage.jsp");
-                	dispatcher.forward(request, response);
+                	response.setContentType("text/html");
+            		PrintWriter out = response.getWriter();
+            		out.print("<script>alert('Video uploaded!'); window.location='videoinsertpage.jsp' </script>");
                 	System.out.println("Video submitted");
             	}
             	else
             	{
             		response.setContentType("text/html");
             		PrintWriter out = response.getWriter();
-            		out.print("<script>alert('You have inserted 5 videos today. You cannot insert anymore!'); window.location='loginpage.jsp' </script>");
-            	}
-            	 
+            		out.print("<script>alert('You have inserted 5 videos today. You cannot insert anymore!'); window.location='user_successpage.jsp' </script>");
+            	}    	 
             }
             else
             {
@@ -303,7 +320,7 @@ public class ControlServlet extends HttpServlet
             	response.setContentType("text/html");
             	PrintWriter pw = response.getWriter();
             	pw.println("<script type=\"text/javascript\">");
-            	pw.println("alert('Comedian doesnt exist. Register comedian to insert video');");
+            	pw.println("alert('Comedian does not exist! Register comedian to insert video');");
             	pw.println("</script>");
             	dispatcher=request.getRequestDispatcher("comedianregisterpage.jsp");
             	dispatcher.include(request, response);
@@ -358,21 +375,77 @@ public class ControlServlet extends HttpServlet
     	session = request.getSession(false);
     	if(session != null || request.isRequestedSessionIdValid())
     	{
-    		String currentUser = (String) session.getAttribute("currentUsername");
-    		
-    		RequestDispatcher dispatcher;
+            RequestDispatcher dispatcher;
+            
+            String currentUser = (String) session.getAttribute("currentUsername");
 	        String url = request.getParameter("url");
-	        String remark = request.getParameter("remark");
-	        String score = request.getParameter("rating");
 	        
-	        Review r = reviewDAO.insert(url, currentUser, remark, score);
-	                
-	        System.out.println("Review posted");
+	        if(reviewDAO.checkPostUser(url, currentUser) == false)
+	        {
+		        System.out.println("Review NOT posted.");
+		        
+		        response.setContentType("text/html");
+	        	PrintWriter w = response.getWriter();
+	        	w.println("<script type=\"text/javascript\">");
+	        	w.println("alert('Review NOT posted, you cannot review your OWN videos!');");
+	        	w.println("</script>");
+	        	dispatcher=request.getRequestDispatcher("searchpage.jsp");
+	        	dispatcher.include(request, response);
+        	}
+	        else
+	        {
+		        String remark = request.getParameter("remark");
+		        char rating = request.getParameter("rating").charAt(0);
+		        
+		        reviewDAO.insert(url, currentUser, remark, rating);
+		        System.out.println("Review posted");
+		        
+		        response.setContentType("text/html");
+	        	PrintWriter pw = response.getWriter();
+	        	pw.println("<script type=\"text/javascript\">");
+	        	pw.println("alert('Review posted!');");
+	        	pw.println("</script>");
+	        	dispatcher=request.getRequestDispatcher("searchpage.jsp");
+	        	dispatcher.include(request, response);
+	        }
     	}
-        
     	else
     	{
     		response.sendRedirect("loginpage.jsp");
-    	}   
+    	}
+    }
+    
+    private void favorite(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException
+    {
+    	session = request.getSession(false);
+    	if(session != null || request.isRequestedSessionIdValid())
+    	{
+    		RequestDispatcher dispatcher;
+            
+    		String currentUser = (String) session.getAttribute("currentUsername");
+    		List<Integer> idList = new ArrayList<Integer>();
+    		List<String> nameList = new ArrayList<String>();
+            
+    		idList = favoriteDAO.getComedianId(currentUser);
+    		
+            for (int i = 0; i < idList.size(); i++)
+            {
+            	String s = comedianDAO.getComedianSpecificToID(idList.get(i));
+            	nameList.add(s);
+            }
+                        
+            request.setAttribute("listFav", nameList);      
+            dispatcher = request.getRequestDispatcher("user_favoritepage.jsp");      
+            dispatcher.forward(request, response);
+            System.out.println("printing favorite comedians...");
+    	}
+    }
+    
+    private void deleteFav(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
+        int id = Integer.parseInt(request.getParameter("id"));
+        String user = request.getParameter("user");
+
+        favoriteDAO.delete(id, user);
+        response.sendRedirect("user_favoritepage.jsp"); 
     }
 }

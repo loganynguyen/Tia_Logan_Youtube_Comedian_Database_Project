@@ -78,48 +78,80 @@ public class FavoriteDAO {
 		statement.executeUpdate("SET FOREIGN_KEY_CHECKS = 1");
  	}
  	
-	// Function that creates and seeds the table
-	public void createTable() throws SQLException {
-		try {
-			connect_func();
-			
-			// create the user table
-			String s = "CREATE TABLE favorite (" +
-					"favoriteId VARCHAR(50) NOT NULL," +
-					"username VARCHAR(50) NOT NULL," +
-					"comedianId VARCHAR(50) NOT NULL," +
-					"PRIMARY KEY(favoriteId) )";
-			statement.executeUpdate(s);
-			System.out.println("favorite 'table' created.");
-			
-			// seed the table with 10 users
-			String s2 = "INSERT INTO favorite(favoriteId, username, comedianId) VALUES" +
-					"('1', 'mary@gmail.com', '1'), " +
-					"('2', 'luke@gmail.com', '2'), " +
-					"('3', 'john@gmail.com', '3'), " +
-					"('4', 'tess@gmail.com', '4'), " +
-					"('5', 'tia@gmail.com', '5'), " +
-					"('6', 'logan@gmail.com', '6'), " +
-					"('7', 'junwen@gmail.com', '7'), " +
-					"('8', 'evan@gmail.com', '8'), " +
-					"('9', 'evanlogan@gmail.com', '9'), " +
-					"('10', 'bob@gmail.com', '10');";
-			statement.executeUpdate(s2);
-			System.out.println("10 users added.");
-			
-		} catch (Exception e) {
-			System.out.println(e);
-		} finally {
-			close();
-		}
+	public List<Integer> getComedianId (String currentUser) throws SQLException {
+    	
+		String sql = "SELECT comedianid FROM favorite where username='" + currentUser + "'";   
+        List<Integer> list = new ArrayList<Integer>();
+        
+    	connect_func();     
+        statement =  (Statement) connect.createStatement();
+        resultSet = statement.executeQuery(sql);
+        while(resultSet.next())
+    	{
+        	int id = resultSet.getInt("comedianid");
+        	list.add(id);
+    	}
+        
+        resultSet.close();
+        statement.close();        
+        disconnect();       
+        return list;	
 	}
 	
-	private void close() throws SQLException {
-		if (resultSet != null)
-			resultSet.close();
-		if (statement != null)
-			statement.close();
-	}
-}
+    public boolean delete(int comedianid, String user) throws SQLException {
+        String sql = "DELETE FROM favorite WHERE username = ? and comedianId = ?";        
+        connect_func();
+         
+        preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
+        preparedStatement.setString(1, user);
+        preparedStatement.setInt(2, comedianid);
+         
+        boolean rowDeleted = preparedStatement.executeUpdate() > 0;
+        preparedStatement.close();
 
-//comment
+        return rowDeleted;     
+    }
+ 	
+ 	// Function that creates and seeds the table
+ 	public void createTable() throws SQLException {
+        try {
+            connect_func();
+           
+            // create the user table
+            String s = "CREATE TABLE favorite (" +
+                    "favoriteId INTEGER NOT NULL AUTO_INCREMENT," +
+                    "username VARCHAR(50) NOT NULL," +
+                    "comedianId VARCHAR(50) NOT NULL," +
+                    "PRIMARY KEY(favoriteId) )";
+            statement.executeUpdate(s);
+            System.out.println("favorite 'table' created.");
+           
+            // seed the table with 10 users
+            String s2 = "INSERT INTO favorite(username, comedianId) VALUES" +
+                    "('mary@gmail.com', '1'), " +
+                    "('luke@gmail.com', '2'), " +
+                    "('john@gmail.com', '3'), " +
+                    "('tess@gmail.com', '4'), " +
+                    "('tia@gmail.com', '5'), " +
+                    "('logan@gmail.com', '6'), " +
+                    "('junwen@gmail.com', '7'), " +
+                    "('evan@gmail.com', '8'), " +
+                    "('evanlogan@gmail.com', '9'), " +
+                    "('bob@gmail.com', '10');";
+            statement.executeUpdate(s2);
+            System.out.println("10 users added.");
+           
+        } catch (Exception e) {
+            System.out.println(e);
+        } finally {
+            close();
+        }
+    }
+   
+    private void close() throws SQLException {
+        if (resultSet != null)
+            resultSet.close();
+        if (statement != null)
+            statement.close();
+    }
+}

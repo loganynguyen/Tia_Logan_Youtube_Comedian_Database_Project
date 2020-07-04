@@ -4,13 +4,13 @@ public class Review {
     protected String url;
     protected String username;
     protected String remark;
-    protected String score;
+    protected char score;
     protected int reviewId;
  
     public Review() {
     }
     
-    public Review(String url, String username, String remark, String score)
+    public Review(String url, String username, String remark, char score)
     {
         this.url = url;
         this.username = username;
@@ -46,12 +46,12 @@ public class Review {
     	return remark;
     }
     
-    public void setScore(String score)
+    public void setScore(char score)
     {
     	this.score = score;
     }
     
-    public String getScore()
+    public char getScore()
     {
     	return score;
     }

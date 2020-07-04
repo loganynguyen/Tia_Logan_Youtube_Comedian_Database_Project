@@ -31,11 +31,11 @@
 				<tbody>
 					<tr>
 						<td>Email</td>
-						<td><input type="text"name="email"/></td>
+						<td><input type="text"name="email" required/></td>
 					</tr>
 					<tr>
 						<td>Password</td>
-						<td><input type="password" name="password"/></td>
+						<td><input type="password" name="password" required/></td>
 					</tr>
 					<tr>
 						<td><button type="submit" id="login" value="login">Login</button></td>

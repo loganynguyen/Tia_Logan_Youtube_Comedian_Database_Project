@@ -14,6 +14,25 @@
 </head>
 
 <body>
+<h4>
+<%
+if(session != null)
+{
+	if(session.getAttribute("currentUsername") != null)
+	{
+		String currentUser = (String) session.getAttribute("currentUsername");
+		String currentPassword = (String) session.getAttribute("currentPassword");
+		out.println("Current user: ");
+		out.print(currentUser);
+	}
+	else
+	{
+		response.sendRedirect("loginpage.jsp");
+	}
+}
+%>
+</h4>
+<p align = 'right'><form method = "post" action="logout"><button type="submit" id="logout" value="logout">logout</button></form></p>
 
 	<form method="post" action="register">
 		<center>
@@ -28,27 +47,27 @@
 				<tbody>
 					<tr>
 						<td>First Name</td>
-						<td><input type="text" name="firstname"/></td>
+						<td><input type="text" name="firstname" required/></td>
 					</tr>
 					<tr>
 						<td>Last Name</td>
-						<td><input type="text" name="lastname"/></td>
+						<td><input type="text" name="lastname" required/></td>
 					</tr>
 					<tr>
 						<td>Email/Username</td>
-						<td><input type="email" name="email"/></td>
+						<td><input type="email" name="email" required/></td>
 					</tr>
 					<tr>
 						<td>Password</td>
-						<td><input type="password" name="password"/></td>
+						<td><input type="password" name="password" required/></td>
 					</tr>
 					<tr>
 						<td>Confirm Password</td>
-						<td><input type="password" name="password2"/></td>
+						<td><input type="password" name="password2" required/></td>
 					</tr>
 					<tr>
 						<td>Age</td>
-						<td><input type="text" name="age"/></td>
+						<td><input type="text" name="age" required/></td>
 					</tr>
 					<tr>
 						<td><button type="submit" id="register" value="register">Submit</button></td>

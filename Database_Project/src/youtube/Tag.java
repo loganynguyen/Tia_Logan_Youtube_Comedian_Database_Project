@@ -31,7 +31,5 @@ public class Tag  {
     public String getTags()
     {
     	return tags;
-    }
-    
-    
+    }  
 }

@@ -98,9 +98,38 @@ protected void disconnect() throws SQLException {
   preparedStatement.close();
   disconnect();
  }
-
-	
-	
+  
+  public List<String> listAllUrlsspecifictotags(String tagList) throws SQLException {
+      
+      List<String> videoList = new ArrayList<String>();
+      String[] tag = tagList.split(", ");
+      for(int i = 0; i < tag.length; i++)
+      {
+          String sql = "SELECT url FROM videotag where url='"+ tag[i] +"'";
+          connect_func();     
+          statement =  (Statement) connect.createStatement();
+          resultSet = statement.executeQuery(sql);
+          while (resultSet.next())
+          {
+              String url = resultSet.getString("url");
+              for(int j = 0; j < videoList.size(); j++)
+              {
+                  if(url == videoList.get(i))
+                  {
+                      return null;
+                  }
+                  else
+                      videoList.add(url);
+              }
+             
+          }
+      }
+      resultSet.close();
+      statement.close();        
+      disconnect();       
+      return videoList;
+  }
+  
 	
 // Function that creates and seeds the table
 public void createTable() throws SQLException {
@@ -117,18 +146,18 @@ public void createTable() throws SQLException {
 		
 		// seed the table with 10 users
 		String s2 = "INSERT INTO videotag(url, tag) VALUES" +
-				"('youtube.com', 'Somany videos and really 'helpful' ), " +
-				"('google.com', 'browser'), " +
-				"('wix.com', 'helpful'), " +
-				"('yahoo.com', 'browser'), " +
-				"('gmail.com', 'emails'), " +
-				"('facebook.com', 'photos'), " +
-				"('facebook.com', 'videos'), " +
-				"('instagram.com', 'stories'), " +
-				"('samsung.com', 'phones'), " +
-				"('samsung.com', 'tabs');";
+				"('https://www.youtube.com/embed/lychTT79gKI', 'funny' ), " +
+				"('https://www.youtube.com/embed/lychTT79gKI', 'helpful'), " +
+				"('https://www.youtube.com/embed/_px_2mXKry0', 'funny'), " +
+				"('https://www.youtube.com/embed/kMiEGUWBn98', 'helpful'), " +
+				"('https://www.youtube.com/embed/EOfFRDryVQM', 'phones'), " +
+				"('https://www.youtube.com/embed/twlb_LJsp4Q', 'phones'), " +
+				"('https://www.youtube.com/embed/uCJDLgQ6xFk', 'phones'), " +
+				"('https://www.youtube.com/embed/buSv1jjAels', 'relationships'), " +
+				"('https://www.youtube.com/embed/tDolNU89SXI', 'relationships'), " +
+				"('https://www.youtube.com/embed/B7sgN1Hb2zY', 'relationships');";
 		statement.executeUpdate(s2);
-		System.out.println("10 videotag added.");
+		System.out.println("10 videotags added.");
 		
 	} catch (Exception e) {
 		System.out.println(e);

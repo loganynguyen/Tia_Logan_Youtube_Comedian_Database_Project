@@ -5,15 +5,14 @@ public class Video {
     protected String title;
     protected String description;
     protected String date;
-    protected Integer comedianId; 
+    protected int comedianId;
     protected String postUser;
+    protected String fullName;
  
     public Video() {
     }
 
- 
-
-    public Video(String url, String title, String description, String date, Integer comedianId, String postUser) 
+    public Video(String url, String title, String description, String date, int comedianId, String postUser) 
     {
         this.url = url;
         this.title = title;
@@ -77,5 +76,14 @@ public class Video {
     public String getPostUser()
     {
     	return postUser;
+    }
+    
+    public void setFullName(String fullName)
+    {
+    	this.fullName = fullName;
+    }
+    public String getFullName()
+    {
+    	return fullName;
     }
 }

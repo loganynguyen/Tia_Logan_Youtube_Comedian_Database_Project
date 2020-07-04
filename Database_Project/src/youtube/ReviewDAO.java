@@ -69,7 +69,7 @@ public class ReviewDAO {
 					"url VARCHAR(50) NOT NULL," +
 					"username VARCHAR(50) NOT NULL," +
 					"remark VARCHAR(100) NOT NULL," +
-					"score VARCHAR(1) NOT NULL," +
+					"score CHAR(1) NOT NULL," +
 					"PRIMARY KEY(reviewid) );";
 			statement.executeUpdate(s);
 			System.out.println("'Review' table created.");
@@ -96,17 +96,36 @@ public class ReviewDAO {
 		}
 	}
 	
-    public void insert(String url, String user, String remark, String rating) throws SQLException {
+    public void insert(String url, String user, String remark, char rating) throws SQLException {
     	connect_func();         
     	String sql = "insert into  review (url, username, remark, score) values (?, ?, ?, ?)";
 		preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
 		preparedStatement.setString(1, url);
 		preparedStatement.setString(2, user);
 		preparedStatement.setString(3, remark);
-		preparedStatement.setString(4, rating);
+		preparedStatement.setString(4, String.valueOf(rating));
 		preparedStatement.executeUpdate();
         preparedStatement.close();
         disconnect();
+    }
+    
+    public boolean checkPostUser(String url, String currentUser) throws SQLException 
+    {
+        connect_func();
+        boolean flag = true;
+
+        statement = (Statement) connect.createStatement();
+        String s = "Select postuser from video where url='" + url + "'";
+        ResultSet rs = statement.executeQuery(s);
+        rs.next();
+        String postUser = rs.getString("postuser");
+
+        if(postUser.contentEquals(currentUser))
+        {
+            flag = false;
+        }
+
+        return flag;
     }
 	
 	private void close() throws SQLException {
