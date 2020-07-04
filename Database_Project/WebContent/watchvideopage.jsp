@@ -40,6 +40,13 @@ if(session != null)
 			<h2><c:out value="${video.title}" /></h2>
 	        <h5><c:out value="${video.description}" /></h4>	
 	        
+	        <form method="post" action="addFav">
+	        	<center>
+      				<input type="hidden" name="id" value="${video.comedianid}"/>
+	        		<button type="submit" id="addFav" value="addFav">Add comedian to list of favorites</button>
+	        	</center>	
+			</form>
+			
 			<form method="post" action="review">
 				<center>
 					<table border="1" width="30%" cellpadding="5" bgcolor="white">

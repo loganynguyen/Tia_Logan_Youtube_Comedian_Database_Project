@@ -47,9 +47,11 @@ if(session != null)
                     <td><c:out value="${listFav}" /></td>
                     
                     <td>
-                 		<form method="post" action="delete">
+                 		<form method="post" action="deleteFav">
 							<input type="hidden" name="id" id="id" value="${listFav}" />
-							<input type="hidden" name="user" id="user" value="" />
+							<input type="hidden" name="user" id="user" value= 
+							<%@ %> 
+							>" />
 							<button type="submit">Delete</button>
 						</form>
 					</td>
