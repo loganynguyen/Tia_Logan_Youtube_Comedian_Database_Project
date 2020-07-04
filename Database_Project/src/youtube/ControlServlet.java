@@ -437,7 +437,11 @@ public class ControlServlet extends HttpServlet
             dispatcher = request.getRequestDispatcher("user_favoritepage.jsp");      
             dispatcher.forward(request, response);
             System.out.println("printing favorite comedians...");
-        }
+    	}
+    	else
+    	{
+    		response.sendRedirect("loginpage.jsp");
+    	}
     }
    
     private void deleteFav(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException

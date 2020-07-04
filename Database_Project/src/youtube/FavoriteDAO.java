@@ -100,7 +100,23 @@ public class FavoriteDAO {
         disconnect();       
         return favlist;	
 	}
-    
+	public boolean ifComedianExistinFavList(int comedianID, String user) throws SQLException 
+    {
+		connect_func();
+		boolean status = false;
+		
+		statement = (Statement) connect.createStatement();
+		String s = "Select * from favorite where comedianId='" + comedianID + "' and username='" + user + "'";
+		resultSet = statement.executeQuery(s);
+		 resultSet.close();
+	        statement.close();        
+	        disconnect();    
+	    if(resultSet.next())
+	    	status = true;
+	    return status;
+	    
+	}
+	
     public boolean delete(int comedianid, String username) throws SQLException {
         String sql = "DELETE FROM favorite WHERE username = ? and comedianId = ?";        
         connect_func();
@@ -111,6 +127,9 @@ public class FavoriteDAO {
          
         boolean rowDeleted = preparedStatement.executeUpdate() > 0;
         preparedStatement.close();
+        resultSet.close();
+        statement.close();        
+        disconnect();    
 
         return rowDeleted;     
     }
