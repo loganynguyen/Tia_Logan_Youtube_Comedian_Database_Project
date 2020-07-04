@@ -78,24 +78,27 @@ public class FavoriteDAO {
 		statement.executeUpdate("SET FOREIGN_KEY_CHECKS = 1");
  	}
  	
-	public List<Integer> getComedianId (String currentUser) throws SQLException {
+	public List<Favorite> getFavObjects (String currentUser) throws SQLException {
     	
-		String sql = "SELECT comedianid FROM favorite where username='" + currentUser + "'";   
-        List<Integer> list = new ArrayList<Integer>();
+		String sql = "SELECT * FROM favorite where username='" + currentUser + "'";   
+        List<Favorite> favlist = new ArrayList<Favorite>();
         
     	connect_func();     
         statement =  (Statement) connect.createStatement();
         resultSet = statement.executeQuery(sql);
         while(resultSet.next())
     	{
-        	int id = resultSet.getInt("comedianid");
-        	list.add(id);
+        	int Cid = resultSet.getInt("comedianId");
+        	int Fid = resultSet.getInt("favoriteId");
+        	String user = resultSet.getString("username");
+        	Favorite favorite = new Favorite(Fid, user, Cid);
+        	favlist.add(favorite);
     	}
         
         resultSet.close();
         statement.close();        
         disconnect();       
-        return list;	
+        return favlist;	
 	}
 	
 	public List<Favorite> getFavObjects (String currentUser) throws SQLException {

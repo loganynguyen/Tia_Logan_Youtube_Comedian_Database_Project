@@ -97,6 +97,7 @@ public class ControlServlet extends HttpServlet
             	break;
             case "/logout":
             	logout(request, response);
+            	break;
             case "/review":
             	review(request, response);
             	break;
@@ -415,25 +416,25 @@ public class ControlServlet extends HttpServlet
     
     private void favorite(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException
     {
-        session = request.getSession(false);
-        if(session != null || request.isRequestedSessionIdValid())
-        {
-            RequestDispatcher dispatcher;
-           
-            String currentUser = (String) session.getAttribute("currentUsername");
-            List<Favorite> favList = new ArrayList<Favorite>();
-            List<String> nameList = new ArrayList<String>();
-           
-            favList = favoriteDAO.getFavObjects(currentUser);
-           
+    	session = request.getSession(false);
+    	if(session != null || request.isRequestedSessionIdValid())
+    	{
+    		RequestDispatcher dispatcher;
+            
+    		String currentUser = (String) session.getAttribute("currentUsername");
+    		List<Favorite> favList = new ArrayList<Favorite>();
+    		List<String> nameList = new ArrayList<String>();
+            
+    		favList = favoriteDAO.getFavObjects(currentUser);
+    		
             for (int i = 0; i < favList.size(); i++)
             {
-                String s = comedianDAO.getComedianSpecificToID(favList.get(i).getComedianid());
-                nameList.add(s);
+            	String s = comedianDAO.getComedianSpecificToID(favList.get(i).getComedianid());
+            	nameList.add(s);
             }
-                                   
-            request.setAttribute("listFav", nameList);     
-            dispatcher = request.getRequestDispatcher("user_favoritepage.jsp");     
+                                    
+            request.setAttribute("listFav", nameList);      
+            dispatcher = request.getRequestDispatcher("user_favoritepage.jsp");      
             dispatcher.forward(request, response);
             System.out.println("printing favorite comedians...");
         }
