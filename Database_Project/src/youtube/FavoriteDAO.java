@@ -114,6 +114,20 @@ public class FavoriteDAO {
 
         return rowDeleted;     
     }
+    
+    public boolean add(int comedianid, String user) throws SQLException {
+        String sql = "INSERT INTO favorite WHERE username = ? and comedianId = ?";        
+        connect_func();
+         
+        preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
+        preparedStatement.setString(1, user);
+        preparedStatement.setInt(2, comedianid);
+         
+        boolean rowAdded = preparedStatement.executeUpdate() > 0;
+        preparedStatement.close();
+
+        return rowAdded;     
+    }
  	
  	// Function that creates and seeds the table
  	public void createTable() throws SQLException {
@@ -124,7 +138,7 @@ public class FavoriteDAO {
             String s = "CREATE TABLE favorite (" +
                     "favoriteId INTEGER NOT NULL AUTO_INCREMENT," +
                     "username VARCHAR(50) NOT NULL," +
-                    "comedianId VARCHAR(50) NOT NULL," +
+                    "comedianId INTEGER NOT NULL," +
                     "PRIMARY KEY(favoriteId) )";
             statement.executeUpdate(s);
             System.out.println("favorite 'table' created.");

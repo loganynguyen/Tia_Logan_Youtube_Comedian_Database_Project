@@ -104,7 +104,10 @@ public class ControlServlet extends HttpServlet
             case "/favorite":
             	favorite(request, response);
             	break;
-            case "/delete":
+            case "/addFav":
+            	addFav(request, response);
+            	break;
+        	case "/deleteFav":
             	deleteFav(request, response);
             	break;
             }
@@ -460,5 +463,13 @@ public class ControlServlet extends HttpServlet
     	}
         //int id = Integer.parseInt(request.getParameter("id"));
        
+    }
+    
+    private void addFav(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
+        int id = Integer.parseInt(request.getParameter("id"));
+        String user = request.getParameter("user");
+
+        favoriteDAO.add(id, user);
+        response.sendRedirect("user_favoritepage.jsp"); 
     }
 }

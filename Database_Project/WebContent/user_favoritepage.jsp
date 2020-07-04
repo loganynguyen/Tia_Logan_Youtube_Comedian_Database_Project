@@ -46,11 +46,11 @@ if(session != null)
                 <tr>
                     <td><c:out value="${comedians}"/></td>
                     <td>
+
                         <div align = "center">
                         	<form method="post" action="delete">
 							<input type="hidden" name="comedian" id="comedian" value="${comedians}" />
-							
-							<button type="submit">Delete</button>
+                            <button type="submit">Delete</button>
 							</form>
                         </div>
                  	</td>
