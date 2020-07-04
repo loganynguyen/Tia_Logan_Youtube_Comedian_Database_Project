@@ -42,17 +42,18 @@ if(session != null)
                 <th>Name</th>
                 <th>Action</th>
             </tr>
-            <c:forEach var="listFav" items="${listFav}">
+            <c:forEach var="comedians" items="${listFav}">
                 <tr>
-                    <td><c:out value="${listFav}" /></td>
-                    
+                    <td><c:out value="${comedians}"/></td>
                     <td>
-                 		<form method="post" action="delete">
-							<input type="hidden" name="id" id="id" value="${listFav}" />
-							<input type="hidden" name="user" id="user" value="" />
+                        <div align = "center">
+                        	<form method="post" action="delete">
+							<input type="hidden" name="comedian" id="comedian" value="${comedians}" />
+							
 							<button type="submit">Delete</button>
-						</form>
-					</td>
+							</form>
+                        </div>
+                 	</td>
                 </tr>
             </c:forEach>
             <h4><a href="user_successpage.jsp">Home</a></h4>

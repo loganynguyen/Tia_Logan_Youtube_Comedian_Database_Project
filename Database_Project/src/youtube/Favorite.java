@@ -1,26 +1,26 @@
 package youtube;
 
 public class Favorite {
-    protected String favoriteId;
+    protected int favoriteId;
     protected String username;
-    protected String comedianId;
+    protected int comedianId;
 
     public Favorite() {
     }
     
-    public Favorite(String favoriteId, String username, String comedianId) 
+    public Favorite(int favoriteId, String username, int comedianId) 
     {
         this.favoriteId = favoriteId;
         this.username = username;
         this.comedianId = comedianId;
     }
  
-    public void setFavoriteid(String favoriteId)
+    public void setFavoriteid(int favoriteId)
     {
     	this.favoriteId = favoriteId;
     }
  
-    public String getFavoriteid() {
+    public int getFavoriteid() {
         return favoriteId;
     }
  
@@ -33,11 +33,11 @@ public class Favorite {
     	return username;
     }
     
-    public void setComedianid(String comedianId) {
+    public void setComedianid(int comedianId) {
         this.comedianId = comedianId;
     }
     
-    public String getComedianid()
+    public int getComedianid()
     {
     	return comedianId;
     }

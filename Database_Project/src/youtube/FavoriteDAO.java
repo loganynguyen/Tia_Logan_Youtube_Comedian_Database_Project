@@ -78,32 +78,35 @@ public class FavoriteDAO {
 		statement.executeUpdate("SET FOREIGN_KEY_CHECKS = 1");
  	}
  	
-	public List<Integer> getComedianId (String currentUser) throws SQLException {
+	public List<Favorite> getFavObjects (String currentUser) throws SQLException {
     	
-		String sql = "SELECT comedianid FROM favorite where username='" + currentUser + "'";   
-        List<Integer> list = new ArrayList<Integer>();
+		String sql = "SELECT * FROM favorite where username='" + currentUser + "'";   
+        List<Favorite> favlist = new ArrayList<Favorite>();
         
     	connect_func();     
         statement =  (Statement) connect.createStatement();
         resultSet = statement.executeQuery(sql);
         while(resultSet.next())
     	{
-        	int id = resultSet.getInt("comedianid");
-        	list.add(id);
+        	int Cid = resultSet.getInt("comedianId");
+        	int Fid = resultSet.getInt("favoriteId");
+        	String user = resultSet.getString("username");
+        	Favorite favorite = new Favorite(Fid, user, Cid);
+        	favlist.add(favorite);
     	}
         
         resultSet.close();
         statement.close();        
         disconnect();       
-        return list;	
+        return favlist;	
 	}
 	
-    public boolean delete(int comedianid, String user) throws SQLException {
+    public boolean delete(int comedianid, String username) throws SQLException {
         String sql = "DELETE FROM favorite WHERE username = ? and comedianId = ?";        
         connect_func();
          
         preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
-        preparedStatement.setString(1, user);
+        preparedStatement.setString(1, username);
         preparedStatement.setInt(2, comedianid);
          
         boolean rowDeleted = preparedStatement.executeUpdate() > 0;

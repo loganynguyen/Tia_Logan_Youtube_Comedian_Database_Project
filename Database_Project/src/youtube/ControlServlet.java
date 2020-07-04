@@ -97,6 +97,7 @@ public class ControlServlet extends HttpServlet
             	break;
             case "/logout":
             	logout(request, response);
+            	break;
             case "/review":
             	review(request, response);
             	break;
@@ -423,17 +424,17 @@ public class ControlServlet extends HttpServlet
     		RequestDispatcher dispatcher;
             
     		String currentUser = (String) session.getAttribute("currentUsername");
-    		List<Integer> idList = new ArrayList<Integer>();
+    		List<Favorite> favList = new ArrayList<Favorite>();
     		List<String> nameList = new ArrayList<String>();
             
-    		idList = favoriteDAO.getComedianId(currentUser);
+    		favList = favoriteDAO.getFavObjects(currentUser);
     		
-            for (int i = 0; i < idList.size(); i++)
+            for (int i = 0; i < favList.size(); i++)
             {
-            	String s = comedianDAO.getComedianSpecificToID(idList.get(i));
+            	String s = comedianDAO.getComedianSpecificToID(favList.get(i).getComedianid());
             	nameList.add(s);
             }
-                        
+                                    
             request.setAttribute("listFav", nameList);      
             dispatcher = request.getRequestDispatcher("user_favoritepage.jsp");      
             dispatcher.forward(request, response);
@@ -441,11 +442,23 @@ public class ControlServlet extends HttpServlet
     	}
     }
     
-    private void deleteFav(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
-        int id = Integer.parseInt(request.getParameter("id"));
-        String user = request.getParameter("user");
-
-        favoriteDAO.delete(id, user);
-        response.sendRedirect("user_favoritepage.jsp"); 
+    private void deleteFav(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException 
+    {
+    	session = request.getSession(false);
+    	if(session != null || request.isRequestedSessionIdValid())
+    	{
+    		RequestDispatcher dispatcher;
+            
+    		 String currentUser = (String) session.getAttribute("currentUsername");
+    		 String user = request.getParameter("comedian");
+    	        String[] comedianName = user.split(" ");
+    	        String comedianFirstName = comedianName[0];
+    	        String comedianLastName = comedianName[1];
+    	        int id = comedianDAO.getComedianId(comedianFirstName, comedianLastName);
+    	        favoriteDAO.delete(id, currentUser);
+    	        response.sendRedirect("user_favoritepage.jsp"); 
+    	}
+        //int id = Integer.parseInt(request.getParameter("id"));
+       
     }
 }
