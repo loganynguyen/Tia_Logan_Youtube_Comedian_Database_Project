@@ -72,6 +72,29 @@ public class ComedianDAO extends HttpServlet {
         return listComedians;
     }
     
+    public List<Comedian> listCoolComedians() throws SQLException {
+        List<Comedian> listComedians = new ArrayList<Comedian>();        
+        String sql = "SELECT V.url, V.comedianId FROM review R, video V  WHERE R.url = V.url  AND R.score = 'E'";      
+        connect_func();      
+        statement =  (Statement) connect.createStatement();
+        resultSet = statement.executeQuery(sql);
+         
+        while (resultSet.next()) {
+           // String comedianid = resultSet.getString("comedianid");
+            String firstname = resultSet.getString("firstname");
+            String lastname = resultSet.getString("lastname");
+            String birthday = resultSet.getString("birthday");
+            String birthplace = resultSet.getString("birthplace");
+             
+            Comedian newComedian = new Comedian(firstname, lastname, birthday, birthplace);
+            listComedians.add(newComedian);
+        }        
+        resultSet.close();
+        statement.close();         
+        disconnect();        
+        return listComedians;
+    }
+    
     public int getComedianId(String firstname, String lastname) throws SQLException 
     {
     	String s = "Select comedianid from comedian where firstname='" + firstname + "' and lastname='" + lastname + "'";

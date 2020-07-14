@@ -110,25 +110,29 @@ public class ControlServlet extends HttpServlet
         	case "/deleteFav":
             	deleteFav(request, response);
             	break;
+        	case "/listCool":
+            	listCool(request, response);
+            	break;
             }
         } catch (SQLException ex) { throw new ServletException(ex); }
     }
    
     // Function to initialize the database for the root user
     private void initializeDatabase(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException {       
-        userDAO.dropTable();
-        reviewDAO.dropTable();
-        videoDAO.dropTable();
+      
+    	userDAO.dropTable();
         comedianDAO.dropTable();
+        videoDAO.dropTable();
+        reviewDAO.dropTable();
         favoriteDAO.dropTable();
         tagDAO.dropTable();
 
         System.out.println("All tables dropped.");
        
         userDAO.createTable();
-        reviewDAO.createTable();
-        videoDAO.createTable();
         comedianDAO.createTable();
+        videoDAO.createTable();
+        reviewDAO.createTable();
         favoriteDAO.createTable();
         tagDAO.createTable();
 
@@ -461,6 +465,18 @@ public class ControlServlet extends HttpServlet
     }
     
     private void addFav(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException {
+    	session = request.getSession(false);
+        if(session != null || request.isRequestedSessionIdValid())
+        {          
+             String currentUser = (String) session.getAttribute("currentUsername");
+             int id = Integer.parseInt(request.getParameter("id"));
+             if(favoriteDAO.ifComedianExistsInFavList(id, currentUser) == false)
+            	 favoriteDAO.add(id, currentUser);
+             favorite(request, response);
+        }
+    }
+    
+    private void listCool(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException {
     	session = request.getSession(false);
         if(session != null || request.isRequestedSessionIdValid())
         {          

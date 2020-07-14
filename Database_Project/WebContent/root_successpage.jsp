@@ -52,6 +52,12 @@ if(session != null)
 		<form action="user_favoritepage.jsp">
 			<button type="submit">Your Favorite Comedians List</button>
 		</form>
+		
+		<br>
+		
+		<form method="post" action="listCool">
+			<button type="submit">Who’s cool</button>
+		</form>
 				
 	</center>
 

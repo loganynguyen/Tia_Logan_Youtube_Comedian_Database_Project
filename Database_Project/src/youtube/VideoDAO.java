@@ -279,10 +279,13 @@ public class VideoDAO {
                     "date VARCHAR(20) NOT NULL," +
                     "comedianId INTEGER NOT NULL," +
                     "postuser VARCHAR(50) NOT NULL,"+
+                    "FOREIGN KEY(comedianId) REFERENCES comedian(comedianid)," +
+                    "FOREIGN KEY(postuser) REFERENCES user(email)," +
                     "PRIMARY KEY(url) )";
 			statement.executeUpdate(s);
 			System.out.println("'Video' table created.");
-			
+			//"('https://www.youtube.com/embed/uCJDLgQ6xFk', 'Bill Burr - Let It Go - 2010 - Stand-up Special', 'Comedy of Bill Burr', '2016-7-11', '7', 'logan@gmail.com'), " +
+			//"('https://www.youtube.com/embed/buSv1jjAels', 'C-SPAN: Joe Wong at RTCA Dinner', 'A debut of Joe Wong', '2010-3-18', '8', 'logan@gmail.com'), " +
 			// seed the table with 10 users
 			String s2 = "INSERT INTO video(url, title, description, date, comedianId, postuser) VALUES" +
 					"('https://www.youtube.com/embed/lychTT79gKI', 'Jim Jefferies - The Rules Of Being On An Airplane', '#JimJefferies on plane etiquette, getting flack for using the C-word, and lying about being gay to win arguments.', '2017-1-20', '1', 'mary@gmail.com'), " +
@@ -293,12 +296,10 @@ public class VideoDAO {
 					"('https://www.youtube.com/embed/twlb_LJsp4Q', 'Kevin Hart, funniest best jokes comedy', 'Kevin Hart is a beast!', '2016-6-16', '4', 'logan@gmail.com'), " +
 					"('https://www.youtube.com/embed/4Xo3Fq7GGWk', 'Sam Morril: I Got This - Full Special', 'Sam Morril wonders if murderers critique each others work and recalls befriending a vigilante in Cleveland.', '2020-2-10', '5', 'mary@gmail.com'), " +
 					"('https://www.youtube.com/embed/LuZjpxmsZQ', 'George Carlin on some cultural issues.', 'Masterful performance of George Carlin taken from the show \"Back in Town\", 1996.', '2010-9-14', '6', 'logan@gmail.com'), " +
-					"('https://www.youtube.com/embed/uCJDLgQ6xFk', 'Bill Burr - Let It Go - 2010 - Stand-up Special', 'Comedy of Bill Burr', '2016-7-11', '7', 'logan@gmail.com'), " +
-					"('https://www.youtube.com/embed/buSv1jjAels', 'C-SPAN: Joe Wong at RTCA Dinner', 'A debut of Joe Wong', '2010-3-18', '8', 'logan@gmail.com'), " +
 					"('https://www.youtube.com/embed/tDolNU89SXI', 'Mark Normand: Out To Lunch - Full Special', 'In his third comedy hour he covers it all: Drinking, anxiety, gays, naughty words, trans, race & the ladies.', '2020-5-12', '9', 'logan@gmail.com'), " +
 					"('https://www.youtube.com/embed/B7sgN1Hb2zY', 'Brian Regan Stand Up Comedy Full HD Best Comedian Ever', 'Brian Regan Stand Up Comedy Full HD Best Comedian Ever', '2017-4-4', '10', 'logan@gmail.com'); ";
 			statement.executeUpdate(s2);
-			System.out.println("12 videos added.");
+			System.out.println("10 videos added.");
 			
 		} catch (Exception e) {
 			System.out.println(e);

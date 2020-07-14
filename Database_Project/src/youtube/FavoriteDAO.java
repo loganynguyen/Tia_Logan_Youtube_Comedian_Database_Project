@@ -168,6 +168,8 @@ public class FavoriteDAO {
                     "favoriteId INTEGER NOT NULL AUTO_INCREMENT," +
                     "username VARCHAR(50) NOT NULL," +
                     "comedianId INTEGER NOT NULL," +
+                    "FOREIGN KEY(comedianId) REFERENCES comedian(comedianid)," +
+                    "FOREIGN KEY(username) REFERENCES user(email)," +
                     "PRIMARY KEY(favoriteId) )";
             statement.executeUpdate(s);
             System.out.println("favorite 'table' created.");
