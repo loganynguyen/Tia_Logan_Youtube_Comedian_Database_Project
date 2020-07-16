@@ -67,7 +67,7 @@ public class ReviewDAO {
 			String s = "CREATE TABLE review (" +
 					"reviewid INTEGER unsigned NOT NULL AUTO_INCREMENT," +
 					"url VARCHAR(50) NOT NULL," +
-					"username VARCHAR(50) NOT NULL," +
+					"username VARCHAR(100) NOT NULL," +
 					"remark VARCHAR(100) NOT NULL," +
 					"score CHAR(1) NOT NULL," +
 					"FOREIGN KEY(url) REFERENCES video(url)," +
@@ -86,7 +86,7 @@ public class ReviewDAO {
 					"('https://www.youtube.com/embed/QdAhlnj97B0', 'logan@gmail.com', 'Upload photos and videos', 'P'), " +
 					"('https://www.youtube.com/embed/QdAhlnj97B0', 'junwen@gmail.com', 'purchase anything you want and get delivered in 2 days', 'F'), " +
 					"('https://www.youtube.com/embed/kMiEGUWBn98', 'evan@gmail.com', 'Upload status and stories', 'F'), " +
-					"('https://www.youtube.com/embed/kMiEGUWBn98', 'evanlogan@gmail.com', 'purchase phones you want', 'P'), " +
+					"('https://www.youtube.com/embed/kMiEGUWBn98', 'evanlog@gmail.com', 'purchase phones you want', 'P'), " +
 					"('https://www.youtube.com/embed/kMiEGUWBn98', 'bob@gmail.com', 'Very cheap shopping but ships slow', 'E');";
 			statement.executeUpdate(s2);
 			System.out.println("10 reviews added.");

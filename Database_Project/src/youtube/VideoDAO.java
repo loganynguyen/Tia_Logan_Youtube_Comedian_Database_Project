@@ -278,7 +278,7 @@ public class VideoDAO {
                     "description VARCHAR(500) NOT NULL," +
                     "date VARCHAR(20) NOT NULL," +
                     "comedianId INTEGER NOT NULL," +
-                    "postuser VARCHAR(50) NOT NULL,"+
+                    "postuser VARCHAR(100) NOT NULL,"+
                     "FOREIGN KEY(comedianId) REFERENCES comedian(comedianid)," +
                     "FOREIGN KEY(postuser) REFERENCES user(email)," +
                     "PRIMARY KEY(url) )";

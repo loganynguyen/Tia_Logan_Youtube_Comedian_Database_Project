@@ -118,7 +118,7 @@ public class UserDAO {
 		try {
 			connect_func();
 			String s = "CREATE TABLE user (" +
-					"email VARCHAR(50) NOT NULL," +
+					"email VARCHAR(100) NOT NULL," +
 					"password VARCHAR(20) NOT NULL," +
 					"firstname VARCHAR(20) NOT NULL," +
 					"lastname VARCHAR(20) NOT NULL," +
@@ -132,9 +132,9 @@ public class UserDAO {
 					"('tess@gmail.com', 'password1234', 'Tess', 'Packer', '90'), " +
 					"('tia@gmail.com', 'password1234', 'Tia', 'Gijo', '20'), " +
 					"('logan@gmail.com', 'password1234', 'Logan', 'Nguyen', '55'), " +
-					"('juwen@gmail.com', 'password1234', 'Juwen', 'Smith', '44'), " +
+					"('junwen@gmail.com', 'password1234', 'Juwen', 'Smith', '44'), " +
 					"('evan@gmail.com', 'password1234', 'Evan', 'Carr', '33'), " +
-					"('evanlogan@gmail.com', 'password1234', 'Evanlogan', 'Carry', '35'), " +
+					"('evanlog@gmail.com', 'password1234', 'Evanlogan', 'Carry', '35'), " +
 					"('bob@gmail.com', 'password1234', 'Bob', 'Dentem', '12');";
 			statement.executeUpdate(s);
 			System.out.println("'User' table created.");
