@@ -60,7 +60,7 @@ public class ComedianDAO extends HttpServlet {
            // String comedianid = resultSet.getString("comedianid");
             String firstname = resultSet.getString("firstname");
             String lastname = resultSet.getString("lastname");
-            String birthday = resultSet.getString("birthday");
+            String birthday = resultSet.getString("birthdate");
             String birthplace = resultSet.getString("birthplace");
              
             Comedian newComedian = new Comedian(firstname, lastname, birthday, birthplace);
@@ -72,9 +72,11 @@ public class ComedianDAO extends HttpServlet {
         return listComedians;
     }
     
-    public List<Comedian> listCoolComedians() throws SQLException {
-        List<Comedian> listComedians = new ArrayList<Comedian>();        
-        String sql = "SELECT V.url, V.comedianId FROM review R, video V  WHERE R.url = V.url  AND R.score = 'E'";      
+    public List<String> listCoolComedians() throws SQLException {
+        List<String> listComedians = new ArrayList<String>();        
+        String sql = "SELECT * FROM comedian WHERE comedianid IN (\r\n" + 
+        		"SELECT DISTINCT V.comedianId FROM review R, video V WHERE R.url = V.url AND R.url NOT IN\r\n" + 
+        		"(SELECT url FROM review WHERE score = '" + 'G' + "' OR score = '" + 'P' + "' OR score ='" + 'F' + "'))";      
         connect_func();      
         statement =  (Statement) connect.createStatement();
         resultSet = statement.executeQuery(sql);
@@ -83,11 +85,11 @@ public class ComedianDAO extends HttpServlet {
            // String comedianid = resultSet.getString("comedianid");
             String firstname = resultSet.getString("firstname");
             String lastname = resultSet.getString("lastname");
-            String birthday = resultSet.getString("birthday");
+            String birthday = resultSet.getString("birthdate");
             String birthplace = resultSet.getString("birthplace");
-             
+            String comedianFullName = firstname + " " + lastname;
             Comedian newComedian = new Comedian(firstname, lastname, birthday, birthplace);
-            listComedians.add(newComedian);
+            listComedians.add(comedianFullName);
         }        
         resultSet.close();
         statement.close();         

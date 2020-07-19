@@ -78,15 +78,16 @@ public class ReviewDAO {
 			System.out.println("'Review' table created.");
 			// seed the table with 10 reviews
 			String s2 = "INSERT INTO review(url, username, remark, score) VALUES" +
-					"('https://www.youtube.com/embed/tDolNU89SXI', 'mary@gmail.com', 'So many videos and really helpful', 'P'), " +
-					"('https://www.youtube.com/embed/tDolNU89SXI', 'luke@gmail.com', 'Can search anything you want', 'F'), " +
+					"('https://www.youtube.com/embed/tDolNU89SXI', 'mary@gmail.com', 'So many videos and really helpful', 'E'), " +
+					"('https://www.youtube.com/embed/tDolNU89SXI', 'luke@gmail.com', 'Can search anything you want', 'E'), " +
 					"('https://www.youtube.com/embed/QdAhlnj97B0', 'john@gmail.com', 'Very helpful in making sites', 'G'), " +
 					"('https://www.youtube.com/embed/QdAhlnj97B0', 'tess@gmail.com', 'Very helpful search engine', 'E'), " +
 					"('https://www.youtube.com/embed/QdAhlnj97B0', 'tia@gmail.com', 'Can send emails from any part to the world and recieve emails too', 'G'), " +
 					"('https://www.youtube.com/embed/QdAhlnj97B0', 'logan@gmail.com', 'Upload photos and videos', 'P'), " +
 					"('https://www.youtube.com/embed/QdAhlnj97B0', 'junwen@gmail.com', 'purchase anything you want and get delivered in 2 days', 'F'), " +
-					"('https://www.youtube.com/embed/kMiEGUWBn98', 'evan@gmail.com', 'Upload status and stories', 'F'), " +
-					"('https://www.youtube.com/embed/kMiEGUWBn98', 'evanlog@gmail.com', 'purchase phones you want', 'P'), " +
+					"('https://www.youtube.com/embed/kMiEGUWBn98', 'evan@gmail.com', 'Upload status and stories', 'E'), " +
+					"('https://www.youtube.com/embed/kMiEGUWBn98', 'evanlog@gmail.com', 'purchase phones you want', 'E'), " +
+					//"('https://www.youtube.com/embed/4Xo3Fq7GGWk', 'evanlog@gmail.com', 'purchase phones you want', 'E'), " +
 					"('https://www.youtube.com/embed/kMiEGUWBn98', 'bob@gmail.com', 'Very cheap shopping but ships slow', 'E');";
 			statement.executeUpdate(s2);
 			System.out.println("10 reviews added.");

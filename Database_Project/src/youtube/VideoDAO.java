@@ -80,6 +80,33 @@ public class VideoDAO {
  		return v;
  	} 
  	
+ 	public List<Video> retrieveVideoByComedianId(int comedianId) throws SQLException {
+ 		
+ 		connect_func();
+ 		List<Video> listVideo = new ArrayList<Video>(); 
+ 		String sql = "SELECT * FROM video where comedianId='" + comedianId + "'";
+        statement = (Statement) connect.createStatement();
+        resultSet = statement.executeQuery(sql);
+        resultSet.next();
+
+        while (resultSet.next())
+        {
+        	String url = resultSet.getString("url");
+            String title = resultSet.getString("title");
+            String description = resultSet.getString("description");
+            String date = resultSet.getString("date");
+            int comedianid = resultSet.getInt("comedianId");
+            String user = resultSet.getString("postUser");
+
+            Video v = new Video(url, title, description, date, comedianid, user);
+            listVideo.add(v);
+    	}
+        resultSet.close();
+        statement.close();         
+        disconnect();
+ 		return listVideo;
+ 	} 
+ 	
  	// Function to list all videos by any tag of a comedian
  	public List<Video> listAllVideo(String searchTerm) throws SQLException {
         

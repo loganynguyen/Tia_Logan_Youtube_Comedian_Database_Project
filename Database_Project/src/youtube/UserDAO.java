@@ -125,7 +125,7 @@ public class UserDAO {
 					"age INTEGER NOT NULL," +
 					"PRIMARY KEY(email) )";
 			String s2 = "INSERT INTO User(email, password, firstname, lastname, age) VALUES" +
-					//"('root', 'pass1234', 'x', 'x', '0'), " +
+					"('root', 'pass1234', 'x', 'x', '0'), " +
 					"('mary@gmail.com', 'password1234', 'Mary', 'Smith', '20'), " +
 					"('luke@gmail.com', 'password1234', 'Luke', 'Cambell', '13'), " +
 					"('john@gmail.com', 'password1234', 'John', 'Lewis', '10'), " +

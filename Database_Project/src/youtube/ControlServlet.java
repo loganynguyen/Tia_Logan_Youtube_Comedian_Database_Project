@@ -481,10 +481,18 @@ public class ControlServlet extends HttpServlet
         if(session != null || request.isRequestedSessionIdValid())
         {          
              String currentUser = (String) session.getAttribute("currentUsername");
-             int id = Integer.parseInt(request.getParameter("id"));
-             if(favoriteDAO.ifComedianExistsInFavList(id, currentUser) == false)
-            	 favoriteDAO.add(id, currentUser);
-             favorite(request, response);
+             RequestDispatcher dispatcher; 
+             List<String> coolComedians = new ArrayList<String>();
+             coolComedians = comedianDAO.listCoolComedians();
+             
+             request.setAttribute("coolComedians", coolComedians);      
+             dispatcher = request.getRequestDispatcher("listCoolComedians.jsp");      
+             dispatcher.forward(request, response);
+             System.out.println("Printing the cool comedians...");
         }
+        else
+    	{
+    		response.sendRedirect("loginpage.jsp");
+    	}
     }
 }

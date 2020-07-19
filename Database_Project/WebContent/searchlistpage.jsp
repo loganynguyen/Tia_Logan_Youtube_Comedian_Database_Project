@@ -37,7 +37,7 @@ if(session != null)
     <div align="center">
 
 		<table border="1" width="70%" align="center">
-            <caption><h2>Search Results</h2></caption>
+            <caption><h2>Video List</h2></caption>
             
             <tr>
                 <th>Title</th>
