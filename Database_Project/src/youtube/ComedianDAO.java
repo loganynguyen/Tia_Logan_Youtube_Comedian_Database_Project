@@ -146,6 +146,34 @@ public class ComedianDAO extends HttpServlet {
         disconnect();       
         return comedian;
     }
+    
+    public List<String> getHotComedians() throws SQLException {
+
+    	//String sql = "CREATE VIEW ReviewNumber(comedianId, num) AS SELECT V.comedianId, COUNT(*) AS num​ FROM review R, video V WHERE R.url = V.url GROUP BY V.comedianId";
+    			
+    	//SELECT * FROM ReviewNumber ORDER BY num desc; SELECT DISTINCT C.firstname, C.lastname, C.comedianid FROM comedian C WHERE C.comedianid IN (SELECT comedianId FROM ReviewNumber); ";
+        String sql = "SELECT DISTINCT C.firstname, C.lastname, C.comedianid FROM comedian C WHERE C.comedianid IN (SELECT comedianId FROM ReviewNumber)";
+        		
+    	System.out.println("ch");
+        connect_func();     
+        List<String> listComedians = new ArrayList<String>();   
+        statement =  (Statement) connect.createStatement();
+        resultSet = statement.executeQuery(sql);
+        while (resultSet.next()) 
+        {
+        	String firstname = resultSet.getString("firstname");
+            String lastname = resultSet.getString("lastname");
+            String comedian = firstname + " " + lastname;
+            listComedians.add(comedian);
+        }
+        
+        
+        
+        resultSet.close();
+        statement.close();        
+        disconnect();       
+        return listComedians;
+    }
         
     public boolean ifComedianExist(String firstname, String lastname) throws SQLException 
     {

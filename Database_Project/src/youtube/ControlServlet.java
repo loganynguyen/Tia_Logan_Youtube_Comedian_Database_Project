@@ -116,6 +116,9 @@ public class ControlServlet extends HttpServlet
         	case "/listNew":
             	listNew(request, response);
             	break;
+        	case "/listHot":
+            	listHot(request, response);
+            	break;
             }
         } catch (SQLException ex) { throw new ServletException(ex); }
     }
@@ -531,4 +534,33 @@ public class ControlServlet extends HttpServlet
     		response.sendRedirect("loginpage.jsp");
     	}
     }
+    
+    private void listHot(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException {
+    	session = request.getSession(false);
+        if(session != null || request.isRequestedSessionIdValid())
+        {          
+             String currentUser = (String) session.getAttribute("currentUsername");
+             RequestDispatcher dispatcher; 
+             List<String> hotComedians = new ArrayList<String>();
+             List<String> hotComediansThree = new ArrayList<String>();
+             String comedianName;
+             System.out.println("check");
+             hotComedians = comedianDAO.getHotComedians();
+             for(int i = 0; i < 3; i++)
+             {
+            	 comedianName = hotComedians.get(i);
+            	 hotComediansThree.add(comedianName);
+;             }
+             
+             request.setAttribute("hotComedians", hotComediansThree);      
+             dispatcher = request.getRequestDispatcher("listHotComedians.jsp");      
+             dispatcher.forward(request, response);
+             System.out.println("Printing the Hot comedians...");
+        }
+        else
+    	{
+    		response.sendRedirect("loginpage.jsp");
+    	}
+    }
+    
 }

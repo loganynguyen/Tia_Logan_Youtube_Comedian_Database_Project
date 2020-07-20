@@ -65,6 +65,12 @@ if(session != null)
 			<button type="submit">Who is new</button>
 		</form>
 				
+		<br>
+		
+		<form method="post" action="listHot">
+			<button type="submit">Who is hot</button>
+		</form>
+				
 	</center>
 
 </body>
