@@ -113,6 +113,9 @@ public class ControlServlet extends HttpServlet
         	case "/listCool":
             	listCool(request, response);
             	break;
+        	case "/listNew":
+            	listNew(request, response);
+            	break;
             }
         } catch (SQLException ex) { throw new ServletException(ex); }
     }
@@ -291,7 +294,7 @@ public class ControlServlet extends HttpServlet
             String tag = request.getParameter("tag");
             String[] tagList = tag.split(", ");
            
-            DateFormat df = new SimpleDateFormat("dd/MM/yy");
+            DateFormat df = new SimpleDateFormat("MM-dd-yyyy");
             Date dateobj = new Date();
             String date = df.format(dateobj);
             System.out.println(date);
@@ -489,6 +492,39 @@ public class ControlServlet extends HttpServlet
              dispatcher = request.getRequestDispatcher("listCoolComedians.jsp");      
              dispatcher.forward(request, response);
              System.out.println("Printing the cool comedians...");
+        }
+        else
+    	{
+    		response.sendRedirect("loginpage.jsp");
+    	}
+    }
+    
+    private void listNew(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException {
+    	session = request.getSession(false);
+        if(session != null || request.isRequestedSessionIdValid())
+        {          
+             String currentUser = (String) session.getAttribute("currentUsername");
+             RequestDispatcher dispatcher; 
+             DateFormat df = new SimpleDateFormat("MM-dd-yyyy");
+             Date dateobj = new Date();
+             String date = df.format(dateobj);
+             System.out.println(date);
+             List<Integer> newComedianId = new ArrayList<Integer>();
+             List<String> newComedians = new ArrayList<String>();
+             newComedianId = videoDAO.retrieveVideoByPostDate(date);
+             
+             for(int i = 0; i < newComedianId.size(); i++)
+             {
+            	 int id = newComedianId.get(i);
+            	 System.out.println(id);
+            	 String name = comedianDAO.getComedianSpecificToID(id);
+            	 newComedians.add(name);
+            	
+             }
+             request.setAttribute("newComedians", newComedians);      
+             dispatcher = request.getRequestDispatcher("listNewComedians.jsp");      
+             dispatcher.forward(request, response);
+             System.out.println("Printing the new comedian...");
         }
         else
     	{

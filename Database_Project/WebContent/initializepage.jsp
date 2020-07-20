@@ -38,7 +38,8 @@ if(session != null)
 		<form action="initialize" method="post">
 			<button type="submit" id="initialize" value="initialize">Initalize</button>
 		</form>
-		
+		<br>
+		<a href="root_successpage.jsp">Continue with pre existing table</a>
 	</center>
 
 </body>
