@@ -119,6 +119,12 @@ public class ControlServlet extends HttpServlet
         	case "/listHot":
             	listHot(request, response);
             	break;
+        	case "/listTop":
+            	listTop(request, response);
+            	break;
+        	case "/listPopular":
+            	listPopularTag(request, response);
+            	break;
             }
         } catch (SQLException ex) { throw new ServletException(ex); }
     }
@@ -562,5 +568,46 @@ public class ControlServlet extends HttpServlet
     		response.sendRedirect("loginpage.jsp");
     	}
     }
+    
+    private void listTop(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException {
+    	session = request.getSession(false);
+        if(session != null || request.isRequestedSessionIdValid())
+        {          
+             String currentUser = (String) session.getAttribute("currentUsername");
+             RequestDispatcher dispatcher; 
+             List<String> topComedians = new ArrayList<String>();
+             topComedians = comedianDAO.getTopComedians();
+             
+             request.setAttribute("topComedians", topComedians);      
+             dispatcher = request.getRequestDispatcher("listTopComedians.jsp");      
+             dispatcher.forward(request, response);
+             System.out.println("Printing the top comedians...");
+        }
+        else
+    	{
+    		response.sendRedirect("loginpage.jsp");
+    	}
+    }
+    
+    private void listPopularTag(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException {
+    	session = request.getSession(false);
+        if(session != null || request.isRequestedSessionIdValid())
+        {          
+             String currentUser = (String) session.getAttribute("currentUsername");
+             RequestDispatcher dispatcher; 
+             List<String> popularTags = new ArrayList<String>();
+             popularTags = tagDAO.listPopularTags();
+             
+             request.setAttribute("popularTags", popularTags);      
+             dispatcher = request.getRequestDispatcher("listPopularTags.jsp");      
+             dispatcher.forward(request, response);
+             System.out.println("Printing the popular tags...");
+        }
+        else
+    	{
+    		response.sendRedirect("loginpage.jsp");
+    	}
+    }
+    
     
 }

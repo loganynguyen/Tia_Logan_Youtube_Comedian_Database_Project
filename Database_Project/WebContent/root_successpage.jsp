@@ -53,10 +53,11 @@ if(session != null)
 			<button type="submit">Your Favorite Comedians List</button>
 		</form>
 		
+	
 		<br>
 		
 		<form method="post" action="listCool">
-			<button type="submit">Who is cool</button>
+			<button color= "red" type="submit">Who is cool</button>
 		</form>
 		
 		<br>
@@ -71,7 +72,19 @@ if(session != null)
 			<button type="submit">Who is hot</button>
 		</form>
 				
-	</center>
+		<br>
+		
+		<form method="post" action="listTop">
+			<button type="submit">Who is top</button>
+		</form>
+		<br>
+		<form method="post" action="listPopular">
+			<button type="submit">Popular Tags</button>
+		</form>
+		<br>
+			</center>
+		
+	
 
 </body>
 
