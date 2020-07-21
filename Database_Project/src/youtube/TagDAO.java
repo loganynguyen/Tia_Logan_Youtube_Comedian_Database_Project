@@ -84,6 +84,29 @@ protected void disconnect() throws SQLException {
 	        return tagsSpecificToUrl;
 	    }
 	 
+	 public List<String> listPopularTags() throws SQLException
+       {
+	        
+	        List<String> popularTagList = new ArrayList<String>(); 
+	        
+	        List<User> list = new ArrayList<User>();
+	        
+	        connect_func();
+	         statement = (Statement) connect.createStatement();
+	        statement.executeUpdate("DROP VIEW IF EXISTS tagnumber");
+	        statement.executeUpdate("CREATE VIEW tagnumber(tag, num) AS (SELECT T.tag, COUNT(distinct postuser) AS num FROM video V, videotag T WHERE V.url = T.url GROUP BY T.tag)");
+	        String sql = "SELECT * FROM tagnumber WHERE num = (SELECT COUNT(*) FROM user)";
+	        resultSet = statement.executeQuery(sql);
+	        while (resultSet.next())
+            {
+                String tag = resultSet.getString("tag");
+                popularTagList.add(tag);
+        	}
+	        resultSet.close();
+	        statement.close();         
+	        disconnect();        
+	        return popularTagList;
+	    }
 	 
 	 
   public void insert(Tag tag) throws SQLException 

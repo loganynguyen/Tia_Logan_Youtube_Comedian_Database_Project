@@ -166,8 +166,10 @@ public class FavoriteDAO {
             // create the user table
             String s = "CREATE TABLE favorite (" +
                     "favoriteId INTEGER NOT NULL AUTO_INCREMENT," +
-                    "username VARCHAR(50) NOT NULL," +
+                    "username VARCHAR(100) NOT NULL," +
                     "comedianId INTEGER NOT NULL," +
+                    "FOREIGN KEY(comedianId) REFERENCES comedian(comedianid)," +
+                    "FOREIGN KEY(username) REFERENCES user(email)," +
                     "PRIMARY KEY(favoriteId) )";
             statement.executeUpdate(s);
             System.out.println("favorite 'table' created.");
@@ -182,7 +184,7 @@ public class FavoriteDAO {
                     "('logan@gmail.com', '6'), " +
                     "('junwen@gmail.com', '7'), " +
                     "('evan@gmail.com', '8'), " +
-                    "('evanlogan@gmail.com', '9'), " +
+                    "('evanlog@gmail.com', '9'), " +
                     "('bob@gmail.com', '10');";
             statement.executeUpdate(s2);
             System.out.println("10 users added.");

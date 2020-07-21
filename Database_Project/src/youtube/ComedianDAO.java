@@ -60,11 +60,36 @@ public class ComedianDAO extends HttpServlet {
            // String comedianid = resultSet.getString("comedianid");
             String firstname = resultSet.getString("firstname");
             String lastname = resultSet.getString("lastname");
-            String birthday = resultSet.getString("birthday");
+            String birthday = resultSet.getString("birthdate");
             String birthplace = resultSet.getString("birthplace");
              
             Comedian newComedian = new Comedian(firstname, lastname, birthday, birthplace);
             listComedians.add(newComedian);
+        }        
+        resultSet.close();
+        statement.close();         
+        disconnect();        
+        return listComedians;
+    }
+    
+    public List<String> listCoolComedians() throws SQLException {
+        List<String> listComedians = new ArrayList<String>();        
+        String sql = "SELECT * FROM comedian WHERE comedianid IN (\r\n" + 
+        		"SELECT DISTINCT V.comedianId FROM review R, video V WHERE R.url = V.url AND R.url NOT IN\r\n" + 
+        		"(SELECT url FROM review WHERE score = '" + 'G' + "' OR score = '" + 'P' + "' OR score ='" + 'F' + "'))";      
+        connect_func();      
+        statement =  (Statement) connect.createStatement();
+        resultSet = statement.executeQuery(sql);
+         
+        while (resultSet.next()) {
+           // String comedianid = resultSet.getString("comedianid");
+            String firstname = resultSet.getString("firstname");
+            String lastname = resultSet.getString("lastname");
+            String birthday = resultSet.getString("birthdate");
+            String birthplace = resultSet.getString("birthplace");
+            String comedianFullName = firstname + " " + lastname;
+            Comedian newComedian = new Comedian(firstname, lastname, birthday, birthplace);
+            listComedians.add(comedianFullName);
         }        
         resultSet.close();
         statement.close();         
@@ -120,6 +145,64 @@ public class ComedianDAO extends HttpServlet {
         statement.close();        
         disconnect();       
         return comedian;
+    }
+    
+    public List<String> getHotComedians() throws SQLException {
+
+    	String sql1 = "CREATE VIEW ReviewNumber(comedianId, num) AS SELECT V.comedianId, COUNT(*) AS num​ FROM review R, video V WHERE R.url = V.url GROUP BY V.comedianId";
+    			
+    	//SELECT * FROM ReviewNumber ORDER BY num desc; SELECT DISTINCT C.firstname, C.lastname, C.comedianid FROM comedian C WHERE C.comedianid IN (SELECT comedianId FROM ReviewNumber); ";
+        String sql = "SELECT DISTINCT C.firstname, C.lastname, C.comedianid FROM comedian C WHERE C.comedianid IN (SELECT comedianId FROM ReviewNumber ORDER BY num desc);" + 
+        		"";
+        System.out.println("ch");
+        connect_func();     
+        List<String> listComedians = new ArrayList<String>();   
+        statement =  (Statement) connect.createStatement();
+        statement.executeUpdate("DROP VIEW IF EXISTS ReviewNumber");
+        statement.executeUpdate(sql1);
+        resultSet = statement.executeQuery(sql);
+        while (resultSet.next()) 
+        {
+        	String firstname = resultSet.getString("firstname");
+            String lastname = resultSet.getString("lastname");
+            String comedian = firstname + " " + lastname;
+            listComedians.add(comedian);
+        }
+             
+        resultSet.close();
+        statement.close();        
+        disconnect();       
+        return listComedians;
+    }
+    
+    public List<String> getTopComedians() throws SQLException 
+    {
+
+    	
+    	
+    	String sql1 = "CREATE VIEW videonumber(comedianId, num) AS (SELECT V.comedianId, COUNT(*) AS num​ FROM comedian C2, video V WHERE C2.comedianid = V.comedianId GROUP BY V.comedianId)";
+    	String sql2 = "SELECT DISTINCT C.firstname, C.lastname, C.comedianid FROM comedian C WHERE C.comedianid IN (SELECT comedianId FROM videonumber WHERE num = (SELECT MAX(num) FROM videonumber))";
+        String sql3;
+    	System.out.println("ch");
+        connect_func();     
+        List<String> listComedians = new ArrayList<String>();   
+        statement =  (Statement) connect.createStatement();
+        statement.executeUpdate("DROP VIEW IF EXISTS videonumber");
+        statement.executeUpdate(sql1);
+        resultSet = statement.executeQuery(sql2);
+        while (resultSet.next()) 
+        {
+        	String firstname = resultSet.getString("firstname");
+            String lastname = resultSet.getString("lastname");
+            String comedian = firstname + " " + lastname;
+            listComedians.add(comedian);
+        }
+         
+        
+        resultSet.close();
+        statement.close();        
+        disconnect();       
+        return listComedians;
     }
         
     public boolean ifComedianExist(String firstname, String lastname) throws SQLException 
