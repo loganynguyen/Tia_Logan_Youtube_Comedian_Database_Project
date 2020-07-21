@@ -167,7 +167,7 @@ public class FavoriteDAO {
             // create the user table
             String s = "CREATE TABLE favorite (" +
                     "favoriteId INTEGER NOT NULL AUTO_INCREMENT," +
-                    "username VARCHAR(50) NOT NULL," +
+                    "username VARCHAR(100) NOT NULL," +
                     "comedianId INTEGER NOT NULL," +
                     "FOREIGN KEY(username) REFERENCES User(email)," +
                     "FOREIGN KEY(comedianId) REFERENCES Comedian(comedianid)," +

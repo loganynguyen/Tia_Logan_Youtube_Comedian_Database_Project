@@ -67,15 +67,15 @@ public class ReviewDAO {
 			String s = "CREATE TABLE review (" +
 					"reviewid INTEGER unsigned NOT NULL AUTO_INCREMENT," +
 					"url VARCHAR(50) NOT NULL," +
-					"username VARCHAR(50) NOT NULL," +
+					"username VARCHAR(100) NOT NULL," +
 					"remark VARCHAR(100) NOT NULL," +
 					"score CHAR(1) NOT NULL," +
 					"FOREIGN KEY(username) REFERENCES User(email)," +
 					"FOREIGN KEY(url) REFERENCES Video(url)," +
 					"PRIMARY KEY(reviewid));";
 			statement.executeUpdate(s);
+			System.out.println("'review' table created.");
 			System.out.println("'Review' table created.");
-			
 			// seed the table with 10 reviews
 			String s2 = "INSERT INTO review(url, username, remark, score) VALUES" +
 					"('https://www.youtube.com/embed/lychTT79gKI', 'tess@gmail.com', 'It was okay', 'P'), " +

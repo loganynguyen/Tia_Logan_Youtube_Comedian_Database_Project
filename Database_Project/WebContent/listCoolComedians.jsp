@@ -37,29 +37,29 @@ if(session != null)
     <div align="center">
 
 		<table border="1" width="70%" align="center">
-            <caption><h2>Video List</h2></caption>
+            <caption><h2>Cool Comedians</h2></caption>
             
             <tr>
-                <th>Title</th>
-                <th>Comedian</th>
-                <th>Description</th>
-                <th>Actions</th>
+                <th>Name</th>
+                
+                <th>Videos</th>
+                
             </tr>
             
-            <c:forEach var="video" items="${listVideo}">
+            <c:forEach var="comedian" items="${coolComedians}">
                 <tr>
-                    <td><c:out value="${video.title}" /></td>
-                    <td><c:out value="${video.fullName}" /></td>
-                    <td><c:out value="${video.description}" /></td>
+                    <td><c:out value="${comedian}" /></td>
+                    
                  	<td>
-                 		<form method="post" action="watch">
-							<input type="hidden" name="url" id="url" value="${video.url}" />
-							<button type="submit">Watch</button>
+                 		<form method="post" action="search">
+							<input type="hidden" name="field" id="field" value="${comedian}" />
+							<p align = 'center'><button type="submit">Click to see the list of videos</button></p>
 						</form>
 					</td>
                 </tr>
            	</c:forEach>
-           	<h4><a href="user_successpage.jsp">Home</a></h4>
+           	
+           	<h4><a href="root_successpage.jsp">Home</a></h4>
            	
         </table>
          	

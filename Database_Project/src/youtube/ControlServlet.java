@@ -120,6 +120,20 @@ public class ControlServlet extends HttpServlet
         		commonFavTool(request, response);
         	case "/viewUserVideos":
         		viewUserVideos(request, response);
+        	case "/listCool":
+            	listCool(request, response);
+            	break;
+        	case "/listNew":
+            	listNew(request, response);
+            	break;
+        	case "/listHot":
+            	listHot(request, response);
+            	break;
+        	case "/listTop":
+            	listTop(request, response);
+            	break;
+        	case "/listPopular":
+            	listPopularTag(request, response);
             	break;
             }
         } catch (SQLException ex) { throw new ServletException(ex); }
@@ -298,7 +312,7 @@ public class ControlServlet extends HttpServlet
             String tag = request.getParameter("tag");
             String[] tagList = tag.split(", ");
            
-            DateFormat df = new SimpleDateFormat("dd/MM/yy");
+            DateFormat df = new SimpleDateFormat("MM-dd-yyyy");
             Date dateobj = new Date();
             String date = df.format(dateobj);
             System.out.println(date);
@@ -570,4 +584,126 @@ public class ControlServlet extends HttpServlet
         System.out.println("Printing the user's videos...");
         
     }
+    private void listCool(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException {
+    	session = request.getSession(false);
+        if(session != null || request.isRequestedSessionIdValid())
+        {          
+             String currentUser = (String) session.getAttribute("currentUsername");
+             RequestDispatcher dispatcher; 
+             List<String> coolComedians = new ArrayList<String>();
+             coolComedians = comedianDAO.listCoolComedians();
+             
+             request.setAttribute("coolComedians", coolComedians);      
+             dispatcher = request.getRequestDispatcher("listCoolComedians.jsp");      
+             dispatcher.forward(request, response);
+             System.out.println("Printing the cool comedians...");
+        }
+        else
+    	{
+    		response.sendRedirect("loginpage.jsp");
+    	}
+    }
+    
+    private void listNew(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException {
+    	session = request.getSession(false);
+        if(session != null || request.isRequestedSessionIdValid())
+        {          
+             String currentUser = (String) session.getAttribute("currentUsername");
+             RequestDispatcher dispatcher; 
+             DateFormat df = new SimpleDateFormat("MM-dd-yyyy");
+             Date dateobj = new Date();
+             String date = df.format(dateobj);
+             System.out.println(date);
+             List<Integer> newComedianId = new ArrayList<Integer>();
+             List<String> newComedians = new ArrayList<String>();
+             newComedianId = videoDAO.retrieveVideoByPostDate(date);
+             
+             for(int i = 0; i < newComedianId.size(); i++)
+             {
+            	 int id = newComedianId.get(i);
+            	 System.out.println(id);
+            	 String name = comedianDAO.getComedianSpecificToID(id);
+            	 newComedians.add(name);
+            	
+             }
+             request.setAttribute("newComedians", newComedians);      
+             dispatcher = request.getRequestDispatcher("listNewComedians.jsp");      
+             dispatcher.forward(request, response);
+             System.out.println("Printing the new comedian...");
+        }
+        else
+    	{
+    		response.sendRedirect("loginpage.jsp");
+    	}
+    }
+    
+    private void listHot(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException {
+    	session = request.getSession(false);
+        if(session != null || request.isRequestedSessionIdValid())
+        {          
+             String currentUser = (String) session.getAttribute("currentUsername");
+             RequestDispatcher dispatcher; 
+             List<String> hotComedians = new ArrayList<String>();
+             List<String> hotComediansThree = new ArrayList<String>();
+             String comedianName;
+             System.out.println("check");
+             hotComedians = comedianDAO.getHotComedians();
+             for(int i = 0; i < 3; i++)
+             {
+            	 comedianName = hotComedians.get(i);
+            	 hotComediansThree.add(comedianName);
+;             }
+             
+             request.setAttribute("hotComedians", hotComediansThree);      
+             dispatcher = request.getRequestDispatcher("listHotComedians.jsp");      
+             dispatcher.forward(request, response);
+             System.out.println("Printing the Hot comedians...");
+        }
+        else
+    	{
+    		response.sendRedirect("loginpage.jsp");
+    	}
+    }
+    
+    private void listTop(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException {
+    	session = request.getSession(false);
+        if(session != null || request.isRequestedSessionIdValid())
+        {          
+             String currentUser = (String) session.getAttribute("currentUsername");
+             RequestDispatcher dispatcher; 
+             List<String> topComedians = new ArrayList<String>();
+             topComedians = comedianDAO.getTopComedians();
+             
+             request.setAttribute("topComedians", topComedians);      
+             dispatcher = request.getRequestDispatcher("listTopComedians.jsp");      
+             dispatcher.forward(request, response);
+             System.out.println("Printing the top comedians...");
+        }
+        else
+    	{
+    		response.sendRedirect("loginpage.jsp");
+    	}
+    }
+    
+    private void listPopularTag(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException {
+    	session = request.getSession(false);
+        if(session != null || request.isRequestedSessionIdValid())
+        {          
+             String currentUser = (String) session.getAttribute("currentUsername");
+             RequestDispatcher dispatcher; 
+             List<String> popularTags = new ArrayList<String>();
+             popularTags = tagDAO.listPopularTags();
+             
+             request.setAttribute("popularTags", popularTags);      
+             dispatcher = request.getRequestDispatcher("listPopularTags.jsp");      
+             dispatcher.forward(request, response);
+             System.out.println("Printing the popular tags...");
+        }
+        else
+    	{
+    		response.sendRedirect("loginpage.jsp");
+    	}
+    }
+    
+    
 }
