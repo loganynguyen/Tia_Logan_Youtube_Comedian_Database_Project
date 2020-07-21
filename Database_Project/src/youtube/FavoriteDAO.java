@@ -100,6 +100,7 @@ public class FavoriteDAO {
         disconnect();       
         return favlist;	
 	}
+	
 	public boolean ifComedianExistinFavList(int comedianID, String user) throws SQLException 
     {
 		connect_func();
@@ -168,26 +169,49 @@ public class FavoriteDAO {
                     "favoriteId INTEGER NOT NULL AUTO_INCREMENT," +
                     "username VARCHAR(100) NOT NULL," +
                     "comedianId INTEGER NOT NULL," +
-                    "FOREIGN KEY(comedianId) REFERENCES comedian(comedianid)," +
-                    "FOREIGN KEY(username) REFERENCES user(email)," +
-                    "PRIMARY KEY(favoriteId) )";
+                    "FOREIGN KEY(username) REFERENCES User(email)," +
+                    "FOREIGN KEY(comedianId) REFERENCES Comedian(comedianid)," +
+                    "PRIMARY KEY(favoriteId));";
             statement.executeUpdate(s);
             System.out.println("favorite 'table' created.");
            
             // seed the table with 10 users
             String s2 = "INSERT INTO favorite(username, comedianId) VALUES" +
                     "('mary@gmail.com', '1'), " +
-                    "('luke@gmail.com', '2'), " +
-                    "('john@gmail.com', '3'), " +
-                    "('tess@gmail.com', '4'), " +
-                    "('tia@gmail.com', '5'), " +
+                    "('mary@gmail.com', '6'), " +            		
+                    "('mary@gmail.com', '9'), " +            		
+                    "('luke@gmail.com', '6'), " +   
+                    "('luke@gmail.com', '7'), " +                    
+                    "('luke@gmail.com', '8'), " +   
+                    "('luke@gmail.com', '9'), " +                    
+                    "('john@gmail.com', '8'), " +
+                    "('john@gmail.com', '9'), " +
+                    "('john@gmail.com', '10'), " +
+                    "('tess@gmail.com', '1'), " +
+                    "('tess@gmail.com', '2'), " +
+                    "('tess@gmail.com', '9'), " +
+                    "('tess@gmail.com', '6'), " +
+                    "('tia@gmail.com', '1'), " +
+                    "('tia@gmail.com', '2'), " +
+                    "('tia@gmail.com', '3'), " +
+                    "('tia@gmail.com', '10'), " +
+                    "('tia@gmail.com', '9'), " +
                     "('logan@gmail.com', '6'), " +
+                    "('logan@gmail.com', '9'), " +
+                    "('junwen@gmail.com', '6'), " +
                     "('junwen@gmail.com', '7'), " +
+                    "('junwen@gmail.com', '8'), " +
+                    "('junwen@gmail.com', '9'), " +
+                    "('evan@gmail.com', '1'), " +
+                    "('evan@gmail.com', '2'), " +
+                    "('evan@gmail.com', '3'), " +
                     "('evan@gmail.com', '8'), " +
-                    "('evanlog@gmail.com', '9'), " +
+                    "('evan@gmail.com', '9'), " +
+                    "('bob@gmail.com', '8'), " +
+                    "('bob@gmail.com', '9'), " +
                     "('bob@gmail.com', '10');";
             statement.executeUpdate(s2);
-            System.out.println("10 users added.");
+            System.out.println("10 favorite comedians added.");
            
         } catch (Exception e) {
             System.out.println(e);

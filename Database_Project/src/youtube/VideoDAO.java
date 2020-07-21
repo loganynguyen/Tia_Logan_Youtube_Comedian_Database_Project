@@ -325,6 +325,50 @@ public class VideoDAO {
         disconnect();
     }
  	
+ 	public List<Video> getUserVideos(String email) throws SQLException {
+		List<Video> list = new ArrayList<Video>();
+		
+		connect_func();   
+		String sql = "SELECT * FROM video WHERE postuser='" + email + "'";
+        statement = (Statement) connect.createStatement();
+        ResultSet rs = statement.executeQuery(sql);
+        System.out.println("in");
+        while (rs.next()) {
+        	String url = rs.getString("url");
+            String title = rs.getString("title");
+            String description = rs.getString("description");
+            String date = rs.getString("date");
+            int comedianId = rs.getInt("comedianId");
+            String postUser = rs.getString("postUser");
+        	list.add(new Video(url, title, description, date, comedianId, postUser));
+        }
+
+		return list;
+ 	}
+ 	
+	public List<Video> getPoorVideos() throws SQLException {
+		List<Video> list = new ArrayList<Video>();
+		
+		connect_func();
+        statement = (Statement) connect.createStatement();
+        String s = "SELECT DISTINCT V.url, V.title, V.description, V.date, V.comedianId, V.postuser FROM video V, review R WHERE R.url = V.url AND R.score = 'P' AND R.url NOT IN " +
+        		   "(SELECT DISTINCT R.url FROM review R WHERE R.score <> 'P')";
+        ResultSet rs = statement.executeQuery(s);
+        
+        while (rs.next())
+        {
+            String url = rs.getString("url");
+            String title = rs.getString("title");
+            String description = rs.getString("description");
+            String date = rs.getString("date");
+            int comedianid = rs.getInt("comedianid");
+            String postuser = rs.getString("postuser");
+            list.add(new Video(url, title, description, date, comedianid, postuser));
+        }
+
+		return list;
+	}
+ 	
 	// Function that creates and seeds the table
 	public void createTable() throws SQLException {
 		try {
@@ -337,7 +381,7 @@ public class VideoDAO {
                     "description VARCHAR(500) NOT NULL," +
                     "date VARCHAR(50) NOT NULL," +
                     "comedianId INTEGER NOT NULL," +
-                    "postuser VARCHAR(100) NOT NULL,"+
+                    "postuser VARCHAR(50) NOT NULL,"+
                     "FOREIGN KEY(comedianId) REFERENCES comedian(comedianid)," +
                     "FOREIGN KEY(postuser) REFERENCES user(email)," +
                     "PRIMARY KEY(url) )";
@@ -347,16 +391,18 @@ public class VideoDAO {
 			//"('https://www.youtube.com/embed/buSv1jjAels', 'C-SPAN: Joe Wong at RTCA Dinner', 'A debut of Joe Wong', '2010-3-18', '8', 'logan@gmail.com'), " +
 			// seed the table with 10 users
 			String s2 = "INSERT INTO video(url, title, description, date, comedianId, postuser) VALUES" +
-					"('https://www.youtube.com/embed/lychTT79gKI', 'Jim Jefferies - The Rules Of Being On An Airplane', '#JimJefferies on plane etiquette, getting flack for using the C-word, and lying about being gay to win arguments.', '07-20-2020', '1', 'mary@gmail.com'), " +
-					"('https://www.youtube.com/embed/QdAhlnj97B0', 'Bo Burnham - Sad', '#BoBurnham wows the audience with his poetry and then performs a song about all the sadness in the world.', '07-20-2020', '2', 'luke@gmail.com'), " +
-					"('https://www.youtube.com/embed/_px_2mXKry0', 'Bo Burnham Stand-Up 11/30/10 - CONAN on TBS', 'Comedian Bo Burnham wows the crowd with jokes, poems and a song; the comedy triumvirate!', '07-18-2020', '2', 'luke@gmail.com'), " +
-					"('https://www.youtube.com/embed/kMiEGUWBn98', 'Bill Hicks standup comedy 1991 - HBO One Night Stand', 'Bill Hicks half hour standup comedy special, first aired April 27, 1991, is as insightful as it is controversial.', '07-20-2020', '3', 'luke@gmail.com'), " +
-					"('https://www.youtube.com/embed/EOfFRDryVQM', 'Bill Hicks - Relentless [1992] - Stand Up Comedy Show', 'This special is well regarded as the most knowledge spewing and entertainment filled of them all.', '07-20-2020', '3', 'mary@gmail.com'), " +
-					"('https://www.youtube.com/embed/twlb_LJsp4Q', 'Kevin Hart, funniest best jokes comedy', 'Kevin Hart is a beast!', '06-20-2020', '4', 'logan@gmail.com'), " +
-					"('https://www.youtube.com/embed/4Xo3Fq7GGWk', 'Sam Morril: I Got This - Full Special', 'Sam Morril wonders if murderers critique each others work and recalls befriending a vigilante in Cleveland.', '07-17-2020', '5', 'mary@gmail.com'), " +
-					"('https://www.youtube.com/embed/LuZjpxmsZQ', 'George Carlin on some cultural issues.', 'Masterful performance of George Carlin taken from the show \"Back in Town\", 1996.', '07-20-2020', '6', 'logan@gmail.com'), " +
-					"('https://www.youtube.com/embed/tDolNU89SXI', 'Mark Normand: Out To Lunch - Full Special', 'In his third comedy hour he covers it all: Drinking, anxiety, gays, naughty words, trans, race & the ladies.', '07-16-2020', '9', 'logan@gmail.com'), " +
-					"('https://www.youtube.com/embed/B7sgN1Hb2zY', 'Brian Regan Stand Up Comedy Full HD Best Comedian Ever', 'Brian Regan Stand Up Comedy Full HD Best Comedian Ever', '07-15-2020', '10', 'logan@gmail.com'); ";
+					"('https://www.youtube.com/embed/lychTT79gKI', 'Jim Jefferies - The Rules Of Being On An Airplane', '#JimJefferies on plane etiquette, getting flack for using the C-word, and lying about being gay to win arguments.', '2017-1-20', '1', 'mary@gmail.com'), " +
+					"('https://www.youtube.com/embed/QdAhlnj97B0', 'Bo Burnham - Sad', '#BoBurnham wows the audience with his poetry and then performs a song about all the sadness in the world.', '2015-8-31', '2', 'luke@gmail.com'), " +
+					"('https://www.youtube.com/embed/_px_2mXKry0', 'Bo Burnham Stand-Up 11/30/10 - CONAN on TBS', 'Comedian Bo Burnham wows the crowd with jokes, poems and a song; the comedy triumvirate!', '2016-7-3', '2', 'luke@gmail.com'), " +
+					"('https://www.youtube.com/embed/kMiEGUWBn98', 'Bill Hicks standup comedy 1991 - HBO One Night Stand', 'Bill Hicks half hour standup comedy special, first aired April 27, 1991, is as insightful as it is controversial.', '2019-10-1', '3', 'luke@gmail.com'), " +
+					"('https://www.youtube.com/embed/EOfFRDryVQM', 'Bill Hicks - Relentless [1992] - Stand Up Comedy Show', 'This special is well regarded as the most knowledge spewing and entertainment filled of them all.', '2019-4-31', '3', 'mary@gmail.com'), " +
+					"('https://www.youtube.com/embed/twlb_LJsp4Q', 'Kevin Hart, funniest best jokes comedy', 'Kevin Hart is a beast!', '2016-6-16', '4', 'logan@gmail.com'), " +
+					"('https://www.youtube.com/embed/4Xo3Fq7GGWk', 'Sam Morril: I Got This - Full Special', 'Sam Morril wonders if murderers critique each others work and recalls befriending a vigilante in Cleveland.', '2020-2-10', '5', 'mary@gmail.com'), " +
+					"('https://www.youtube.com/embed/LuZjpxmsZQ', 'George Carlin on some cultural issues.', 'Masterful performance of George Carlin taken from the show \"Back in Town\", 1996.', '2010-9-14', '6', 'logan@gmail.com'), " +
+					"('https://www.youtube.com/embed/uCJDLgQ6xFk', 'Bill Burr - Let It Go - 2010 - Stand-up Special', 'Comedy of Bill Burr', '2016-7-11', '7', 'logan@gmail.com'), " +
+					"('https://www.youtube.com/embed/buSv1jjAels', 'C-SPAN: Joe Wong at RTCA Dinner', 'A debut of Joe Wong', '2010-3-18', '8', 'logan@gmail.com'), " +
+					"('https://www.youtube.com/embed/tDolNU89SXI', 'Mark Normand: Out To Lunch - Full Special', 'In his third comedy hour he covers it all: Drinking, anxiety, gays, naughty words, trans, race & the ladies.', '2020-5-12', '9', 'evan@gmail.com'), " +
+					"('https://www.youtube.com/embed/B7sgN1Hb2zY', 'Brian Regan Stand Up Comedy Full HD Best Comedian Ever', 'Brian Regan Stand Up Comedy Full HD Best Comedian Ever', '2017-4-4', '10', 'evan@gmail.com'); ";
 			statement.executeUpdate(s2);
 			System.out.println("10 videos added.");
 			

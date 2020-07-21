@@ -70,25 +70,28 @@ public class ReviewDAO {
 					"username VARCHAR(100) NOT NULL," +
 					"remark VARCHAR(100) NOT NULL," +
 					"score CHAR(1) NOT NULL," +
-					"FOREIGN KEY(url) REFERENCES video(url)," +
-                    "FOREIGN KEY(username) REFERENCES user(email)," +
-					"PRIMARY KEY(reviewid) )";
+					"FOREIGN KEY(username) REFERENCES User(email)," +
+					"FOREIGN KEY(url) REFERENCES Video(url)," +
+					"PRIMARY KEY(reviewid));";
 			statement.executeUpdate(s);
 			System.out.println("'review' table created.");
 			System.out.println("'Review' table created.");
 			// seed the table with 10 reviews
 			String s2 = "INSERT INTO review(url, username, remark, score) VALUES" +
-					"('https://www.youtube.com/embed/tDolNU89SXI', 'mary@gmail.com', 'So many videos and really helpful', 'E'), " +
-					"('https://www.youtube.com/embed/tDolNU89SXI', 'luke@gmail.com', 'Can search anything you want', 'E'), " +
-					"('https://www.youtube.com/embed/QdAhlnj97B0', 'john@gmail.com', 'Very helpful in making sites', 'G'), " +
-					"('https://www.youtube.com/embed/QdAhlnj97B0', 'tess@gmail.com', 'Very helpful search engine', 'E'), " +
-					"('https://www.youtube.com/embed/QdAhlnj97B0', 'tia@gmail.com', 'Can send emails from any part to the world and recieve emails too', 'G'), " +
-					"('https://www.youtube.com/embed/QdAhlnj97B0', 'logan@gmail.com', 'Upload photos and videos', 'P'), " +
-					"('https://www.youtube.com/embed/QdAhlnj97B0', 'junwen@gmail.com', 'purchase anything you want and get delivered in 2 days', 'F'), " +
-					"('https://www.youtube.com/embed/kMiEGUWBn98', 'evan@gmail.com', 'Upload status and stories', 'E'), " +
-					"('https://www.youtube.com/embed/kMiEGUWBn98', 'evanlog@gmail.com', 'purchase phones you want', 'E'), " +
-					//"('https://www.youtube.com/embed/4Xo3Fq7GGWk', 'evanlog@gmail.com', 'purchase phones you want', 'E'), " +
-					"('https://www.youtube.com/embed/kMiEGUWBn98', 'bob@gmail.com', 'Very cheap shopping but ships slow', 'E');";
+					"('https://www.youtube.com/embed/lychTT79gKI', 'tess@gmail.com', 'It was okay', 'P'), " +
+					"('https://www.youtube.com/embed/QdAhlnj97B0', 'tess@gmail.com', 'I did like this somewhat', 'F'), " +
+					"('https://www.youtube.com/embed/_px_2mXKry0', 'tia@gmail.com', 'One of the best', 'G'), " +
+					"('https://www.youtube.com/embed/kMiEGUWBn98', 'tia@gmail.com', 'My favorite', 'E'), " +
+					"('https://www.youtube.com/embed/EOfFRDryVQM', 'tia@gmail.com', 'Good I would say', 'G'), " +
+					"('https://www.youtube.com/embed/twlb_LJsp4Q', 'logan@gmail.com', 'I like this one a lot', 'E'), " +
+					"('https://www.youtube.com/embed/4Xo3Fq7GGWk', 'logan@gmail.com', 'Great stuff', 'G'), " +
+					"('https://www.youtube.com/embed/LuZjpxmsZQ', 'tess@gmail.com', 'I would not reccommend this to people', 'F'), " +
+					"('https://www.youtube.com/embed/uCJDLgQ6xFk', 'tess@gmail.com', 'Boring content', 'P'), " +
+					"('https://www.youtube.com/embed/buSv1jjAels', 'tess@gmail.com', 'Kept me interested the whole time!', 'E'), " +
+					"('https://www.youtube.com/embed/B7sgN1Hb2zY', 'junwen@gmail.com', 'Terrible', 'P'), " +
+					"('https://www.youtube.com/embed/B7sgN1Hb2zY', 'tess@gmail.com', 'I hate this', 'P'), " +
+					"('https://www.youtube.com/embed/tDolNU89SXI', 'junwen@gmail.com', 'It was really bad', 'P'), " +
+					"('https://www.youtube.com/embed/tDolNU89SXI', 'tess@gmail.com', 'Not bad at all', 'G');";
 			statement.executeUpdate(s2);
 			System.out.println("10 reviews added.");
 			

@@ -123,7 +123,7 @@ public class UserDAO {
 					"firstname VARCHAR(20) NOT NULL," +
 					"lastname VARCHAR(20) NOT NULL," +
 					"age INTEGER NOT NULL," +
-					"PRIMARY KEY(email) )";
+					"PRIMARY KEY(email));";
 			String s2 = "INSERT INTO User(email, password, firstname, lastname, age) VALUES" +
 					"('root', 'pass1234', 'x', 'x', '0'), " +
 					"('mary@gmail.com', 'password1234', 'Mary', 'Smith', '20'), " +
@@ -162,6 +162,145 @@ public class UserDAO {
 		return flag;
 	}
 	
+	public List<User> getProductiveUsers() throws SQLException {
+		List<User> list = new ArrayList<User>();
+		
+		connect_func();
+ 		statement = (Statement) connect.createStatement();
+		statement.executeUpdate("DROP VIEW IF EXISTS mostVideos");
+        statement.executeUpdate("CREATE VIEW mostVideos(postuser, num) AS SELECT postuser, COUNT(*) AS num​ FROM video GROUP BY postuser ORDER BY COUNT(*) DESC");
+        String s = "SELECT * FROM mostVideos";
+        ResultSet rs = statement.executeQuery(s);
+        
+        int lastTotalVideos = 0;
+        while (rs.next()) {
+            String email = rs.getString("postuser");
+            int num = rs.getInt("num");
+            if(num >= lastTotalVideos) {
+            	lastTotalVideos = num;
+            	list.add(new User(email, "", "", "", 0));
+        	}
+        }
+
+		return list;
+	}
+	
+	public List<User> getAllUsers() throws SQLException {
+		List<User> list = new ArrayList<User>();
+		
+		connect_func();
+        statement = (Statement) connect.createStatement();
+        String s = "SELECT * FROM user where email <> 'root';";      
+        
+        ResultSet rs = statement.executeQuery(s);
+        
+        while (rs.next())
+        {
+            String email = rs.getString("email");
+            String firstname = rs.getString("firstname");
+            String lastname = rs.getString("lastname");
+            int age = rs.getInt("age");
+            list.add(new User(email, "", firstname, lastname, age));
+        }
+
+		return list;
+	}
+		
+	public List<User> getPositiveUsers() throws SQLException {
+		List<User> list = new ArrayList<User>();
+		
+		connect_func();
+        statement = (Statement) connect.createStatement();
+        String s = "SELECT DISTINCT R.username, U.firstname, U.lastname FROM user U, review R " +
+        		"WHERE R.username = U.email AND (R.score = 'G' OR score = 'E') AND R.username NOT IN " +
+        		"(SELECT DISTINCT R.username FROM review R WHERE (R.score <> 'G' AND score <> 'E'));";      
+        
+        ResultSet rs = statement.executeQuery(s);
+        
+        while (rs.next())
+        {
+            String email = rs.getString("username");
+            String firstname = rs.getString("firstname");
+            String lastname = rs.getString("lastname");
+            list.add(new User(email, "", firstname, lastname, 0));
+        }
+
+		return list;
+	}
+	
+	public List<Pair> getIdenticalUsers() throws SQLException {
+		List<Pair> list = new ArrayList<Pair>();
+		List<String> userList = new ArrayList<String>();
+
+		connect_func();
+        statement = (Statement) connect.createStatement();
+        String s = "SELECT DISTINCT username FROM favorite";
+        ResultSet rs = statement.executeQuery(s);
+        
+        while(rs.next())
+        {
+        	String name = rs.getString("username");
+        	userList.add(name);
+        }
+        
+        for(int i = 0; i < userList.size(); i++)
+        {
+        	statement = (Statement) connect.createStatement();
+        	String [] array = userList.get(i).split("@gmail.com");
+            statement.executeUpdate("DROP VIEW IF EXISTS " + array[0]);
+        	statement.executeUpdate("CREATE VIEW " + array[0] + "(username, comedianId) AS SELECT username, comedianId FROM favorite WHERE username='" + userList.get(i) + "'");
+        }
+        
+        for(int i = 0; i < userList.size(); i++)
+        {
+        	statement = (Statement) connect.createStatement();
+        	String [] array = userList.get(i).split("@gmail.com");
+            rs = statement.executeQuery("SELECT * FROM " + array[0]);
+            
+    		List<Integer> idList1 = new ArrayList<Integer>();
+            while(rs.next())
+            {
+            	int id = rs.getInt("comedianId");
+            	System.out.println("1: " + id + " : " + userList.get(i));
+            	idList1.add(id);
+            }
+            
+        	for(int j = i + 1; j < userList.size() - 1; j++)
+            {
+        		statement = (Statement) connect.createStatement();
+        		String [] array2 = userList.get(j).split("@gmail.com");
+                rs = statement.executeQuery("SELECT * FROM " + array2[0]);
+                
+        		List<Integer> idList2 = new ArrayList<Integer>();
+                while(rs.next())
+                {
+                	int id = rs.getInt("comedianId");
+                	System.out.println("2: " + id + " : " + userList.get(j));
+                	idList2.add(id);
+                }
+                
+                boolean notEqual = false;
+                System.out.println("size:" + idList1.size() + " "+ idList2.size());
+                if(idList1.size() == idList2.size())
+                {
+                	for(int k = 0; k < idList1.size(); k++)
+                    {
+                    	if(idList1.get(k) != idList2.get(k))
+                    		notEqual = true;
+                    }
+                } else {
+                	notEqual = true;
+                	System.out.println("wrong size, not equal");
+                }
+                                
+                if(notEqual == false)
+                	list.add(new Pair(userList.get(i), userList.get(j)));
+            }
+        }
+
+		return list;
+	}
+	
 	// Function to check if the username / email already exists
 	public boolean isDuplicateEmail(String email) throws SQLException {
 		connect_func();
@@ -182,5 +321,3 @@ public class UserDAO {
 			statement.close();
 	}
 }
-
-//comment

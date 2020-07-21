@@ -53,7 +53,12 @@ if(session != null)
 			<button type="submit">Your Favorite Comedians List</button>
 		</form>
 		
-	
+		<br>
+		
+		<form method="post" action="stats">
+			<button type="submit">Database Statistics</button>
+		</form>
+		
 		<br>
 		
 		<form method="post" action="listCool">

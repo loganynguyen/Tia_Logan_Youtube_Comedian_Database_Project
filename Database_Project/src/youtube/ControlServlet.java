@@ -104,12 +104,22 @@ public class ControlServlet extends HttpServlet
             case "/favorite":
             	favorite(request, response);
             	break;
+            case "/favorite_alt":
+            	favorite_alt(request, response);
+            	break;
             case "/addFav":
             	addFav(request, response);
             	break;
         	case "/deleteFav":
             	deleteFav(request, response);
             	break;
+        	case "/stats":
+        		stats(request, response);
+            	break;
+        	case "/commonFavTool":
+        		commonFavTool(request, response);
+        	case "/viewUserVideos":
+        		viewUserVideos(request, response);
         	case "/listCool":
             	listCool(request, response);
             	break;
@@ -131,8 +141,7 @@ public class ControlServlet extends HttpServlet
    
     // Function to initialize the database for the root user
     private void initializeDatabase(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException {       
-      
-    	userDAO.dropTable();
+        userDAO.dropTable();
         comedianDAO.dropTable();
         videoDAO.dropTable();
         reviewDAO.dropTable();
@@ -459,6 +468,29 @@ public class ControlServlet extends HttpServlet
     		response.sendRedirect("loginpage.jsp");
     	}
     }
+    
+    private void favorite_alt(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException
+    {
+		RequestDispatcher dispatcher;
+        
+        String email = request.getParameter("email");
+
+        List<Favorite> favList = new ArrayList<Favorite>();
+		List<String> nameList = new ArrayList<String>();
+        
+		favList = favoriteDAO.getFavObjects(email);
+		
+        for (int i = 0; i < favList.size(); i++)
+        {
+        	String s = comedianDAO.getComedianSpecificToID(favList.get(i).getComedianid());
+        	nameList.add(s);
+        }
+                                
+        request.setAttribute("listFav", nameList);      
+        dispatcher = request.getRequestDispatcher("user_favoritepage.jsp");      
+        dispatcher.forward(request, response);
+        System.out.println("printing favorite comedians...");
+    }
    
     private void deleteFav(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException
     {
@@ -488,6 +520,70 @@ public class ControlServlet extends HttpServlet
         }
     }
     
+    private void stats(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException {
+    	
+    	List<User> prodUsers = new ArrayList<User>(); 
+    	prodUsers = userDAO.getProductiveUsers();
+    	
+    	List<User> posUsers = new ArrayList<User>(); 
+    	posUsers = userDAO.getPositiveUsers();
+    	
+    	List<Video> poorVideos = new ArrayList<Video>(); 
+    	poorVideos = videoDAO.getPoorVideos();
+    	
+    	List<User> userList = new ArrayList<User>(); 
+    	userList = userDAO.getAllUsers();
+    	
+    	List<Pair> identialUsers = new ArrayList<Pair>();
+    	identialUsers = userDAO.getIdenticalUsers();
+    	
+		RequestDispatcher dispatcher;
+    	request.setAttribute("prodUsers", prodUsers);      
+    	request.setAttribute("posUsers", posUsers);
+    	request.setAttribute("poorVideos", poorVideos);
+    	request.setAttribute("userList", userList);
+    	request.setAttribute("identialUsers", identialUsers);
+
+        dispatcher = request.getRequestDispatcher("stats.jsp");      
+        dispatcher.forward(request, response);
+        System.out.println("printing statistics...");
+    }
+    
+    private void commonFavTool(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException {
+    	
+    	RequestDispatcher dispatcher;
+
+        String user1 = request.getParameter("user1");
+        String user2 = request.getParameter("user2");
+
+		List<Comedian> comedianList = new ArrayList<Comedian>();
+		comedianList = comedianDAO.getCommonFavs(user1, user2);
+        
+        request.setAttribute("comedianList", comedianList);      
+        dispatcher = request.getRequestDispatcher("common_favoritepage.jsp");      
+        dispatcher.forward(request, response);
+        System.out.println("Common favorite comedians being compared...");
+    }
+    
+    private void viewUserVideos(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException {
+        String email = request.getParameter("field");
+        List<Video> listVideo = new ArrayList<Video>();
+
+        listVideo = videoDAO.getUserVideos(email);
+        
+        // adding the full name of the comedian to the video object
+        for(int i = 0; i < listVideo.size(); i++)
+    	{
+        	listVideo.get(i).setFullName(comedianDAO.getComedianSpecificToID(listVideo.get(i).getComedianid()));
+    	}
+        
+        RequestDispatcher dispatcher;
+        request.setAttribute("listVideo", listVideo);      
+        dispatcher = request.getRequestDispatcher("searchlistpage.jsp");      
+        dispatcher.forward(request, response);
+        System.out.println("Printing the user's videos...");
+        
+    }
     private void listCool(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException {
     	session = request.getSession(false);
         if(session != null || request.isRequestedSessionIdValid())

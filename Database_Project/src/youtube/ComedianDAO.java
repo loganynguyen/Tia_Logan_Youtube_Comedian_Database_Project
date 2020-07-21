@@ -147,6 +147,32 @@ public class ComedianDAO extends HttpServlet {
         return comedian;
     }
     
+	public List<Comedian> getCommonFavs(String user1, String user2) throws SQLException {
+		List<Comedian> list = new ArrayList<Comedian>();
+		connect_func();
+        statement = (Statement) connect.createStatement();
+        String s = "SELECT * FROM comedian WHERE comedianid IN " +
+        		   "(SELECT comedianId FROM favorite WHERE username = '" + user1 + "' AND comedianid IN " +
+        		   "(SELECT comedianId FROM favorite WHERE username = '" + user2 + "'));";
+        
+        resultSet = statement.executeQuery(s);
+		System.out.println("in");
+
+        while (resultSet.next())
+        {
+        	String firstname = resultSet.getString("firstname");
+        	String lastname = resultSet.getString("lastname");
+        	String birthdate = resultSet.getString("birthdate");
+        	String birthplace = resultSet.getString("birthplace");
+    		System.out.println(firstname + ", " + lastname + ", " + birthdate + ", " + birthplace);
+            list.add(new Comedian(firstname, lastname, birthdate, birthplace));
+        }
+        
+        resultSet.close();
+        statement.close();        
+        disconnect();
+		return list;
+	}
     public List<String> getHotComedians() throws SQLException {
 
     	String sql1 = "CREATE VIEW ReviewNumber(comedianId, num) AS SELECT V.comedianId, COUNT(*) AS num​ FROM review R, video V WHERE R.url = V.url GROUP BY V.comedianId";
