@@ -266,6 +266,50 @@ public class VideoDAO {
         disconnect();
     }
  	
+ 	public List<Video> getUserVideos(String email) throws SQLException {
+		List<Video> list = new ArrayList<Video>();
+		
+		connect_func();   
+		String sql = "SELECT * FROM video WHERE postuser='" + email + "'";
+        statement = (Statement) connect.createStatement();
+        ResultSet rs = statement.executeQuery(sql);
+        System.out.println("in");
+        while (rs.next()) {
+        	String url = rs.getString("url");
+            String title = rs.getString("title");
+            String description = rs.getString("description");
+            String date = rs.getString("date");
+            int comedianId = rs.getInt("comedianId");
+            String postUser = rs.getString("postUser");
+        	list.add(new Video(url, title, description, date, comedianId, postUser));
+        }
+
+		return list;
+ 	}
+ 	
+	public List<Video> getPoorVideos() throws SQLException {
+		List<Video> list = new ArrayList<Video>();
+		
+		connect_func();
+        statement = (Statement) connect.createStatement();
+        String s = "SELECT DISTINCT V.url, V.title, V.description, V.date, V.comedianId, V.postuser FROM video V, review R WHERE R.url = V.url AND R.score = 'P' AND R.url NOT IN " +
+        		   "(SELECT DISTINCT R.url FROM review R WHERE R.score <> 'P')";
+        ResultSet rs = statement.executeQuery(s);
+        
+        while (rs.next())
+        {
+            String url = rs.getString("url");
+            String title = rs.getString("title");
+            String description = rs.getString("description");
+            String date = rs.getString("date");
+            int comedianid = rs.getInt("comedianid");
+            String postuser = rs.getString("postuser");
+            list.add(new Video(url, title, description, date, comedianid, postuser));
+        }
+
+		return list;
+	}
+ 	
 	// Function that creates and seeds the table
 	public void createTable() throws SQLException {
 		try {
@@ -278,7 +322,9 @@ public class VideoDAO {
                     "description VARCHAR(500) NOT NULL," +
                     "date VARCHAR(20) NOT NULL," +
                     "comedianId INTEGER NOT NULL," +
-                    "postuser VARCHAR(50) NOT NULL,"+
+                    "postuser VARCHAR(50) NOT NULL," +
+                    "FOREIGN KEY(comedianId) REFERENCES Comedian(comedianid)," +
+                    "FOREIGN KEY(postuser) REFERENCES User(email)," +
                     "PRIMARY KEY(url) )";
 			statement.executeUpdate(s);
 			System.out.println("'Video' table created.");
@@ -295,8 +341,8 @@ public class VideoDAO {
 					"('https://www.youtube.com/embed/LuZjpxmsZQ', 'George Carlin on some cultural issues.', 'Masterful performance of George Carlin taken from the show \"Back in Town\", 1996.', '2010-9-14', '6', 'logan@gmail.com'), " +
 					"('https://www.youtube.com/embed/uCJDLgQ6xFk', 'Bill Burr - Let It Go - 2010 - Stand-up Special', 'Comedy of Bill Burr', '2016-7-11', '7', 'logan@gmail.com'), " +
 					"('https://www.youtube.com/embed/buSv1jjAels', 'C-SPAN: Joe Wong at RTCA Dinner', 'A debut of Joe Wong', '2010-3-18', '8', 'logan@gmail.com'), " +
-					"('https://www.youtube.com/embed/tDolNU89SXI', 'Mark Normand: Out To Lunch - Full Special', 'In his third comedy hour he covers it all: Drinking, anxiety, gays, naughty words, trans, race & the ladies.', '2020-5-12', '9', 'logan@gmail.com'), " +
-					"('https://www.youtube.com/embed/B7sgN1Hb2zY', 'Brian Regan Stand Up Comedy Full HD Best Comedian Ever', 'Brian Regan Stand Up Comedy Full HD Best Comedian Ever', '2017-4-4', '10', 'logan@gmail.com'); ";
+					"('https://www.youtube.com/embed/tDolNU89SXI', 'Mark Normand: Out To Lunch - Full Special', 'In his third comedy hour he covers it all: Drinking, anxiety, gays, naughty words, trans, race & the ladies.', '2020-5-12', '9', 'evan@gmail.com'), " +
+					"('https://www.youtube.com/embed/B7sgN1Hb2zY', 'Brian Regan Stand Up Comedy Full HD Best Comedian Ever', 'Brian Regan Stand Up Comedy Full HD Best Comedian Ever', '2017-4-4', '10', 'evan@gmail.com'); ";
 			statement.executeUpdate(s2);
 			System.out.println("12 videos added.");
 			
