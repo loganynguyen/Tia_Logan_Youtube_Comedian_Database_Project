@@ -81,12 +81,19 @@ public class ReviewDAO {
 					"('https://www.youtube.com/embed/lychTT79gKI', 'tess@gmail.com', 'It was okay', 'P'), " +
 					"('https://www.youtube.com/embed/QdAhlnj97B0', 'tess@gmail.com', 'I did like this somewhat', 'F'), " +
 					"('https://www.youtube.com/embed/_px_2mXKry0', 'tia@gmail.com', 'One of the best', 'G'), " +
+					"('https://www.youtube.com/embed/_px_2mXKry0', 'bob@gmail.com', 'Fav', 'G'), " +
 					"('https://www.youtube.com/embed/kMiEGUWBn98', 'tia@gmail.com', 'My favorite', 'E'), " +
 					"('https://www.youtube.com/embed/EOfFRDryVQM', 'tia@gmail.com', 'Good I would say', 'G'), " +
 					"('https://www.youtube.com/embed/twlb_LJsp4Q', 'logan@gmail.com', 'I like this one a lot', 'E'), " +
 					"('https://www.youtube.com/embed/4Xo3Fq7GGWk', 'logan@gmail.com', 'Great stuff', 'G'), " +
 					"('https://www.youtube.com/embed/LuZjpxmsZQ', 'tess@gmail.com', 'I would not reccommend this to people', 'F'), " +
 					"('https://www.youtube.com/embed/uCJDLgQ6xFk', 'tess@gmail.com', 'Boring content', 'P'), " +
+					"('https://www.youtube.com/embed/uCJDLgQ6xFk', 'mary@gmail.com', 'Terrible!', 'P'), " +
+					"('https://www.youtube.com/embed/uCJDLgQ6xFk', 'john@gmail.com', 'Yuck', 'P'), " +
+					"('https://www.youtube.com/embed/B7sgN1Hb2zY', 'john@gmail.com', 'Good', 'G'), " +
+					"('https://www.youtube.com/embed/B7sgN1Hb2zY', 'bob@gmail.com', 'Good', 'G'), " +
+					"('https://www.youtube.com/embed/uCJDLgQ6xFk', 'bob@gmail.com', 'Ew', 'P'), " +
+					"('https://www.youtube.com/embed/uCJDLgQ6xFk', 'evan@gmail.com', 'Bad', 'P'), " +
 					"('https://www.youtube.com/embed/buSv1jjAels', 'tess@gmail.com', 'Kept me interested the whole time!', 'E'), " +
 					"('https://www.youtube.com/embed/B7sgN1Hb2zY', 'junwen@gmail.com', 'Terrible', 'P'), " +
 					"('https://www.youtube.com/embed/B7sgN1Hb2zY', 'tess@gmail.com', 'I hate this', 'P'), " +

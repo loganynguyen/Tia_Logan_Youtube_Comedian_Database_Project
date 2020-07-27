@@ -14,26 +14,6 @@
 </head>
 
 <body>
-<h4>
-<%
-if(session != null)
-{
-	if(session.getAttribute("currentUsername") != null)
-	{
-		String currentUser = (String) session.getAttribute("currentUsername");
-		String currentPassword = (String) session.getAttribute("currentPassword");
-		out.println("Current user: ");
-		out.print(currentUser);
-	}
-	else
-	{
-		response.sendRedirect("loginpage.jsp");
-	}
-}
-%>
-</h4>
-<p align = 'right'><form method = "post" action="logout"><button type="submit" id="logout" value="logout">logout</button></form></p>
-
 	<form method="post" action="register">
 		<center>
 			<table border="1" width="30%" cellpadding="5" bgcolor="pink">

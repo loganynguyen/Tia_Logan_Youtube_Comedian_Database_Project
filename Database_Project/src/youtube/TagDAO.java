@@ -88,14 +88,12 @@ protected void disconnect() throws SQLException {
        {
 	        
 	        List<String> popularTagList = new ArrayList<String>(); 
-	        
-	        List<User> list = new ArrayList<User>();
-	        
+	       	        
 	        connect_func();
 	         statement = (Statement) connect.createStatement();
 	        statement.executeUpdate("DROP VIEW IF EXISTS tagnumber");
 	        statement.executeUpdate("CREATE VIEW tagnumber(tag, num) AS (SELECT T.tag, COUNT(distinct postuser) AS num FROM video V, videotag T WHERE V.url = T.url GROUP BY T.tag)");
-	        String sql = "SELECT * FROM tagnumber WHERE num = (SELECT COUNT(*) FROM user)";
+	        String sql = "SELECT * FROM tagnumber WHERE num = (SELECT COUNT(DISTINCT postuser) FROM video)";
 	        resultSet = statement.executeQuery(sql);
 	        while (resultSet.next())
             {
@@ -177,8 +175,11 @@ public void createTable() throws SQLException {
 				"('https://www.youtube.com/embed/twlb_LJsp4Q', 'phones'), " +
 				"('https://www.youtube.com/embed/uCJDLgQ6xFk', 'phones'), " +
 				"('https://www.youtube.com/embed/buSv1jjAels', 'relationships'), " +
+				"('https://www.youtube.com/embed/buSv1jjAels', 'funny'), " +
 				"('https://www.youtube.com/embed/tDolNU89SXI', 'relationships'), " +
+				"('https://www.youtube.com/embed/B7sgN1Hb2zY', 'funny'), " +
 				"('https://www.youtube.com/embed/B7sgN1Hb2zY', 'relationships');";
+
 		statement.executeUpdate(s2);
 		System.out.println("10 videotags added.");
 		

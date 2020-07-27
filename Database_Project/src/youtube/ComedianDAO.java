@@ -1,7 +1,5 @@
 package youtube;
 
- 
-
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -173,26 +171,39 @@ public class ComedianDAO extends HttpServlet {
         disconnect();
 		return list;
 	}
-    public List<String> getHotComedians() throws SQLException {
+	
+	public List<String> getHotComedians() throws SQLException {
+    	
+    	List<Integer> comedianId = new ArrayList<Integer>();
 
     	String sql1 = "CREATE VIEW ReviewNumber(comedianId, num) AS SELECT V.comedianId, COUNT(*) AS num​ FROM review R, video V WHERE R.url = V.url GROUP BY V.comedianId";
-    			
-    	//SELECT * FROM ReviewNumber ORDER BY num desc; SELECT DISTINCT C.firstname, C.lastname, C.comedianid FROM comedian C WHERE C.comedianid IN (SELECT comedianId FROM ReviewNumber); ";
-        String sql = "SELECT DISTINCT C.firstname, C.lastname, C.comedianid FROM comedian C WHERE C.comedianid IN (SELECT comedianId FROM ReviewNumber ORDER BY num desc);" + 
-        		"";
-        System.out.println("ch");
+    	String sql2 = "SELECT * FROM ReviewNumber ORDER BY num desc;";		
+    	
         connect_func();     
         List<String> listComedians = new ArrayList<String>();   
         statement =  (Statement) connect.createStatement();
         statement.executeUpdate("DROP VIEW IF EXISTS ReviewNumber");
         statement.executeUpdate(sql1);
-        resultSet = statement.executeQuery(sql);
+        resultSet = statement.executeQuery(sql2);
+        
         while (resultSet.next()) 
         {
-        	String firstname = resultSet.getString("firstname");
-            String lastname = resultSet.getString("lastname");
-            String comedian = firstname + " " + lastname;
-            listComedians.add(comedian);
+        	Integer id = resultSet.getInt("comedianId");
+            comedianId.add(id);
+        }
+        
+        for(int i = 0; i < comedianId.size(); i++)
+        {
+        	String sql = "SELECT * FROM comedian where comedianid='" + comedianId.get(i) + "'";
+        	statement =  (Statement) connect.createStatement();
+        	resultSet = statement.executeQuery(sql);
+            while (resultSet.next()) 
+            {
+            	String firstname = resultSet.getString("firstname");
+                String lastname = resultSet.getString("lastname");
+                String comedian = firstname + " " + lastname;
+                listComedians.add(comedian);
+            }
         }
              
         resultSet.close();
@@ -203,13 +214,9 @@ public class ComedianDAO extends HttpServlet {
     
     public List<String> getTopComedians() throws SQLException 
     {
-
-    	
-    	
-    	String sql1 = "CREATE VIEW videonumber(comedianId, num) AS (SELECT V.comedianId, COUNT(*) AS num​ FROM comedian C2, video V WHERE C2.comedianid = V.comedianId GROUP BY V.comedianId)";
+    	String sql1 = "CREATE VIEW videonumber(comedianId, num) AS (SELECT V.comedianId, COUNT(*) AS num FROM comedian C2, video V WHERE C2.comedianid = V.comedianId GROUP BY V.comedianId)";
     	String sql2 = "SELECT DISTINCT C.firstname, C.lastname, C.comedianid FROM comedian C WHERE C.comedianid IN (SELECT comedianId FROM videonumber WHERE num = (SELECT MAX(num) FROM videonumber))";
-        String sql3;
-    	System.out.println("ch");
+
         connect_func();     
         List<String> listComedians = new ArrayList<String>();   
         statement =  (Statement) connect.createStatement();
